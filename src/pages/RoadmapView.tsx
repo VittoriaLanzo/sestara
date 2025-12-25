@@ -306,16 +306,7 @@ const RoadmapView = () => {
                         progress={topic.progress}
                         status={topic.status as any}
                         estimatedTime={topic.estimated_hours ? `${topic.estimated_hours}h` : undefined}
-                        onClick={() => {
-                          // Cycle through statuses
-                          if (topic.status === "not-started") {
-                            updateTopicStatus(topic.id, "in-progress", 50);
-                          } else if (topic.status === "in-progress") {
-                            updateTopicStatus(topic.id, "completed", 100);
-                          } else {
-                            updateTopicStatus(topic.id, "not-started", 0);
-                          }
-                        }}
+                        onClick={() => navigate(`/topic/${topic.id}`)}
                       />
                     ))}
                   </div>
