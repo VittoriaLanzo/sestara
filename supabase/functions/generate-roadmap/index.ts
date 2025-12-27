@@ -13,14 +13,43 @@ serve(async (req) => {
   }
 
   try {
+    // NOTE: We intentionally validate the user token ourselves instead of relying on platform JWT verification.
+    // This avoids "Invalid JWT" issues and still keeps the endpoint protected.
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const jwt = authHeader.startsWith("Bearer ") ? authHeader.slice("Bearer ".length) : null;
+
+    if (!jwt) {
+      return new Response(JSON.stringify({ error: "Missing Authorization token" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+      throw new Error("Backend auth is not configured");
+    }
+
+    const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const { data: userData, error: userError } = await supabaseAdmin.auth.getUser(jwt);
+
+    if (userError || !userData?.user) {
+      return new Response(JSON.stringify({ error: "Invalid session. Please sign in again." }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { goalType, goalDetails, title } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    
+
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log("Generating roadmap for:", { goalType, goalDetails, title });
+    console.log("Generating roadmap for:", { goalType, goalDetails, title, userId: userData.user.id });
 
     const systemPrompt = `You are an expert educational curriculum designer and study planner. 
 Your task is to create a comprehensive, well-structured study roadmap based on the user's learning goal.

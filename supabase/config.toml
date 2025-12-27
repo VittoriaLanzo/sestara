@@ -1,7 +1,7 @@
 project_id = "iicddxaiteujjsqtlcai"
 
 [functions.generate-roadmap]
-verify_jwt = true
+verify_jwt = false
 
 [functions.topic-ai]
 verify_jwt = true
