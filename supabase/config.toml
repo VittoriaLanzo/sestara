@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.topic-ai]
 verify_jwt = true
+
+[functions.study-assistant]
+verify_jwt = false

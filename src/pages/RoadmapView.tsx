@@ -4,20 +4,15 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { TopicCard } from "@/components/TopicCard";
-import { ProgressRing } from "@/components/ProgressRing";
+import { RoadmapProgressOverview } from "@/components/progress/RoadmapProgressOverview";
+import { ProgressBar } from "@/components/progress/ProgressBar";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
   ChevronLeft,
   ChevronDown,
-  ChevronRight,
-  Calendar,
-  Clock,
-  BookOpen,
-  Target,
   Sparkles,
-  Edit3,
   Loader2,
 } from "lucide-react";
 
@@ -217,43 +212,26 @@ const RoadmapView = () => {
           Back to Dashboard
         </Button>
 
-        {/* Roadmap Header */}
-        <div className="glass-card p-6 mb-8 animate-slide-up">
-          <div className="flex flex-col md:flex-row md:items-center gap-6">
-            <ProgressRing progress={overallProgress} size={100} strokeWidth={8}>
-              <span className="text-xl font-bold text-foreground">{overallProgress}%</span>
-            </ProgressRing>
-
-            <div className="flex-1">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-2">
-                    {roadmap.title}
-                  </h1>
-                  <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <BookOpen className="w-4 h-4" />
-                      {completedTopics}/{totalTopics} topics
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      {totalHours.toFixed(1)}h estimated
-                    </span>
-                    {roadmap.target_date && (
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        Target: {new Date(roadmap.target_date).toLocaleDateString()}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Edit3 className="w-4 h-4" />
-                  Edit
-                </Button>
-              </div>
-            </div>
-          </div>
+        {/* Progress Overview */}
+        <div className="mb-8 animate-slide-up">
+          <RoadmapProgressOverview
+            roadmapTitle={roadmap.title}
+            overallProgress={overallProgress}
+            completedTopics={completedTopics}
+            totalTopics={totalTopics}
+            totalHours={totalHours}
+            targetDate={roadmap.target_date}
+            subjects={subjects.map((s) => ({
+              id: s.id,
+              title: s.title,
+              completedTopics: s.topics.filter((t) => t.status === "completed").length,
+              totalTopics: s.topics.length,
+              progress: calculateSubjectProgress(s),
+              isCompleted: s.is_completed || calculateSubjectProgress(s) === 100,
+            }))}
+            streak={0}
+            trend="stable"
+          />
         </div>
 
         {/* Subjects List */}
@@ -273,15 +251,18 @@ const RoadmapView = () => {
                   onClick={() => toggleSubject(subject.id)}
                   className="w-full glass-card p-4 hover-lift flex items-center gap-4"
                 >
-                  <ProgressRing progress={subjectProgress} size={48} strokeWidth={4}>
-                    <span className="text-xs font-semibold">{subjectProgress}%</span>
-                  </ProgressRing>
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-sm font-bold text-primary">{subjectProgress}%</span>
+                  </div>
 
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-left min-w-0">
                     <h3 className="font-display font-semibold text-foreground">{subject.title}</h3>
                     {subject.description && (
                       <p className="text-sm text-muted-foreground line-clamp-1">{subject.description}</p>
                     )}
+                    <div className="mt-2">
+                      <ProgressBar progress={subjectProgress} size="sm" />
+                    </div>
                     <p className="text-xs text-muted-foreground mt-1">
                       {subject.topics.filter((t) => t.status === "completed").length}/{subject.topics.length} topics completed
                     </p>
@@ -289,7 +270,7 @@ const RoadmapView = () => {
 
                   <ChevronDown
                     className={cn(
-                      "w-5 h-5 text-muted-foreground transition-transform duration-300",
+                      "w-5 h-5 text-muted-foreground transition-transform duration-300 flex-shrink-0",
                       isExpanded && "rotate-180"
                     )}
                   />
