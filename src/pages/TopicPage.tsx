@@ -52,7 +52,7 @@ const TopicPage = () => {
   
   // AI content states
   const [explanation, setExplanation] = useState<string | null>(null);
-  const [summary, setSummary] = useState<string | null>(null);
+  const [keywords, setKeywords] = useState<string[] | null>(null);
   const [flashcards, setFlashcards] = useState<any[] | null>(null);
   
   // Modal states
@@ -349,8 +349,8 @@ const TopicPage = () => {
               notes={notes}
               explanation={explanation}
               setExplanation={setExplanation}
-              summary={summary}
-              setSummary={setSummary}
+              keywords={keywords}
+              setKeywords={setKeywords}
               flashcards={flashcards}
               setFlashcards={setFlashcards}
               onShowFlashcards={() => setShowFlashcards(true)}
