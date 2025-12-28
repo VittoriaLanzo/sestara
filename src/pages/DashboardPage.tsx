@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { StatCard } from "@/components/StatCard";
 import { StreakWidget } from "@/components/StreakWidget";
+import { RemindersWidget } from "@/components/reminders/RemindersWidget";
 import { Button } from "@/components/ui/button";
 import { ProgressRing } from "@/components/ProgressRing";
 import { cn } from "@/lib/utils";
@@ -250,8 +251,13 @@ const DashboardPage = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Streak Widget */}
+            {/* Reminders Widget */}
             <div className="animate-slide-up" style={{ animationDelay: "0.5s" }}>
+              <RemindersWidget limit={4} />
+            </div>
+
+            {/* Streak Widget */}
+            <div className="animate-slide-up" style={{ animationDelay: "0.6s" }}>
               <StreakWidget
                 currentStreak={0}
                 longestStreak={0}
@@ -260,7 +266,7 @@ const DashboardPage = () => {
             </div>
 
             {/* AI Assistant */}
-            <div className="animate-slide-up" style={{ animationDelay: "0.6s" }}>
+            <div className="animate-slide-up" style={{ animationDelay: "0.7s" }}>
               <div className="glass-card p-5 gradient-border">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-accent">

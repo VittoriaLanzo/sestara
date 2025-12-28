@@ -90,6 +90,7 @@ serve(async (req) => {
           const completedTopics = topics?.filter(t => t.status === "completed").length || 0;
           const inProgressTopics = topics?.filter(t => t.status === "in-progress") || [];
           const notStartedTopics = topics?.filter(t => t.status === "not-started") || [];
+          const skippedTopics = topics?.filter(t => t.status === "skipped") || [];
           const progress = totalTopics > 0 ? Math.round((completedTopics / totalTopics) * 100) : 0;
 
           const isCurrentRoadmap = roadmapId === roadmap.id;
@@ -98,7 +99,13 @@ serve(async (req) => {
           
           if (roadmap.target_date) {
             const daysLeft = Math.ceil((new Date(roadmap.target_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-            contextInfo += `\n  - Target date: ${roadmap.target_date} (${daysLeft > 0 ? daysLeft + " days left" : "overdue"})`;
+            const topicsPerDay = daysLeft > 0 ? ((totalTopics - completedTopics) / daysLeft).toFixed(1) : "N/A";
+            contextInfo += `\n  - Target date: ${roadmap.target_date} (${daysLeft > 0 ? daysLeft + " days left" : "OVERDUE!"})`;
+            contextInfo += `\n  - Required pace: ${topicsPerDay} topics/day to finish on time`;
+          }
+
+          if (skippedTopics.length > 0) {
+            contextInfo += `\n  - ⚠️ Skipped topics needing attention: ${skippedTopics.map(t => t.title).join(", ")}`;
           }
 
           if (isCurrentRoadmap) {
@@ -110,6 +117,62 @@ serve(async (req) => {
             }
             contextInfo += `\n  - Subjects: ${subjects.map(s => s.title).join(", ")}`;
           }
+        }
+      }
+    }
+
+    // Get upcoming reminders and deadlines
+    const { data: reminders } = await supabaseAdmin
+      .from("reminders")
+      .select("title, reminder_type, due_date, is_completed")
+      .eq("user_id", userId)
+      .eq("is_completed", false)
+      .order("due_date", { ascending: true })
+      .limit(10);
+
+    if (reminders && reminders.length > 0) {
+      contextInfo += `\n\n📅 Upcoming Deadlines & Reminders:\n`;
+      for (const reminder of reminders) {
+        const daysUntil = Math.ceil((new Date(reminder.due_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+        const urgency = daysUntil <= 0 ? "🔴 OVERDUE" : daysUntil <= 3 ? "🟡 URGENT" : "🟢";
+        contextInfo += `\n${urgency} ${reminder.reminder_type.toUpperCase()}: "${reminder.title}" - ${reminder.due_date} (${daysUntil > 0 ? daysUntil + " days" : "overdue"})`;
+      }
+    }
+
+    // Get quiz performance for personalization
+    const { data: quizAttempts } = await supabaseAdmin
+      .from("quiz_attempts")
+      .select("topic_id, score, max_score, quiz_type, completed_at")
+      .eq("user_id", userId)
+      .not("score", "is", null)
+      .order("completed_at", { ascending: false })
+      .limit(20);
+
+    if (quizAttempts && quizAttempts.length > 0) {
+      const totalScore = quizAttempts.reduce((sum, q) => sum + (q.score || 0), 0);
+      const totalMax = quizAttempts.reduce((sum, q) => sum + (q.max_score || 0), 0);
+      const avgAccuracy = totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0;
+      
+      contextInfo += `\n\n📊 Quiz Performance:\n`;
+      contextInfo += `- Average accuracy: ${avgAccuracy}%`;
+      contextInfo += `- Total quizzes taken: ${quizAttempts.length}`;
+      
+      // Find weak topics (score < 70%)
+      const weakTopicIds = new Set<string>();
+      quizAttempts.forEach(q => {
+        if (q.max_score && q.score && (q.score / q.max_score) < 0.7) {
+          weakTopicIds.add(q.topic_id);
+        }
+      });
+
+      if (weakTopicIds.size > 0) {
+        const { data: weakTopics } = await supabaseAdmin
+          .from("topics")
+          .select("title")
+          .in("id", Array.from(weakTopicIds));
+        
+        if (weakTopics && weakTopics.length > 0) {
+          contextInfo += `\n- ⚠️ Topics needing more practice: ${weakTopics.map(t => t.title).join(", ")}`;
         }
       }
     }
@@ -156,22 +219,31 @@ serve(async (req) => {
 Your key capabilities:
 1. **Explain concepts** - Break down complex topics into simple, digestible explanations
 2. **Study planning** - Help create daily/weekly study schedules based on goals and deadlines
-3. **Suggest next steps** - Recommend what to study next based on progress
+3. **Suggest next steps** - Recommend what to study next based on progress and deadlines
 4. **Generate revision plans** - Create spaced repetition and review schedules
 5. **Answer questions** - Clarify doubts using the student's own notes and context
 6. **Motivation** - Provide encouragement and study tips
+7. **Pace adjustment** - If the user is falling behind, suggest realistic catch-up plans
 
 Context about the student:
 ${contextInfo || "No roadmaps created yet. Encourage the user to create their first learning roadmap!"}
 
-Guidelines:
+Personalization Guidelines:
+- If quiz scores are low on certain topics, recommend revisiting those with simpler explanations
+- If there are upcoming exams/deadlines, prioritize those topics in your suggestions
+- If user is behind schedule, suggest an adjusted study pace without overwhelming them
+- If there are skipped topics, gently remind them about the importance of covering fundamentals
+- Suggest revision sessions for topics completed more than a week ago
+- Celebrate achievements (completed topics, high quiz scores, streaks)
+
+General Guidelines:
 - Be encouraging and supportive, but also honest about study requirements
 - Give specific, actionable advice based on their actual progress
-- When suggesting study plans, consider their target dates
+- When suggesting study plans, consider their target dates and current pace
 - Reference their notes and current topics when answering questions
 - Keep responses concise but helpful (aim for 2-4 paragraphs max unless they ask for detail)
 - Use emojis sparingly to keep things friendly
-- If they're behind schedule, be motivating but realistic
+- If they're behind schedule, be motivating but realistic about what's achievable
 - Always end with a helpful next step or question`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
