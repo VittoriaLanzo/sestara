@@ -41,8 +41,27 @@ serve(async (req) => {
         break;
 
       case 'summarize':
-        systemPrompt = 'You are an expert at creating concise, memorable summaries. Focus on key points and essential information.';
-        userPrompt = `Create a short, memorable summary of this topic:\n\n${context}\n\nInclude:\n- Key concepts (3-5 bullet points)\n- One memorable takeaway\n- Any important formulas or rules if applicable`;
+        systemPrompt = 'You are an expert at extracting key terms and concepts from educational content. Extract the most important keywords and phrases that students should know.';
+        userPrompt = `Extract 6-10 important keywords or key phrases from this topic that are essential for understanding:\n\n${context}\n\nFocus on:\n- Core concepts and terminology\n- Important names, formulas, or principles\n- Key vocabulary students must know`;
+        tools = [{
+          type: 'function',
+          function: {
+            name: 'extract_keywords',
+            description: 'Extract important keywords from the topic',
+            parameters: {
+              type: 'object',
+              properties: {
+                keywords: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  description: 'List of 6-10 important keywords or key phrases'
+                }
+              },
+              required: ['keywords']
+            }
+          }
+        }];
+        toolChoice = { type: 'function', function: { name: 'extract_keywords' } };
         break;
 
       case 'quiz':
@@ -168,7 +187,7 @@ serve(async (req) => {
 
     let result: any;
 
-    if (action === 'quiz' || action === 'flashcards') {
+    if (action === 'quiz' || action === 'flashcards' || action === 'summarize') {
       const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
       if (toolCall) {
         result = JSON.parse(toolCall.function.arguments);

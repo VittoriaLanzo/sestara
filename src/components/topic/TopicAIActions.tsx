@@ -3,9 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
+import { KeywordChips } from "@/components/topic/KeywordChips";
 import {
   Lightbulb,
-  FileText,
+  Tag,
   HelpCircle,
   Layers,
   Loader2,
@@ -21,8 +23,8 @@ interface TopicAIActionsProps {
   notes: string;
   explanation: string | null;
   setExplanation: (val: string | null) => void;
-  summary: string | null;
-  setSummary: (val: string | null) => void;
+  keywords: string[] | null;
+  setKeywords: (val: string[] | null) => void;
   flashcards: any[] | null;
   setFlashcards: (val: any[] | null) => void;
   onShowFlashcards: () => void;
@@ -34,8 +36,8 @@ export const TopicAIActions = ({
   notes,
   explanation,
   setExplanation,
-  summary,
-  setSummary,
+  keywords,
+  setKeywords,
   flashcards,
   setFlashcards,
   onShowFlashcards,
@@ -62,7 +64,7 @@ export const TopicAIActions = ({
           setExplanation(data.content);
           break;
         case 'summarize':
-          setSummary(data.content);
+          setKeywords(data.keywords);
           break;
         case 'flashcards':
           setFlashcards(data.cards);
@@ -87,9 +89,9 @@ export const TopicAIActions = ({
     },
     {
       id: 'summarize',
-      icon: FileText,
-      label: 'Generate Summary',
-      description: 'Create a concise summary with key points',
+      icon: Tag,
+      label: 'Important Keywords',
+      description: 'Extract key terms and concepts',
       onClick: () => callAI('summarize'),
       color: 'text-blue-400',
     },
@@ -111,6 +113,8 @@ export const TopicAIActions = ({
     },
   ];
 
+  const hasContent = explanation || keywords || flashcards;
+
   return (
     <div className="space-y-6">
       {/* AI Actions Grid */}
@@ -119,7 +123,7 @@ export const TopicAIActions = ({
           <Button
             key={action.id}
             variant="outline"
-            className="h-auto py-4 flex flex-col items-center gap-2 hover-lift"
+            className="h-auto py-4 flex flex-col items-center gap-2 hover-lift relative overflow-hidden"
             onClick={action.onClick}
             disabled={loadingAction !== null}
           >
@@ -133,54 +137,53 @@ export const TopicAIActions = ({
         ))}
       </div>
 
-      {/* Explanation Card */}
-      {explanation && (
-        <Card className="glass-card animate-fade-in">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Lightbulb className="w-5 h-5 text-yellow-400" />
-              Simple Explanation
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="prose prose-invert prose-sm max-w-none">
-              <p className="text-foreground/90 whitespace-pre-wrap">{explanation}</p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {/* AI Generated Content - New content appears at top */}
+      <div className="space-y-4">
+        {/* Explanation Card */}
+        {explanation && (
+          <Card className="glass-card animate-fade-in transition-all duration-300">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Lightbulb className="w-5 h-5 text-yellow-400" />
+                Simple Explanation
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <MarkdownRenderer content={explanation} />
+            </CardContent>
+          </Card>
+        )}
 
-      {/* Summary Card */}
-      {summary && (
-        <Card className="glass-card animate-fade-in">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <FileText className="w-5 h-5 text-blue-400" />
-              Summary
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="prose prose-invert prose-sm max-w-none">
-              <p className="text-foreground/90 whitespace-pre-wrap">{summary}</p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+        {/* Keywords Card */}
+        {keywords && keywords.length > 0 && (
+          <Card className="glass-card animate-fade-in transition-all duration-300">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Tag className="w-5 h-5 text-blue-400" />
+                Important Keywords
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <KeywordChips keywords={keywords} />
+            </CardContent>
+          </Card>
+        )}
 
-      {/* View Flashcards Button */}
-      {flashcards && flashcards.length > 0 && (
-        <Button
-          variant="outline"
-          onClick={onShowFlashcards}
-          className="w-full gap-2"
-        >
-          <Layers className="w-4 h-4 text-purple-400" />
-          View {flashcards.length} Flashcards
-        </Button>
-      )}
+        {/* View Flashcards Button */}
+        {flashcards && flashcards.length > 0 && (
+          <Button
+            variant="outline"
+            onClick={onShowFlashcards}
+            className="w-full gap-2 animate-fade-in"
+          >
+            <Layers className="w-4 h-4 text-purple-400" />
+            View {flashcards.length} Flashcards
+          </Button>
+        )}
+      </div>
 
       {/* Empty State */}
-      {!explanation && !summary && !flashcards && (
+      {!hasContent && !loadingAction && (
         <Card className="glass-card border-dashed">
           <CardContent className="py-12 text-center">
             <Sparkles className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
@@ -188,8 +191,23 @@ export const TopicAIActions = ({
               AI-Powered Learning Tools
             </h3>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Click any button above to get AI-generated explanations, summaries, 
+              Click any button above to get AI-generated explanations, keywords, 
               quizzes, or flashcards for this topic.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Loading State Indicator */}
+      {loadingAction && !hasContent && (
+        <Card className="glass-card animate-pulse">
+          <CardContent className="py-12 text-center">
+            <Loader2 className="w-12 h-12 text-primary mx-auto mb-4 animate-spin" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Generating Content...
+            </h3>
+            <p className="text-muted-foreground">
+              AI is working on your request
             </p>
           </CardContent>
         </Card>
