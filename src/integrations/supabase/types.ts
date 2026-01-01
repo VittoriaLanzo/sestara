@@ -87,6 +87,88 @@ export type Database = {
           },
         ]
       }
+      note_drawings: {
+        Row: {
+          created_at: string
+          drawing_data: Json
+          id: string
+          page_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          drawing_data?: Json
+          id?: string
+          page_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          drawing_data?: Json
+          id?: string
+          page_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "note_drawings_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "note_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      note_pages: {
+        Row: {
+          color_tag: string | null
+          content: Json
+          created_at: string
+          icon: string | null
+          id: string
+          is_pinned: boolean
+          order_index: number
+          title: string
+          topic_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          color_tag?: string | null
+          content?: Json
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_pinned?: boolean
+          order_index?: number
+          title?: string
+          topic_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          color_tag?: string | null
+          content?: Json
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_pinned?: boolean
+          order_index?: number
+          title?: string
+          topic_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "note_pages_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null

@@ -6,12 +6,14 @@ const corsHeaders = {
 };
 
 interface RequestBody {
-  action: 'explain' | 'summarize' | 'quiz' | 'flashcards';
-  topicTitle: string;
+  action: 'explain' | 'summarize' | 'quiz' | 'flashcards' | 'write-assist' | 'math-convert';
+  topicTitle?: string;
   topicDescription?: string;
   userNotes?: string;
   quizType?: 'mcq' | 'short' | 'mixed';
   questionCount?: number;
+  assistType?: string;
+  text?: string;
 }
 
 serve(async (req) => {
@@ -20,7 +22,7 @@ serve(async (req) => {
   }
 
   try {
-    const { action, topicTitle, topicDescription, userNotes, quizType = 'mixed', questionCount = 5 }: RequestBody = await req.json();
+    const { action, topicTitle, topicDescription, userNotes, quizType = 'mixed', questionCount = 5, assistType, text }: RequestBody = await req.json();
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -135,6 +137,23 @@ serve(async (req) => {
         toolChoice = { type: 'function', function: { name: 'create_flashcards' } };
         break;
 
+      case 'write-assist':
+        const assistPrompts: Record<string, string> = {
+          improve: 'Improve the clarity and readability of this text while keeping the same meaning:',
+          simplify: 'Simplify this text to make it easier to understand:',
+          expand: 'Expand on this text with more details and examples:',
+          bulletize: 'Convert this text into clear bullet points:',
+          exam: 'Reformat this text into an exam-ready format with key points highlighted:'
+        };
+        systemPrompt = 'You are a helpful writing assistant. Output only the improved text, nothing else.';
+        userPrompt = `${assistPrompts[assistType || 'improve']}\n\n${text}`;
+        break;
+
+      case 'math-convert':
+        systemPrompt = 'You are a LaTeX expert. Convert plain text math expressions to LaTeX. Output ONLY the LaTeX code, nothing else.';
+        userPrompt = `Convert to LaTeX: ${text}`;
+        break;
+
       default:
         throw new Error(`Unknown action: ${action}`);
     }
@@ -194,6 +213,10 @@ serve(async (req) => {
       } else {
         throw new Error('Failed to get structured response from AI');
       }
+    } else if (action === 'write-assist') {
+      result = { result: data.choices?.[0]?.message?.content || '' };
+    } else if (action === 'math-convert') {
+      result = { latex: data.choices?.[0]?.message?.content?.replace(/```latex?\n?/g, '').replace(/```/g, '').trim() || '' };
     } else {
       result = { content: data.choices?.[0]?.message?.content || '' };
     }
