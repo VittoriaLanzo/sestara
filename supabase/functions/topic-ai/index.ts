@@ -6,14 +6,19 @@ const corsHeaders = {
 };
 
 interface RequestBody {
-  action: 'explain' | 'summarize' | 'quiz' | 'flashcards' | 'write-assist' | 'math-convert';
+  action: 'explain' | 'summarize' | 'quiz' | 'flashcards' | 'write-assist' | 'math-convert' | 'explain-wrong';
   topicTitle?: string;
   topicDescription?: string;
   userNotes?: string;
   quizType?: 'mcq' | 'short' | 'mixed';
   questionCount?: number;
+  difficulty?: 'easy' | 'medium' | 'hard' | 'mixed';
   assistType?: string;
   text?: string;
+  question?: string;
+  correctAnswer?: string;
+  userAnswer?: string;
+  cardCount?: number;
 }
 
 serve(async (req) => {
@@ -22,7 +27,7 @@ serve(async (req) => {
   }
 
   try {
-    const { action, topicTitle, topicDescription, userNotes, quizType = 'mixed', questionCount = 5, assistType, text }: RequestBody = await req.json();
+    const { action, topicTitle, topicDescription, userNotes, quizType = 'mixed', questionCount = 5, difficulty = 'mixed', assistType, text, question, correctAnswer, userAnswer, cardCount = 10 }: RequestBody = await req.json();
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -67,8 +72,8 @@ serve(async (req) => {
         break;
 
       case 'quiz':
-        systemPrompt = 'You are an educational quiz creator. Create engaging, fair questions that test understanding, not just memorization. Be encouraging in your feedback.';
-        userPrompt = `Create a ${quizType === 'mcq' ? 'multiple choice' : quizType === 'short' ? 'short answer' : 'mixed format'} quiz with ${questionCount} questions about:\n\n${context}`;
+        systemPrompt = 'You are an educational quiz creator. Create engaging, fair questions that test understanding, not just memorization. Be encouraging in your feedback. Include difficulty level for each question.';
+        userPrompt = `Create a ${quizType === 'mcq' ? 'multiple choice' : quizType === 'short' ? 'short answer' : 'mixed format'} quiz with ${questionCount} questions about:\n\n${context}\n\nDifficulty: ${difficulty === 'mixed' ? 'Mix of easy, medium, and hard questions' : `All ${difficulty} difficulty`}`;
         tools = [{
           type: 'function',
           function: {
@@ -85,6 +90,7 @@ serve(async (req) => {
                       id: { type: 'string' },
                       type: { type: 'string', enum: ['mcq', 'short'] },
                       question: { type: 'string' },
+                      difficulty: { type: 'string', enum: ['easy', 'medium', 'hard'] },
                       options: { 
                         type: 'array', 
                         items: { type: 'string' },
@@ -107,6 +113,7 @@ serve(async (req) => {
 
       case 'flashcards':
         systemPrompt = 'You are an expert at creating effective flashcards for learning. Create cards that are clear, concise, and test understanding.';
+        userPrompt = `Create ${cardCount} flashcards for studying:\n\n${context}`;
         userPrompt = `Create 8-10 flashcards for studying:\n\n${context}`;
         tools = [{
           type: 'function',
@@ -152,6 +159,11 @@ serve(async (req) => {
       case 'math-convert':
         systemPrompt = 'You are a LaTeX expert. Convert plain text math expressions to LaTeX. Output ONLY the LaTeX code, nothing else.';
         userPrompt = `Convert to LaTeX: ${text}`;
+        break;
+
+      case 'explain-wrong':
+        systemPrompt = 'You are a patient, encouraging tutor. Explain why an answer is incorrect and help the student understand the concept. Be supportive, not critical.';
+        userPrompt = `Topic: ${topicTitle}\n\nQuestion: ${question}\nStudent's answer: ${userAnswer}\nCorrect answer: ${correctAnswer}\n\nExplain why the student's answer is incorrect and help them understand the right concept. Be encouraging.`;
         break;
 
       default:
