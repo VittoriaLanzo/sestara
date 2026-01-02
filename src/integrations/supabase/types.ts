@@ -14,11 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      content_sources: {
+        Row: {
+          created_at: string
+          extracted_content: string | null
+          file_name: string | null
+          id: string
+          processing_status: string | null
+          source_type: string
+          source_url: string | null
+          topic_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          extracted_content?: string | null
+          file_name?: string | null
+          id?: string
+          processing_status?: string | null
+          source_type: string
+          source_url?: string | null
+          topic_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          extracted_content?: string | null
+          file_name?: string | null
+          id?: string
+          processing_status?: string | null
+          source_type?: string
+          source_url?: string | null
+          topic_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_sources_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       flashcard_sets: {
         Row: {
           cards: Json
           created_at: string
           id: string
+          last_studied_at: string | null
+          mastery_data: Json | null
+          source_type: string | null
+          source_url: string | null
           topic_id: string
           updated_at: string
           user_id: string
@@ -27,6 +78,10 @@ export type Database = {
           cards?: Json
           created_at?: string
           id?: string
+          last_studied_at?: string | null
+          mastery_data?: Json | null
+          source_type?: string | null
+          source_url?: string | null
           topic_id: string
           updated_at?: string
           user_id: string
@@ -35,6 +90,10 @@ export type Database = {
           cards?: Json
           created_at?: string
           id?: string
+          last_studied_at?: string | null
+          mastery_data?: Json | null
+          source_type?: string | null
+          source_url?: string | null
           topic_id?: string
           updated_at?: string
           user_id?: string
@@ -201,11 +260,15 @@ export type Database = {
           answers: Json | null
           completed_at: string | null
           created_at: string
+          difficulty: string | null
           id: string
           max_score: number | null
+          question_states: Json | null
           questions: Json
           quiz_type: string
           score: number | null
+          source_type: string | null
+          time_spent_seconds: number | null
           topic_id: string
           user_id: string
         }
@@ -213,11 +276,15 @@ export type Database = {
           answers?: Json | null
           completed_at?: string | null
           created_at?: string
+          difficulty?: string | null
           id?: string
           max_score?: number | null
+          question_states?: Json | null
           questions: Json
           quiz_type?: string
           score?: number | null
+          source_type?: string | null
+          time_spent_seconds?: number | null
           topic_id: string
           user_id: string
         }
@@ -225,11 +292,15 @@ export type Database = {
           answers?: Json | null
           completed_at?: string | null
           created_at?: string
+          difficulty?: string | null
           id?: string
           max_score?: number | null
+          question_states?: Json | null
           questions?: Json
           quiz_type?: string
           score?: number | null
+          source_type?: string | null
+          time_spent_seconds?: number | null
           topic_id?: string
           user_id?: string
         }
@@ -239,6 +310,44 @@ export type Database = {
             columns: ["topic_id"]
             isOneToOne: false
             referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_doubt_reports: {
+        Row: {
+          created_at: string
+          doubt_type: string
+          id: string
+          question_index: number
+          quiz_attempt_id: string
+          user_id: string
+          user_notes: string | null
+        }
+        Insert: {
+          created_at?: string
+          doubt_type: string
+          id?: string
+          question_index: number
+          quiz_attempt_id: string
+          user_id: string
+          user_notes?: string | null
+        }
+        Update: {
+          created_at?: string
+          doubt_type?: string
+          id?: string
+          question_index?: number
+          quiz_attempt_id?: string
+          user_id?: string
+          user_notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_doubt_reports_quiz_attempt_id_fkey"
+            columns: ["quiz_attempt_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_attempts"
             referencedColumns: ["id"]
           },
         ]
