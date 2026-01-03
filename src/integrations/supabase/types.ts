@@ -412,6 +412,41 @@ export type Database = {
           },
         ]
       }
+      roadmap_versions: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          roadmap_id: string
+          snapshot_data: Json
+          version_number: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          roadmap_id: string
+          snapshot_data: Json
+          version_number?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          roadmap_id?: string
+          snapshot_data?: Json
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roadmap_versions_roadmap_id_fkey"
+            columns: ["roadmap_id"]
+            isOneToOne: false
+            referencedRelation: "roadmaps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       roadmaps: {
         Row: {
           created_at: string
@@ -532,6 +567,7 @@ export type Database = {
           id: string
           order_index: number
           progress: number | null
+          revision_notes: string | null
           status: string | null
           subject_id: string
           title: string
@@ -544,6 +580,7 @@ export type Database = {
           id?: string
           order_index?: number
           progress?: number | null
+          revision_notes?: string | null
           status?: string | null
           subject_id: string
           title: string
@@ -556,6 +593,7 @@ export type Database = {
           id?: string
           order_index?: number
           progress?: number | null
+          revision_notes?: string | null
           status?: string | null
           subject_id?: string
           title?: string

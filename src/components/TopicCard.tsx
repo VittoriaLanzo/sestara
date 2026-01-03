@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 import { ProgressRing } from "./ProgressRing";
-import { CheckCircle2, Clock, Play, Lock } from "lucide-react";
+import { CheckCircle2, Clock, Play, Lock, AlertTriangle } from "lucide-react";
 
 interface TopicCardProps {
   title: string;
   description: string;
   progress: number;
-  status: "completed" | "in-progress" | "locked" | "not-started";
+  status: "completed" | "in-progress" | "locked" | "not-started" | "needs-revision";
   estimatedTime?: string;
   className?: string;
   onClick?: () => void;
@@ -41,6 +41,13 @@ const statusConfig = {
     bgColor: "bg-secondary",
     borderColor: "border-border",
   },
+  "needs-revision": {
+    icon: AlertTriangle,
+    label: "Needs Revision",
+    color: "text-warning",
+    bgColor: "bg-warning/10",
+    borderColor: "border-warning/30",
+  },
 };
 
 export const TopicCard = ({
@@ -52,7 +59,7 @@ export const TopicCard = ({
   className,
   onClick,
 }: TopicCardProps) => {
-  const config = statusConfig[status];
+  const config = statusConfig[status] || statusConfig["not-started"];
   const Icon = config.icon;
   const isClickable = status !== "locked";
 
