@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreak } from "@/hooks/useStreak";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { StatCard } from "@/components/StatCard";
 import { StreakWidget } from "@/components/StreakWidget";
-import { RemindersWidget } from "@/components/reminders/RemindersWidget";
+import { CompactRemindersWidget } from "@/components/reminders/CompactRemindersWidget";
 import { Button } from "@/components/ui/button";
 import { ProgressRing } from "@/components/ProgressRing";
 import { cn } from "@/lib/utils";
@@ -34,6 +35,7 @@ interface RoadmapWithProgress {
 const DashboardPage = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { currentStreak, longestStreak, weekData, loading: streakLoading } = useStreak();
 
   const [roadmaps, setRoadmaps] = useState<RoadmapWithProgress[]>([]);
   const [loading, setLoading] = useState(true);
@@ -250,37 +252,20 @@ const DashboardPage = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Reminders Widget */}
-            <div className="animate-slide-up" style={{ animationDelay: "0.5s" }}>
-              <RemindersWidget limit={4} />
-            </div>
-
+          <div className="space-y-4">
             {/* Streak Widget */}
-            <div className="animate-slide-up" style={{ animationDelay: "0.6s" }}>
+            <div className="animate-slide-up" style={{ animationDelay: "0.4s" }}>
               <StreakWidget
-                currentStreak={0}
-                longestStreak={0}
-                weekData={[false, false, false, false, false, false, false]}
+                currentStreak={currentStreak}
+                longestStreak={longestStreak}
+                weekData={weekData}
+                loading={streakLoading}
               />
             </div>
 
-            {/* AI Assistant */}
-            <div className="animate-slide-up" style={{ animationDelay: "0.7s" }}>
-              <div className="glass-card p-5 gradient-border">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-accent">
-                    <Sparkles className="w-5 h-5 text-primary-foreground" />
-                  </div>
-                  <h3 className="font-display font-semibold text-foreground">AI Study Assistant</h3>
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Need help understanding a concept? Create a new roadmap anytime!
-                </p>
-                <Button variant="outline" className="w-full" onClick={() => navigate("/onboarding")}>
-                  Create New Roadmap
-                </Button>
-              </div>
+            {/* Compact Reminders Widget */}
+            <div className="animate-slide-up" style={{ animationDelay: "0.5s" }}>
+              <CompactRemindersWidget />
             </div>
           </div>
         </div>
