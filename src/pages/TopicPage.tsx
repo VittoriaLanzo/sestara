@@ -4,15 +4,16 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { TopicAIActions } from "@/components/topic/TopicAIActions";
 import { TopicNotes } from "@/components/topic/TopicNotes";
-import { QuizModal } from "@/components/topic/QuizModal";
-import { FlashcardViewer } from "@/components/topic/FlashcardViewer";
 import { CompletionDialog } from "@/components/topic/CompletionDialog";
+import { EnhancedQuizViewer } from "@/components/quiz/EnhancedQuizViewer";
+import { QuizConfigPanel, QuizConfig } from "@/components/quiz/QuizConfigPanel";
+import { EnhancedFlashcardViewer } from "@/components/flashcard/EnhancedFlashcardViewer";
+import { FlashcardGenerator } from "@/components/flashcard/FlashcardGenerator";
 import {
   ChevronLeft,
   CheckCircle2,
@@ -20,6 +21,7 @@ import {
   BookOpen,
   Loader2,
   Sparkles,
+  X,
 } from "lucide-react";
 
 interface Topic {
@@ -38,6 +40,24 @@ interface Subject {
   roadmap_id: string;
 }
 
+interface QuizQuestion {
+  id: string;
+  type: 'mcq' | 'short';
+  question: string;
+  options?: string[];
+  correctAnswer: string;
+  explanation: string;
+  encouragement: string;
+  difficulty?: string;
+}
+
+interface Flashcard {
+  id: string;
+  front: string;
+  back: string;
+  hint?: string;
+}
+
 const TopicPage = () => {
   const { topicId } = useParams();
   const navigate = useNavigate();
@@ -53,13 +73,22 @@ const TopicPage = () => {
   // AI content states
   const [explanation, setExplanation] = useState<string | null>(null);
   const [keywords, setKeywords] = useState<string[] | null>(null);
-  const [flashcards, setFlashcards] = useState<any[] | null>(null);
+  const [flashcards, setFlashcards] = useState<Flashcard[] | null>(null);
+  const [flashcardSetId, setFlashcardSetId] = useState<string | null>(null);
   
-  // Modal states
+  // Quiz states
+  const [showQuizConfig, setShowQuizConfig] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [quizConfig, setQuizConfig] = useState<QuizConfig | null>(null);
+  const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
+  
+  // Flashcard states
+  const [showFlashcardGenerator, setShowFlashcardGenerator] = useState(false);
   const [showFlashcards, setShowFlashcards] = useState(false);
+  
+  // Completion dialog
   const [showCompletionDialog, setShowCompletionDialog] = useState(false);
-  const [quizQuestions, setQuizQuestions] = useState<any[] | null>(null);
 
   useEffect(() => {
     if (!user || !topicId) return;
@@ -105,6 +134,27 @@ const TopicPage = () => {
       if (notesData) {
         setNotes(notesData.content || "");
         setNoteId(notesData.id);
+      }
+
+      // Fetch existing flashcard set
+      const { data: flashcardData } = await supabase
+        .from("flashcard_sets")
+        .select("*")
+        .eq("topic_id", topicId)
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (flashcardData) {
+        setFlashcardSetId(flashcardData.id);
+        const cards = flashcardData.cards as any[];
+        setFlashcards(cards.map((card, idx) => ({
+          id: card.id || `card-${idx}`,
+          front: card.front,
+          back: card.back,
+          hint: card.hint,
+        })));
       }
     } catch (error) {
       console.error("Error:", error);
@@ -167,8 +217,7 @@ const TopicPage = () => {
   const handleCompleteWithQuiz = () => {
     setShowCompletionDialog(false);
     updateProgress(100, "completed");
-    // Generate quiz after marking complete
-    handleGenerateQuiz();
+    setShowQuizConfig(true);
   };
 
   const handleCompleteWithoutQuiz = () => {
@@ -176,9 +225,10 @@ const TopicPage = () => {
     updateProgress(100, "completed");
   };
 
-  const handleGenerateQuiz = async () => {
+  const handleStartQuiz = async (config: QuizConfig) => {
     if (!topic) return;
     
+    setIsGeneratingQuiz(true);
     try {
       const { data, error } = await supabase.functions.invoke('topic-ai', {
         body: {
@@ -186,18 +236,99 @@ const TopicPage = () => {
           topicTitle: topic.title,
           topicDescription: topic.description,
           userNotes: notes || undefined,
-          quizType: 'mixed',
-          questionCount: 5
+          quizType: config.quizType,
+          questionCount: config.questionCount,
+          difficulty: config.difficulty,
+          sourceUrl: config.sourceUrl,
+          sourceType: config.source,
         }
       });
 
       if (error) throw error;
       
       setQuizQuestions(data.questions);
+      setQuizConfig(config);
+      setShowQuizConfig(false);
       setShowQuiz(true);
     } catch (error: any) {
+      console.error("Quiz generation error:", error);
       toast.error(error.message || "Failed to generate quiz");
+    } finally {
+      setIsGeneratingQuiz(false);
     }
+  };
+
+  const handleCloseQuiz = () => {
+    setShowQuiz(false);
+    setQuizQuestions([]);
+    setQuizConfig(null);
+  };
+
+  const handleNewQuiz = () => {
+    setShowQuiz(false);
+    setShowQuizConfig(true);
+  };
+
+  const handleConvertToFlashcards = async (questions: QuizQuestion[]) => {
+    if (!user || !topicId) return;
+    
+    const cards = questions.map((q, idx) => ({
+      id: `converted-${idx}`,
+      front: q.question,
+      back: q.correctAnswer,
+      hint: q.options ? q.options.filter(o => o !== q.correctAnswer).slice(0, 2).join(", ") : undefined,
+    }));
+
+    try {
+      const { data, error } = await supabase
+        .from("flashcard_sets")
+        .insert({
+          topic_id: topicId,
+          user_id: user.id,
+          cards: cards,
+          source_type: 'quiz-conversion',
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setFlashcards(cards);
+      setFlashcardSetId(data.id);
+      setShowQuiz(false);
+      setShowFlashcards(true);
+      toast.success("Converted quiz questions to flashcards!");
+    } catch (error: any) {
+      toast.error("Failed to convert to flashcards");
+    }
+  };
+
+  const handleFlashcardsGenerated = async () => {
+    // Refresh flashcard data
+    if (!user || !topicId) return;
+    
+    const { data: flashcardData } = await supabase
+      .from("flashcard_sets")
+      .select("*")
+      .eq("topic_id", topicId)
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (flashcardData) {
+      setFlashcardSetId(flashcardData.id);
+      const cards = flashcardData.cards as any[];
+      setFlashcards(cards.map((card, idx) => ({
+        id: card.id || `card-${idx}`,
+        front: card.front,
+        back: card.back,
+        hint: card.hint,
+      })));
+    }
+    
+    setShowFlashcardGenerator(false);
+    setShowFlashcards(true);
   };
 
   if (loading) {
@@ -212,6 +343,97 @@ const TopicPage = () => {
 
   const isCompleted = topic.status === "completed";
   const isInProgress = topic.status === "in-progress";
+
+  // Quiz Configuration View
+  if (showQuizConfig) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        </div>
+        <main className="relative z-10 container mx-auto px-4 pt-24 pb-12 max-w-2xl">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowQuizConfig(false)}
+            className="mb-6 text-muted-foreground hover:text-foreground"
+          >
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <h1 className="text-2xl font-display font-bold text-foreground mb-6">
+            Configure Quiz: {topic.title}
+          </h1>
+          <QuizConfigPanel onStart={handleStartQuiz} isLoading={isGeneratingQuiz} />
+        </main>
+      </div>
+    );
+  }
+
+  // Quiz Taking View
+  if (showQuiz && quizQuestions.length > 0 && quizConfig) {
+    return (
+      <EnhancedQuizViewer
+        questions={quizQuestions}
+        config={quizConfig}
+        topicId={topicId!}
+        userId={user!.id}
+        topicTitle={topic.title}
+        onClose={handleCloseQuiz}
+        onNewQuiz={handleNewQuiz}
+        onConvertToFlashcards={handleConvertToFlashcards}
+      />
+    );
+  }
+
+  // Flashcard Generator View
+  if (showFlashcardGenerator) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        </div>
+        <main className="relative z-10 container mx-auto px-4 pt-24 pb-12 max-w-2xl">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowFlashcardGenerator(false)}
+            className="mb-6 text-muted-foreground hover:text-foreground"
+          >
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <h1 className="text-2xl font-display font-bold text-foreground mb-6">
+            Generate Flashcards: {topic.title}
+          </h1>
+          <FlashcardGenerator
+            topicId={topicId!}
+            topicTitle={topic.title}
+            topicDescription={topic.description || ''}
+            userNotes={notes}
+            userId={user!.id}
+            onGenerated={handleFlashcardsGenerated}
+          />
+        </main>
+      </div>
+    );
+  }
+
+  // Flashcard Viewer
+  if (showFlashcards && flashcards && flashcards.length > 0) {
+    return (
+      <EnhancedFlashcardViewer
+        cards={flashcards}
+        setId={flashcardSetId || undefined}
+        userId={user?.id}
+        onClose={() => setShowFlashcards(false)}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -354,27 +576,15 @@ const TopicPage = () => {
               flashcards={flashcards}
               setFlashcards={setFlashcards}
               onShowFlashcards={() => setShowFlashcards(true)}
-              onGenerateQuiz={handleGenerateQuiz}
+              onGenerateQuiz={() => setShowQuizConfig(true)}
+              onGenerateFlashcards={() => setShowFlashcardGenerator(true)}
+              hasExistingFlashcards={!!flashcards && flashcards.length > 0}
             />
           </TabsContent>
         </Tabs>
       </main>
 
-      {/* Modals */}
-      <QuizModal
-        open={showQuiz}
-        onOpenChange={setShowQuiz}
-        questions={quizQuestions}
-        topicId={topicId!}
-        userId={user!.id}
-      />
-
-      <FlashcardViewer
-        open={showFlashcards}
-        onOpenChange={setShowFlashcards}
-        cards={flashcards}
-      />
-
+      {/* Completion Dialog */}
       <CompletionDialog
         open={showCompletionDialog}
         onOpenChange={setShowCompletionDialog}
