@@ -12,6 +12,7 @@ import DashboardPage from "./pages/DashboardPage";
 import RoadmapView from "./pages/RoadmapView";
 import TopicPage from "./pages/TopicPage";
 import NotFound from "./pages/NotFound";
+import ImportantDatesPage from "./pages/ImportantDatesPage";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const AppContent = () => {
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/roadmap/:id" element={<ProtectedRoute><RoadmapView /></ProtectedRoute>} />
         <Route path="/topic/:topicId" element={<ProtectedRoute><TopicPage /></ProtectedRoute>} />
+        <Route path="/important-dates" element={<ProtectedRoute><ImportantDatesPage /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {user && <StudyAssistant />}

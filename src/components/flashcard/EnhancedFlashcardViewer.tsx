@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useStreak } from "@/hooks/useStreak";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -46,6 +47,7 @@ export const EnhancedFlashcardViewer = ({
   onClose,
   onEdit,
 }: EnhancedFlashcardViewerProps) => {
+  const { recordActivity } = useStreak();
   const [cards, setCards] = useState<Flashcard[]>(initialCards);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -152,6 +154,9 @@ export const EnhancedFlashcardViewer = ({
           mastery_data: updatedMastery,
           last_studied_at: new Date().toISOString(),
         }).eq('id', setId);
+        
+        // Record activity for streak
+        recordActivity("flashcard_studied");
       } catch (error) {
         console.error('Failed to save mastery:', error);
       }

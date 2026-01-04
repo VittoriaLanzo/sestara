@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreak } from "@/hooks/useStreak";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -62,6 +63,7 @@ const TopicPage = () => {
   const { topicId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { recordActivity } = useStreak();
 
   const [topic, setTopic] = useState<Topic | null>(null);
   const [subject, setSubject] = useState<Subject | null>(null);
@@ -182,13 +184,15 @@ const TopicPage = () => {
           .single();
         if (data) setNoteId(data.id);
       }
+      // Record activity for streak
+      recordActivity("notes_edited", topicId, subject?.roadmap_id);
       toast.success("Notes saved");
     } catch (error) {
       toast.error("Failed to save notes");
     } finally {
       setSavingNotes(false);
     }
-  }, [notes, noteId, user, topicId]);
+  }, [notes, noteId, user, topicId, recordActivity, subject]);
 
   const updateProgress = async (newProgress: number, newStatus: string) => {
     if (!topic) return;
@@ -205,7 +209,11 @@ const TopicPage = () => {
 
     setTopic({ ...topic, progress: newProgress, status: newStatus });
     
+    // Record activity for streak
+    recordActivity("progress_updated", topic.id, subject?.roadmap_id);
+    
     if (newStatus === "completed") {
+      recordActivity("topic_completed", topic.id, subject?.roadmap_id);
       toast.success("Great job completing this topic! 🎉");
     }
   };

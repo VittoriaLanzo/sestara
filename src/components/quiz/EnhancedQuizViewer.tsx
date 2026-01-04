@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useStreak } from "@/hooks/useStreak";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,6 +55,7 @@ export const EnhancedQuizViewer = ({
   onNewQuiz,
   onConvertToFlashcards,
 }: EnhancedQuizViewerProps) => {
+  const { recordActivity } = useStreak();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [shortAnswer, setShortAnswer] = useState("");
@@ -217,6 +219,9 @@ export const EnhancedQuizViewer = ({
       if (data) {
         setQuizAttemptId(data.id);
       }
+      
+      // Record activity for streak
+      recordActivity("quiz_attempted", topicId);
     } catch (error) {
       console.error("Failed to save quiz attempt:", error);
     }
