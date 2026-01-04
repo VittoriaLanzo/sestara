@@ -29,6 +29,8 @@ interface TopicAIActionsProps {
   setFlashcards: (val: any[] | null) => void;
   onShowFlashcards: () => void;
   onGenerateQuiz: () => void;
+  onGenerateFlashcards?: () => void;
+  hasExistingFlashcards?: boolean;
 }
 
 export const TopicAIActions = ({
@@ -42,6 +44,8 @@ export const TopicAIActions = ({
   setFlashcards,
   onShowFlashcards,
   onGenerateQuiz,
+  onGenerateFlashcards,
+  hasExistingFlashcards,
 }: TopicAIActionsProps) => {
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
 
@@ -106,9 +110,9 @@ export const TopicAIActions = ({
     {
       id: 'flashcards',
       icon: Layers,
-      label: 'Flashcards',
-      description: 'Generate flashcards for quick review',
-      onClick: () => callAI('flashcards'),
+      label: hasExistingFlashcards ? 'View Flashcards' : 'Generate Flashcards',
+      description: hasExistingFlashcards ? 'Review your flashcards' : 'Generate flashcards for quick review',
+      onClick: hasExistingFlashcards ? onShowFlashcards : (onGenerateFlashcards || (() => callAI('flashcards'))),
       color: 'text-purple-400',
     },
   ];
