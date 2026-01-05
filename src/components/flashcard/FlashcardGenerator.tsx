@@ -28,6 +28,13 @@ interface FlashcardGeneratorProps {
   userNotes?: string;
   userId: string;
   onGenerated: (cards: any[]) => void;
+  examContext?: {
+    examName?: string;
+    examType?: string;
+    goalType?: string;
+    studyLanguage?: string;
+    subjectTitle?: string;
+  };
 }
 
 export const FlashcardGenerator = ({
@@ -37,6 +44,7 @@ export const FlashcardGenerator = ({
   userNotes,
   userId,
   onGenerated,
+  examContext,
 }: FlashcardGeneratorProps) => {
   const [source, setSource] = useState<'topic' | 'notes' | 'pdf' | 'youtube' | 'manual'>('topic');
   const [sourceUrl, setSourceUrl] = useState('');
@@ -83,6 +91,8 @@ export const FlashcardGenerator = ({
           topicDescription,
           userNotes: content,
           cardCount,
+          // Pass exam context
+          ...examContext,
         }
       });
 

@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useStreak } from "@/hooks/useStreak";
+import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,13 @@ interface Subject {
   roadmap_id: string;
 }
 
+interface Roadmap {
+  id: string;
+  title: string;
+  goal_type: string;
+  goal_details: any;
+}
+
 interface QuizQuestion {
   id: string;
   type: 'mcq' | 'short';
@@ -50,6 +58,8 @@ interface QuizQuestion {
   explanation: string;
   encouragement: string;
   difficulty?: string;
+  wrongAnswerExplanations?: Record<string, string>;
+  examRelevance?: string;
 }
 
 interface Flashcard {
@@ -57,6 +67,7 @@ interface Flashcard {
   front: string;
   back: string;
   hint?: string;
+  category?: string;
 }
 
 const TopicPage = () => {
@@ -64,9 +75,11 @@ const TopicPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { recordActivity } = useStreak();
+  const { profile } = useProfile();
 
   const [topic, setTopic] = useState<Topic | null>(null);
   const [subject, setSubject] = useState<Subject | null>(null);
+  const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState<string>("");
   const [noteId, setNoteId] = useState<string | null>(null);
@@ -91,6 +104,14 @@ const TopicPage = () => {
   
   // Completion dialog
   const [showCompletionDialog, setShowCompletionDialog] = useState(false);
+
+  // Exam context derived from roadmap
+  const examContext = {
+    examName: roadmap?.title || '',
+    examType: roadmap?.goal_type || '',
+    goalType: roadmap?.goal_type || '',
+    studyLanguage: profile?.study_language || 'en',
+  };
 
   useEffect(() => {
     if (!user || !topicId) return;
@@ -123,6 +144,17 @@ const TopicPage = () => {
 
       if (subjectData) {
         setSubject(subjectData);
+        
+        // Fetch roadmap for exam context
+        const { data: roadmapData } = await supabase
+          .from("roadmaps")
+          .select("id, title, goal_type, goal_details")
+          .eq("id", subjectData.roadmap_id)
+          .maybeSingle();
+          
+        if (roadmapData) {
+          setRoadmap(roadmapData);
+        }
       }
 
       // Fetch notes
@@ -243,12 +275,18 @@ const TopicPage = () => {
           action: 'quiz',
           topicTitle: topic.title,
           topicDescription: topic.description,
+          subjectTitle: subject?.title,
           userNotes: notes || undefined,
           quizType: config.quizType,
           questionCount: config.questionCount,
           difficulty: config.difficulty,
           sourceUrl: config.sourceUrl,
           sourceType: config.source,
+          // Exam context
+          examName: examContext.examName,
+          examType: examContext.examType,
+          goalType: examContext.goalType,
+          studyLanguage: examContext.studyLanguage,
         }
       });
 
@@ -425,6 +463,7 @@ const TopicPage = () => {
             userNotes={notes}
             userId={user!.id}
             onGenerated={handleFlashcardsGenerated}
+            examContext={examContext}
           />
         </main>
       </div>
@@ -587,6 +626,7 @@ const TopicPage = () => {
               onGenerateQuiz={() => setShowQuizConfig(true)}
               onGenerateFlashcards={() => setShowFlashcardGenerator(true)}
               hasExistingFlashcards={!!flashcards && flashcards.length > 0}
+              examContext={{ ...examContext, subjectTitle: subject?.title }}
             />
           </TabsContent>
         </Tabs>

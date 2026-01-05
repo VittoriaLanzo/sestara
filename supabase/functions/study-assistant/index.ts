@@ -61,8 +61,24 @@ serve(async (req) => {
 
     console.log("Study assistant request:", { userId, roadmapId, messageCount: messages.length });
 
+    // Fetch user profile for language preference
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("study_language, display_name")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    const studyLanguage = profile?.study_language || 'en';
+    const displayName = profile?.display_name || 'Student';
+
     // Fetch user context
     let contextInfo = "";
+    if (displayName) {
+      contextInfo += `Student Name: ${displayName}\n`;
+    }
+    if (studyLanguage !== 'en') {
+      contextInfo += `Preferred Language: ${studyLanguage} (respond in this language when explaining concepts)\n`;
+    }
 
     // Get user's roadmaps and progress
     const { data: roadmaps } = await supabaseAdmin

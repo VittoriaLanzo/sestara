@@ -31,6 +31,13 @@ interface TopicAIActionsProps {
   onGenerateQuiz: () => void;
   onGenerateFlashcards?: () => void;
   hasExistingFlashcards?: boolean;
+  examContext?: {
+    examName?: string;
+    examType?: string;
+    goalType?: string;
+    studyLanguage?: string;
+    subjectTitle?: string;
+  };
 }
 
 export const TopicAIActions = ({
@@ -46,6 +53,7 @@ export const TopicAIActions = ({
   onGenerateQuiz,
   onGenerateFlashcards,
   hasExistingFlashcards,
+  examContext,
 }: TopicAIActionsProps) => {
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
 
@@ -58,6 +66,8 @@ export const TopicAIActions = ({
           topicTitle: topic.title,
           topicDescription: topic.description,
           userNotes: notes || undefined,
+          // Pass exam context
+          ...examContext,
         }
       });
 
