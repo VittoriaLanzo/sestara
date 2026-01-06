@@ -9,20 +9,20 @@
     --background: 222 47% 6%;
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 8%;
+    --card: 222 47% 9%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 8%;
+    --popover: 222 47% 9%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 174 72% 56%;
     --primary-foreground: 222 47% 6%;
 
-    --secondary: 222 30% 14%;
+    --secondary: 222 30% 16%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 222 30% 12%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 222 30% 14%;
+    --muted-foreground: 215 20% 60%;
 
     --accent: 280 70% 60%;
     --accent-foreground: 210 40% 98%;
@@ -30,15 +30,15 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
+    --border: 222 30% 22%;
+    --input: 222 30% 20%;
     --ring: 174 72% 56%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
     --gradient-primary: linear-gradient(135deg, hsl(174 72% 56%) 0%, hsl(280 70% 60%) 50%, hsl(340 75% 60%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(222 47% 10%) 0%, hsl(222 47% 8%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(222 47% 11%) 0%, hsl(222 47% 8%) 100%);
     --gradient-glow: radial-gradient(ellipse at center, hsl(174 72% 56% / 0.15) 0%, transparent 70%);
     
     --success: 152 69% 50%;
@@ -51,15 +51,16 @@
     --info-foreground: 222 47% 6%;
 
     --shadow-glow: 0 0 60px hsl(174 72% 56% / 0.2);
-    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4);
+    --shadow-elevated: 0 12px 40px hsl(0 0% 0% / 0.5);
 
     --sidebar-background: 222 47% 7%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 174 72% 56%;
     --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 30% 14%;
+    --sidebar-accent: 222 30% 16%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 30% 15%;
+    --sidebar-border: 222 30% 18%;
     --sidebar-ring: 174 72% 56%;
   }
 
@@ -74,9 +75,15 @@
     @apply border-border;
   }
 
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -86,8 +93,13 @@
 
 @layer components {
   .glass-card {
-    @apply bg-card/60 backdrop-blur-xl border border-border/50 rounded-xl;
+    @apply bg-card/80 backdrop-blur-xl border border-border rounded-xl;
     box-shadow: var(--shadow-card);
+  }
+
+  .glass-card-elevated {
+    @apply bg-card/90 backdrop-blur-xl border border-border rounded-xl;
+    box-shadow: var(--shadow-elevated);
   }
 
   .gradient-text {
@@ -129,6 +141,15 @@
     box-shadow: var(--shadow-glow), var(--shadow-card);
   }
 
+  .interactive-card {
+    @apply glass-card transition-all duration-200 ease-out;
+  }
+
+  .interactive-card:hover {
+    @apply border-primary/40;
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.2), var(--shadow-card);
+  }
+
   .progress-ring {
     @apply relative inline-flex items-center justify-center;
   }
@@ -153,6 +174,21 @@
   .roadmap-node:last-child::before {
     display: none;
   }
+
+  /* Improved button visibility */
+  .btn-visible {
+    @apply border border-border/60 shadow-sm;
+  }
+
+  /* Hint pulse for discoverability */
+  .hint-pulse {
+    animation: hint-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes hint-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
 }
 
 @layer utilities {
@@ -174,6 +210,10 @@
 
   .animate-scale-in {
     animation: scale-in 0.3s ease-out forwards;
+  }
+
+  .animate-subtle-bounce {
+    animation: subtle-bounce 0.6s ease-out;
   }
 
   @keyframes float {
@@ -201,9 +241,21 @@
     to { opacity: 1; transform: scale(1); }
   }
 
+  @keyframes subtle-bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+
   .stagger-1 { animation-delay: 0.1s; }
   .stagger-2 { animation-delay: 0.2s; }
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
+
+  /* Prevent horizontal overflow */
+  .no-overflow-x {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
 }

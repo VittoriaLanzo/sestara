@@ -22,13 +22,13 @@ export const StatCard = ({
   className,
 }: StatCardProps) => {
   return (
-    <div className={cn("glass-card p-5 hover-lift", className)}>
+    <div className={cn("glass-card-elevated p-5 hover-lift border-border/60", className)}>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-muted-foreground mb-1">{title}</p>
+          <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
           <p className="text-3xl font-display font-bold gradient-text">{value}</p>
           {subtitle && (
-            <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
+            <p className="text-xs text-muted-foreground/80 mt-1">{subtitle}</p>
           )}
           {trend && (
             <div className={cn(
@@ -40,7 +40,7 @@ export const StatCard = ({
             </div>
           )}
         </div>
-        <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20">
+        <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/20">
           <Icon className="w-6 h-6 text-primary" />
         </div>
       </div>

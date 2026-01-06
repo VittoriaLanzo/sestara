@@ -31,7 +31,7 @@ export const StreakWidget = ({ currentStreak, longestStreak, weekData, loading }
   }
 
   return (
-    <div className="glass-card p-5">
+    <div className="glass-card-elevated p-5 border-border/60">
       {/* Header with streak info */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">

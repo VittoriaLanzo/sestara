@@ -108,14 +108,14 @@ export const CompactRemindersWidget = () => {
 
   if (loading) {
     return (
-      <div className="glass-card p-4 flex items-center justify-center h-[180px]">
+      <div className="glass-card-elevated p-4 flex items-center justify-center h-[180px] border-border/60">
         <Loader2 className="w-5 h-5 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card-elevated p-4 border-border/60">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-primary" />

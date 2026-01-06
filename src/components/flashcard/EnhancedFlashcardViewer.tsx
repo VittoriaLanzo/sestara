@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import {
   ChevronLeft,
@@ -22,6 +21,7 @@ import {
   ThumbsDown,
   Minus,
   X,
+  ArrowLeft,
 } from "lucide-react";
 
 export interface Flashcard {
@@ -173,11 +173,39 @@ export const EnhancedFlashcardViewer = ({
     }
   };
 
+  if (!cards || cards.length === 0 || !currentCard) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center p-8">
+          <p className="text-muted-foreground">No flashcards available.</p>
+          <Button variant="outline" onClick={onClose} className="mt-4">
+            Go Back
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={cn(
-      "flex flex-col",
-      isFocusMode && "fixed inset-0 z-50 bg-background p-6"
+      "min-h-screen bg-background",
+      isFocusMode ? "fixed inset-0 z-50 bg-background overflow-y-auto" : ""
     )}>
+      <div className={cn(
+        "flex flex-col p-6 max-w-3xl mx-auto",
+        isFocusMode && "pt-12"
+      )}>
+      {/* Back Button */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={onClose}
+        className="mb-4 text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2" />
+        Back to Topic
+      </Button>
+
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -421,6 +449,7 @@ export const EnhancedFlashcardViewer = ({
             )}
           />
         ))}
+      </div>
       </div>
     </div>
   );

@@ -237,8 +237,8 @@ export const EnhancedQuizViewer = ({
   if (showResults) {
     return (
       <div className={cn(
-        "p-6",
-        isFullscreen && "fixed inset-0 z-50 bg-background overflow-auto"
+        "p-6 min-h-screen bg-background",
+        isFullscreen && "fixed inset-0 z-50 bg-background overflow-y-auto"
       )}>
         {isFullscreen && (
           <Button
@@ -267,9 +267,13 @@ export const EnhancedQuizViewer = ({
 
   return (
     <div className={cn(
-      "flex flex-col",
-      isFullscreen && "fixed inset-0 z-50 bg-background p-6"
+      "min-h-screen bg-background",
+      isFullscreen ? "fixed inset-0 z-50 bg-background overflow-y-auto" : ""
     )}>
+      <div className={cn(
+        "flex flex-col p-6 max-w-4xl mx-auto pb-24",
+        isFullscreen && "pt-6"
+      )}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
@@ -463,6 +467,7 @@ export const EnhancedQuizViewer = ({
             </Button>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

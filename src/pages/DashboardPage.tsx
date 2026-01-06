@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useStreak } from "@/hooks/useStreak";
+import { useStudyTime } from "@/hooks/useStudyTime";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { StatCard } from "@/components/StatCard";
@@ -36,6 +37,7 @@ const DashboardPage = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { currentStreak, longestStreak, weekData, loading: streakLoading } = useStreak();
+  const { totalMinutesThisWeek, formatTime, loading: studyTimeLoading } = useStudyTime();
 
   const [roadmaps, setRoadmaps] = useState<RoadmapWithProgress[]>([]);
   const [loading, setLoading] = useState(true);
@@ -172,7 +174,7 @@ const DashboardPage = () => {
             />
             <StatCard
               title="Study Time"
-              value="0h"
+              value={studyTimeLoading ? "..." : formatTime(totalMinutesThisWeek)}
               subtitle="this week"
               icon={Clock}
               className="animate-slide-up stagger-4"
