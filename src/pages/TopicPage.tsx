@@ -590,27 +590,15 @@ const TopicPage = () => {
           </div>
         </div>
 
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="notes" className="animate-slide-up stagger-1">
+        {/* Main Content Tabs - AI Tools first for priority */}
+        <Tabs defaultValue="ai" className="animate-slide-up stagger-1">
           <TabsList className="glass-card w-full mb-6">
-            <TabsTrigger value="notes" className="flex-1">Notes</TabsTrigger>
             <TabsTrigger value="ai" className="flex-1">
               <Sparkles className="w-4 h-4 mr-2" />
               AI Tools
             </TabsTrigger>
+            <TabsTrigger value="notes" className="flex-1">Notes</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="notes">
-            <TopicNotes
-              notes={notes}
-              setNotes={setNotes}
-              saveNotes={saveNotes}
-              savingNotes={savingNotes}
-              noteId={noteId}
-              topicId={topicId!}
-              userId={user!.id}
-            />
-          </TabsContent>
 
           <TabsContent value="ai">
             <TopicAIActions
@@ -627,6 +615,18 @@ const TopicPage = () => {
               onGenerateFlashcards={() => setShowFlashcardGenerator(true)}
               hasExistingFlashcards={!!flashcards && flashcards.length > 0}
               examContext={{ ...examContext, subjectTitle: subject?.title }}
+            />
+          </TabsContent>
+
+          <TabsContent value="notes">
+            <TopicNotes
+              notes={notes}
+              setNotes={setNotes}
+              saveNotes={saveNotes}
+              savingNotes={savingNotes}
+              noteId={noteId}
+              topicId={topicId!}
+              userId={user!.id}
             />
           </TabsContent>
         </Tabs>

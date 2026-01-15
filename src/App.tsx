@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import { StudyTimeProvider } from "@/providers/StudyTimeProvider";
 import { StudyAssistant } from "@/components/assistant/StudyAssistant";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -37,7 +38,7 @@ const AppContent = () => {
   const { user } = useAuth();
   
   return (
-    <>
+    <StudyTimeProvider>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={<Auth />} />
@@ -50,7 +51,7 @@ const AppContent = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       {user && <StudyAssistant />}
-    </>
+    </StudyTimeProvider>
   );
 };
 
