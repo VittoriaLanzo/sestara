@@ -166,10 +166,31 @@ serve(async (req) => {
     let toolChoice: any = undefined;
 
     // Build comprehensive content context
+    // When sourceType is 'youtube' and sourceUrl is provided, make it the PRIMARY source
     const contentParts: string[] = [];
-    if (topicTitle) contentParts.push(`Topic: ${topicTitle}`);
-    if (subjectTitle) contentParts.push(`Subject: ${subjectTitle}`);
-    if (topicDescription) contentParts.push(`Description: ${topicDescription}`);
+    
+    // If YouTube source is provided, extract video context and make it primary
+    if (sourceType === 'youtube' && sourceUrl) {
+      // Extract video ID and title from URL for context
+      const videoIdMatch = sourceUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      const videoId = videoIdMatch ? videoIdMatch[1] : null;
+      
+      contentParts.push(`PRIMARY SOURCE: YouTube Video`);
+      contentParts.push(`Video URL: ${sourceUrl}`);
+      if (videoId) {
+        contentParts.push(`Video ID: ${videoId}`);
+      }
+      contentParts.push(`\nIMPORTANT: Generate quiz content based on the VIDEO CONTENT, not the current topic. Infer the video's educational content from the URL and create questions that would be relevant to what the video teaches.`);
+      
+      // Add topic only as secondary context
+      if (topicTitle) contentParts.push(`\nSecondary Context - Current Topic: ${topicTitle}`);
+    } else {
+      // Normal behavior - topic is primary
+      if (topicTitle) contentParts.push(`Topic: ${topicTitle}`);
+      if (subjectTitle) contentParts.push(`Subject: ${subjectTitle}`);
+      if (topicDescription) contentParts.push(`Description: ${topicDescription}`);
+    }
+    
     if (extractedContent) contentParts.push(`Extracted Content:\n${extractedContent}`);
     if (userNotes) contentParts.push(`User Notes:\n${userNotes}`);
     

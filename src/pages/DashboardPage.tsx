@@ -123,7 +123,7 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar onSignOut={signOut} displayName={displayName} />
+      <Navbar />
 
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
