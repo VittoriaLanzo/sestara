@@ -557,6 +557,103 @@ export type Database = {
           },
         ]
       }
+      todos: {
+        Row: {
+          actual_minutes: number | null
+          category: string
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          due_time: string | null
+          estimated_minutes: number | null
+          id: string
+          is_recurring: boolean
+          notes: string | null
+          order_index: number
+          parent_id: string | null
+          priority: string
+          recurrence_pattern: string | null
+          roadmap_id: string | null
+          status: string
+          tags: string[] | null
+          title: string
+          topic_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          actual_minutes?: number | null
+          category?: string
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          due_time?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          is_recurring?: boolean
+          notes?: string | null
+          order_index?: number
+          parent_id?: string | null
+          priority?: string
+          recurrence_pattern?: string | null
+          roadmap_id?: string | null
+          status?: string
+          tags?: string[] | null
+          title: string
+          topic_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          actual_minutes?: number | null
+          category?: string
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          due_time?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          is_recurring?: boolean
+          notes?: string | null
+          order_index?: number
+          parent_id?: string | null
+          priority?: string
+          recurrence_pattern?: string | null
+          roadmap_id?: string | null
+          status?: string
+          tags?: string[] | null
+          title?: string
+          topic_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "todos_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "todos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "todos_roadmap_id_fkey"
+            columns: ["roadmap_id"]
+            isOneToOne: false
+            referencedRelation: "roadmaps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "todos_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       topic_notes: {
         Row: {
           content: string | null
