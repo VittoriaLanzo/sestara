@@ -56,8 +56,7 @@ export const Navbar = () => {
             <div className="hidden md:flex items-center gap-6">
               <Link to="/dashboard" className="text-sm text-foreground hover:text-primary transition-colors">Dashboard</Link>
               <Link to="/onboarding" className="text-sm text-muted-foreground hover:text-primary transition-colors">New Roadmap</Link>
-              <Link to="/todos" className="text-sm text-muted-foreground hover:text-primary transition-colors">Tasks</Link>
-              <Link to="/important-dates" className="text-sm text-muted-foreground hover:text-primary transition-colors">Important Dates</Link>
+              <Link to="/important-dates" className="text-sm text-muted-foreground hover:text-primary transition-colors">Productivity Hub</Link>
             </div>
 
             <div className="hidden md:flex items-center gap-2">
@@ -126,8 +125,7 @@ export const Navbar = () => {
               </button>
               <Link to="/dashboard" className="px-3 py-2 rounded-lg text-foreground bg-secondary">Dashboard</Link>
               <Link to="/onboarding" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary">New Roadmap</Link>
-              <Link to="/todos" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary">Tasks</Link>
-              <Link to="/important-dates" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary">Important Dates</Link>
+              <Link to="/important-dates" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary">Productivity Hub</Link>
               <Link to="/settings" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary flex items-center gap-2">
                 <Settings className="w-4 h-4" />
                 Settings
