@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { 
   Select, 
@@ -165,6 +167,8 @@ const ImportantDatesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [taskFilter, setTaskFilter] = useState<string>("all");
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [taskViewMode, setTaskViewMode] = useState<"list" | "grouped">("list");
   const [deleteTodoId, setDeleteTodoId] = useState<string | null>(null);
   const [editTodo, setEditTodo] = useState<Todo | null>(null);
   const [expandedTodos, setExpandedTodos] = useState<Set<string>>(new Set());
@@ -569,15 +573,55 @@ const ImportantDatesPage = () => {
         todo.description?.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesStatus = taskFilter === "all" || todo.status === taskFilter;
       const matchesPriority = priorityFilter === "all" || todo.priority === priorityFilter;
-      return matchesSearch && matchesStatus && matchesPriority;
+      const matchesCategory = categoryFilter === "all" || todo.category === categoryFilter;
+      return matchesSearch && matchesStatus && matchesPriority && matchesCategory;
     });
-  }, [todos, searchQuery, taskFilter, priorityFilter]);
+  }, [todos, searchQuery, taskFilter, priorityFilter, categoryFilter]);
+
+  const groupedTodos = useMemo(() => {
+    const today = startOfDay(new Date());
+    const tomorrow = addDays(today, 1);
+    const weekEnd = endOfWeek(today);
+
+    const groups: { [key: string]: Todo[] } = {
+      overdue: [],
+      today: [],
+      tomorrow: [],
+      thisWeek: [],
+      upcoming: [],
+      noDueDate: [],
+    };
+
+    filteredTodos.forEach((todo) => {
+      if (!todo.due_date) {
+        groups.noDueDate.push(todo);
+      } else {
+        const dueDate = new Date(todo.due_date);
+        if (isPast(dueDate) && !isToday(dueDate) && todo.status !== "completed") {
+          groups.overdue.push(todo);
+        } else if (isToday(dueDate)) {
+          groups.today.push(todo);
+        } else if (isTomorrow(dueDate)) {
+          groups.tomorrow.push(todo);
+        } else if (dueDate <= weekEnd) {
+          groups.thisWeek.push(todo);
+        } else {
+          groups.upcoming.push(todo);
+        }
+      }
+    });
+
+    return groups;
+  }, [filteredTodos]);
 
   const taskStats = useMemo(() => {
-    const pending = todos.filter((t) => t.status === "pending").length;
+    const total = todos.length;
     const completed = todos.filter((t) => t.status === "completed").length;
+    const pending = todos.filter((t) => t.status === "pending").length;
+    const inProgress = todos.filter((t) => t.status === "in_progress").length;
     const overdue = todos.filter((t) => t.due_date && isPast(new Date(t.due_date)) && !isToday(new Date(t.due_date)) && t.status !== "completed").length;
-    return { pending, completed, overdue };
+    const progress = total > 0 ? (completed / total) * 100 : 0;
+    return { total, completed, pending, inProgress, overdue, progress };
   }, [todos]);
 
   // === RENDER HELPERS ===
@@ -1105,8 +1149,17 @@ const ImportantDatesPage = () => {
           {/* SHOW TASKS TAB */}
           {activeTab === "show-tasks" && (
             <div className="space-y-6">
-              {/* Task Stats */}
-              <div className="grid grid-cols-3 gap-4">
+              {/* Task Stats - 5 columns like TodosPage */}
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <Card className="glass-card">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                      <ListTodo className="w-4 h-4" />
+                      <span className="text-xs font-medium">Total</span>
+                    </div>
+                    <p className="text-2xl font-bold">{taskStats.total}</p>
+                  </CardContent>
+                </Card>
                 <Card className="glass-card">
                   <CardContent className="p-4">
                     <div className="flex items-center gap-2 text-muted-foreground mb-1">
@@ -1118,6 +1171,15 @@ const ImportantDatesPage = () => {
                 </Card>
                 <Card className="glass-card">
                   <CardContent className="p-4">
+                    <div className="flex items-center gap-2 text-blue-500 mb-1">
+                      <Timer className="w-4 h-4" />
+                      <span className="text-xs font-medium">In Progress</span>
+                    </div>
+                    <p className="text-2xl font-bold">{taskStats.inProgress}</p>
+                  </CardContent>
+                </Card>
+                <Card className="glass-card">
+                  <CardContent className="p-4">
                     <div className="flex items-center gap-2 text-emerald-500 mb-1">
                       <CheckCircle2 className="w-4 h-4" />
                       <span className="text-xs font-medium">Completed</span>
@@ -1125,7 +1187,7 @@ const ImportantDatesPage = () => {
                     <p className="text-2xl font-bold">{taskStats.completed}</p>
                   </CardContent>
                 </Card>
-                <Card className="glass-card">
+                <Card className="glass-card col-span-2 md:col-span-1">
                   <CardContent className="p-4">
                     <div className="flex items-center gap-2 text-destructive mb-1">
                       <Flag className="w-4 h-4" />
@@ -1136,61 +1198,138 @@ const ImportantDatesPage = () => {
                 </Card>
               </div>
 
-              {/* Filters */}
-              <div className="glass-card p-4">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search tasks..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-9"
-                    />
+              {/* Overall Progress */}
+              <Card className="glass-card">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-muted-foreground">Overall Progress</span>
+                    <span className="text-sm font-medium">{Math.round(taskStats.progress)}%</span>
                   </div>
-                  <div className="flex gap-2">
-                    <Select value={taskFilter} onValueChange={setTaskFilter}>
-                      <SelectTrigger className="w-[130px]">
-                        <SelectValue placeholder="Status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Status</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="in_progress">In Progress</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-                      <SelectTrigger className="w-[130px]">
-                        <SelectValue placeholder="Priority" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Priority</SelectItem>
-                        <SelectItem value="urgent">Urgent</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="low">Low</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
+                  <Progress value={taskStats.progress} className="h-2" />
+                </CardContent>
+              </Card>
 
-              {/* Task List */}
-              <div className="max-h-[500px] overflow-y-auto space-y-2 pr-2">
-                {filteredTodos.length === 0 ? (
-                  <div className="glass-card p-12 text-center">
-                    <ListTodo className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-display font-semibold text-foreground mb-2">No tasks found</h3>
-                    <p className="text-muted-foreground mb-4">
-                      {todos.length === 0 ? "Create your first task to get started" : "No tasks match your filters"}
-                    </p>
-                    <Button variant="outline" onClick={() => setActiveTab("add-tasks")}>Add Task</Button>
+              {/* Filters */}
+              <Card className="glass-card">
+                <CardContent className="p-4">
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Search tasks..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-9"
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Select value={taskFilter} onValueChange={setTaskFilter}>
+                        <SelectTrigger className="w-[130px]">
+                          <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Status</SelectItem>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="in_progress">In Progress</SelectItem>
+                          <SelectItem value="completed">Completed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+                        <SelectTrigger className="w-[130px]">
+                          <SelectValue placeholder="Priority" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Priority</SelectItem>
+                          <SelectItem value="urgent">Urgent</SelectItem>
+                          <SelectItem value="high">High</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="low">Low</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                        <SelectTrigger className="w-[140px]">
+                          <SelectValue placeholder="Category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Categories</SelectItem>
+                          {Object.entries(categoryConfig).map(([key, value]) => (
+                            <SelectItem key={key} value={key}>
+                              {value.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                ) : (
-                  filteredTodos.map((todo) => renderTodoItem(todo))
-                )}
-              </div>
+                </CardContent>
+              </Card>
+
+              {/* View Toggle & Tasks */}
+              <Tabs value={taskViewMode} onValueChange={(v) => setTaskViewMode(v as "list" | "grouped")} className="space-y-4">
+                <TabsList className="grid w-full max-w-[200px] grid-cols-2">
+                  <TabsTrigger value="list">List</TabsTrigger>
+                  <TabsTrigger value="grouped">Grouped</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="list" className="max-h-[500px] overflow-y-auto space-y-2 pr-2">
+                  {filteredTodos.length === 0 ? (
+                    <div className="glass-card p-12 text-center">
+                      <ListTodo className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-display font-semibold text-foreground mb-2">No tasks found</h3>
+                      <p className="text-muted-foreground mb-4">
+                        {todos.length === 0 ? "Create your first task to get started" : "No tasks match your filters"}
+                      </p>
+                      <Button variant="outline" onClick={() => setActiveTab("add-tasks")}>Add Task</Button>
+                    </div>
+                  ) : (
+                    filteredTodos.map((todo) => renderTodoItem(todo))
+                  )}
+                </TabsContent>
+
+                <TabsContent value="grouped" className="max-h-[500px] overflow-y-auto pr-2">
+                  {filteredTodos.length === 0 ? (
+                    <div className="glass-card p-12 text-center">
+                      <ListTodo className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-display font-semibold text-foreground mb-2">No tasks found</h3>
+                      <p className="text-muted-foreground mb-4">
+                        {todos.length === 0 ? "Create your first task to get started" : "No tasks match your filters"}
+                      </p>
+                      <Button variant="outline" onClick={() => setActiveTab("add-tasks")}>Add Task</Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      {Object.entries(groupedTodos).map(([key, items]) => {
+                        if (items.length === 0) return null;
+                        const groupLabels: { [key: string]: { label: string; icon: typeof CalendarIcon } } = {
+                          overdue: { label: "Overdue", icon: Flag },
+                          today: { label: "Today", icon: CalendarIcon },
+                          tomorrow: { label: "Tomorrow", icon: CalendarIcon },
+                          thisWeek: { label: "This Week", icon: CalendarIcon },
+                          upcoming: { label: "Upcoming", icon: CalendarIcon },
+                          noDueDate: { label: "No Due Date", icon: ListTodo },
+                        };
+                        const group = groupLabels[key];
+                        const GroupIcon = group.icon;
+
+                        return (
+                          <div key={key}>
+                            <div className="flex items-center gap-2 mb-3">
+                              <GroupIcon className={cn("w-4 h-4", key === "overdue" && "text-destructive")} />
+                              <h3 className={cn("font-display font-semibold", key === "overdue" && "text-destructive")}>
+                                {group.label}
+                              </h3>
+                              <Badge variant="secondary" className="text-xs">{items.length}</Badge>
+                            </div>
+                            <div className="space-y-2">
+                              {items.map((todo) => renderTodoItem(todo))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
             </div>
           )}
 
