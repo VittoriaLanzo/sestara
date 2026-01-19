@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { GlobalSearch } from "./GlobalSearch";
 import {
@@ -9,20 +9,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Menu, X, Sparkles, Search, LogOut, Settings, User, FileJson } from "lucide-react";
+import { Menu, X, Sparkles, Search, LogOut, Settings, User, LayoutDashboard, Map, Bell, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
   
   const displayName = profile?.display_name || user?.email?.split('@')[0] || 'User';
   const initials = displayName.slice(0, 2).toUpperCase();
+
+  const isActive = (path: string) => location.pathname === path;
 
   // Keyboard shortcut for search
   useEffect(() => {
@@ -54,12 +56,21 @@ export const Navbar = () => {
             </Link>
 
             <div className="hidden md:flex items-center gap-6">
-              <Link to="/dashboard" className="text-sm text-foreground hover:text-primary transition-colors">Dashboard</Link>
-              <Link to="/onboarding" className="text-sm text-muted-foreground hover:text-primary transition-colors">New Roadmap</Link>
-              <Link to="/important-dates" className="text-sm text-muted-foreground hover:text-primary transition-colors">Productivity Hub</Link>
-              <Link to="/custom-quiz" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
-                <FileJson className="w-4 h-4" />
-                JSON Quiz
+              <Link to="/dashboard" className={cn("text-sm transition-colors flex items-center gap-1.5", isActive('/dashboard') ? "text-primary font-medium" : "text-muted-foreground hover:text-primary")}>
+                <LayoutDashboard className="w-4 h-4" />
+                Dashboard
+              </Link>
+              <Link to="/onboarding" className={cn("text-sm transition-colors flex items-center gap-1.5", isActive('/onboarding') ? "text-primary font-medium" : "text-muted-foreground hover:text-primary")}>
+                <Map className="w-4 h-4" />
+                New Roadmap
+              </Link>
+              <Link to="/important-dates" className={cn("text-sm transition-colors flex items-center gap-1.5", isActive('/important-dates') ? "text-primary font-medium" : "text-muted-foreground hover:text-primary")}>
+                <Bell className="w-4 h-4" />
+                Reminders
+              </Link>
+              <Link to="/custom-quiz" className={cn("text-sm transition-colors flex items-center gap-1.5", isActive('/custom-quiz') ? "text-primary font-medium" : "text-muted-foreground hover:text-primary")}>
+                <GraduationCap className="w-4 h-4" />
+                Practice
               </Link>
             </div>
 
@@ -127,12 +138,21 @@ export const Navbar = () => {
                 <Search className="w-4 h-4" />
                 Search
               </button>
-              <Link to="/dashboard" className="px-3 py-2 rounded-lg text-foreground bg-secondary">Dashboard</Link>
-              <Link to="/onboarding" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary">New Roadmap</Link>
-              <Link to="/important-dates" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary">Productivity Hub</Link>
-              <Link to="/custom-quiz" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary flex items-center gap-2">
-                <FileJson className="w-4 h-4" />
-                JSON Quiz
+              <Link to="/dashboard" className={cn("px-3 py-2 rounded-lg flex items-center gap-2", isActive('/dashboard') ? "text-primary bg-secondary font-medium" : "text-muted-foreground hover:bg-secondary")} onClick={() => setIsMenuOpen(false)}>
+                <LayoutDashboard className="w-4 h-4" />
+                Dashboard
+              </Link>
+              <Link to="/onboarding" className={cn("px-3 py-2 rounded-lg flex items-center gap-2", isActive('/onboarding') ? "text-primary bg-secondary font-medium" : "text-muted-foreground hover:bg-secondary")} onClick={() => setIsMenuOpen(false)}>
+                <Map className="w-4 h-4" />
+                New Roadmap
+              </Link>
+              <Link to="/important-dates" className={cn("px-3 py-2 rounded-lg flex items-center gap-2", isActive('/important-dates') ? "text-primary bg-secondary font-medium" : "text-muted-foreground hover:bg-secondary")} onClick={() => setIsMenuOpen(false)}>
+                <Bell className="w-4 h-4" />
+                Reminders
+              </Link>
+              <Link to="/custom-quiz" className={cn("px-3 py-2 rounded-lg flex items-center gap-2", isActive('/custom-quiz') ? "text-primary bg-secondary font-medium" : "text-muted-foreground hover:bg-secondary")} onClick={() => setIsMenuOpen(false)}>
+                <GraduationCap className="w-4 h-4" />
+                Practice
               </Link>
               <Link to="/settings" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-secondary flex items-center gap-2">
                 <Settings className="w-4 h-4" />
