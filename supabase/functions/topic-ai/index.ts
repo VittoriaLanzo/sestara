@@ -1,36 +1,38 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface RequestBody {
-  action: 'explain' | 'summarize' | 'quiz' | 'flashcards' | 'write-assist' | 'math-convert' | 'explain-wrong' | 'youtube-extract';
-  topicTitle?: string;
-  topicDescription?: string;
-  subjectTitle?: string;
-  userNotes?: string;
-  quizType?: 'mcq' | 'short' | 'mixed';
-  questionCount?: number;
-  difficulty?: 'easy' | 'medium' | 'hard' | 'mixed';
-  assistType?: string;
-  text?: string;
-  question?: string;
-  correctAnswer?: string;
-  userAnswer?: string;
-  cardCount?: number;
-  sourceUrl?: string;
-  sourceType?: string;
-  // Exam context
-  examName?: string;
-  examType?: string;
-  goalType?: string;
-  // Language
-  studyLanguage?: string;
-  // External content
-  extractedContent?: string;
-}
+// Input validation schema
+const RequestSchema = z.object({
+  action: z.enum(['explain', 'summarize', 'quiz', 'flashcards', 'write-assist', 'math-convert', 'explain-wrong', 'youtube-extract']),
+  topicTitle: z.string().max(500).optional(),
+  topicDescription: z.string().max(5000).optional(),
+  subjectTitle: z.string().max(200).optional(),
+  userNotes: z.string().max(50000).optional(),
+  quizType: z.enum(['mcq', 'short', 'mixed']).optional(),
+  questionCount: z.number().int().min(1).max(50).optional(),
+  difficulty: z.enum(['easy', 'medium', 'hard', 'mixed']).optional(),
+  assistType: z.string().max(50).optional(),
+  text: z.string().max(50000).optional(),
+  question: z.string().max(2000).optional(),
+  correctAnswer: z.string().max(2000).optional(),
+  userAnswer: z.string().max(2000).optional(),
+  cardCount: z.number().int().min(1).max(100).optional(),
+  sourceUrl: z.string().max(500).optional(),
+  sourceType: z.string().max(50).optional(),
+  examName: z.string().max(200).optional(),
+  examType: z.string().max(100).optional(),
+  goalType: z.string().max(100).optional(),
+  studyLanguage: z.string().max(10).optional(),
+  extractedContent: z.string().max(100000).optional(),
+});
+
+type RequestBody = z.infer<typeof RequestSchema>;
 
 // Language mapping for prompts
 const languageNames: Record<string, string> = {
@@ -127,7 +129,51 @@ serve(async (req) => {
   }
 
   try {
-    const body: RequestBody = await req.json();
+    // Validate authentication
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const jwt = authHeader.startsWith("Bearer ") ? authHeader.slice("Bearer ".length) : null;
+
+    if (!jwt) {
+      return new Response(JSON.stringify({ error: "Missing Authorization token" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+      throw new Error("Backend auth is not configured");
+    }
+
+    const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const { data: userData, error: userError } = await supabaseAdmin.auth.getUser(jwt);
+
+    if (userError || !userData?.user) {
+      return new Response(JSON.stringify({ error: "Invalid session. Please sign in again." }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const userId = userData.user.id;
+
+    // Parse and validate request body
+    const rawBody = await req.json();
+    const parseResult = RequestSchema.safeParse(rawBody);
+    
+    if (!parseResult.success) {
+      return new Response(JSON.stringify({ 
+        error: "Invalid request parameters", 
+        details: parseResult.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ')
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const body = parseResult.data;
     const { 
       action, 
       topicTitle, 
@@ -216,6 +262,8 @@ QUALITY REQUIREMENTS:
 - For wrong answers, explain WHY each option is incorrect (not just what's correct)
 - Reference common exam patterns and frequently asked concepts
 - Avoid overly generic or shallow questions`;
+
+    console.log(`Processing ${action} request for user: ${userId}, topic: ${topicTitle}, exam: ${examName || 'general'}`);
 
     switch (action) {
       case 'youtube-extract': {
@@ -435,8 +483,6 @@ Be encouraging and exam-focused.`;
       requestBody.tools = tools;
       requestBody.tool_choice = toolChoice;
     }
-
-    console.log(`Processing ${action} request for topic: ${topicTitle}, exam: ${examName || 'general'}, language: ${langName}`);
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',

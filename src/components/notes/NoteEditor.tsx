@@ -242,16 +242,19 @@ export const NoteEditor = ({
 
         if (uploadError) throw uploadError;
 
-        const { data: urlData } = supabase.storage
+        // Use signed URL for private bucket instead of public URL
+        const { data: signedUrlData, error: signedUrlError } = await supabase.storage
           .from("note-attachments")
-          .getPublicUrl(filePath);
+          .createSignedUrl(filePath, 60 * 60 * 24 * 7); // 7 days expiry
+
+        if (signedUrlError) throw signedUrlError;
 
         setAttachments((prev) => [
           ...prev,
           {
             id: filePath,
             file_name: file.name,
-            file_url: urlData.publicUrl,
+            file_url: signedUrlData.signedUrl,
             file_type: file.type,
           },
         ]);
