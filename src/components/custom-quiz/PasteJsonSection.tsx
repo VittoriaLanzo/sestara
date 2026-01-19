@@ -10,7 +10,7 @@ import {
   Timer, Clock, Info 
 } from "lucide-react";
 import { toast } from "sonner";
-import { CustomQuiz, CustomQuizQuestion } from "@/pages/CustomQuizPage";
+import type { CustomQuiz, CustomQuizQuestion } from "@/hooks/useCustomQuizzes";
 
 interface PasteJsonSectionProps {
   studyLanguage: string;

@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
@@ -28,25 +29,31 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { 
   FolderOpen, Play, MoreVertical, Edit, Download, Trash2, 
-  Plus, Shuffle, Clock, Trophy, Star, FolderPlus 
+  Shuffle, Clock, Trophy, FolderPlus, Loader2 
 } from "lucide-react";
 import { toast } from "sonner";
-import { SavedQuiz, QuizGroup, CustomQuiz } from "@/pages/CustomQuizPage";
 import { format } from "date-fns";
+import {
+  type SavedQuiz,
+  type QuizGroup,
+  type CustomQuiz,
+  useDeleteQuiz,
+  useUpdateQuizFull,
+  useUpdateQuizStats,
+  useCreateGroup,
+} from "@/hooks/useCustomQuizzes";
 
 interface SavedQuizzesSectionProps {
   savedQuizzes: SavedQuiz[];
   quizGroups: QuizGroup[];
-  onUpdateQuizzes: (quizzes: SavedQuiz[]) => void;
-  onUpdateGroups: (groups: QuizGroup[]) => void;
-  onStartQuiz: (quiz: CustomQuiz, mode: 'timer' | 'track', minutes: number) => void;
+  isLoading?: boolean;
+  onStartQuiz: (quiz: CustomQuiz, mode: 'timer' | 'track', minutes: number, quizId?: string) => void;
 }
 
 export const SavedQuizzesSection = ({
   savedQuizzes,
   quizGroups,
-  onUpdateQuizzes,
-  onUpdateGroups,
+  isLoading,
   onStartQuiz,
 }: SavedQuizzesSectionProps) => {
   const [selectedGroup, setSelectedGroup] = useState<string>("all");
@@ -57,13 +64,17 @@ export const SavedQuizzesSection = ({
   const [newGroupName, setNewGroupName] = useState("");
   const [editingQuiz, setEditingQuiz] = useState<SavedQuiz | null>(null);
 
+  const deleteQuizMutation = useDeleteQuiz();
+  const updateQuizMutation = useUpdateQuizFull();
+  const updateStatsMutation = useUpdateQuizStats();
+  const createGroupMutation = useCreateGroup();
+
   const filteredQuizzes = selectedGroup === "all" 
     ? savedQuizzes 
     : savedQuizzes.filter(q => q.groupId === selectedGroup);
 
   const handleDeleteQuiz = (id: string) => {
-    onUpdateQuizzes(savedQuizzes.filter(q => q.id !== id));
-    toast.success("Quiz deleted");
+    deleteQuizMutation.mutate(id);
   };
 
   const handleExportQuiz = (quiz: SavedQuiz) => {
@@ -74,28 +85,27 @@ export const SavedQuizzesSection = ({
 
   const handlePlayQuiz = (quiz: SavedQuiz) => {
     // Update stats
-    const updated = savedQuizzes.map(q => 
-      q.id === quiz.id 
-        ? { ...q, lastOpenedAt: new Date().toISOString(), timesPlayed: q.timesPlayed + 1 }
-        : q
-    );
-    onUpdateQuizzes(updated);
+    updateStatsMutation.mutate({
+      id: quiz.id,
+      timesPlayed: quiz.timesPlayed + 1,
+    });
     
     const suggestedTime = Math.ceil(quiz.quiz.questions.length * 1.5);
-    onStartQuiz(quiz.quiz, quiz.quiz.durationMode || 'track', suggestedTime);
+    onStartQuiz(quiz.quiz, quiz.quiz.durationMode || 'track', suggestedTime, quiz.id);
   };
 
   const handleCreateGroup = () => {
     if (!newGroupName.trim()) return;
-    const newGroup: QuizGroup = {
-      id: crypto.randomUUID(),
-      name: newGroupName.trim(),
-      color: ['blue', 'green', 'purple', 'orange', 'pink'][quizGroups.length % 5],
-    };
-    onUpdateGroups([...quizGroups, newGroup]);
-    setNewGroupName("");
-    setShowGroupDialog(false);
-    toast.success("Group created!");
+    const colors = ['blue', 'green', 'purple', 'orange', 'pink'];
+    createGroupMutation.mutate(
+      { name: newGroupName.trim(), color: colors[quizGroups.length % 5] },
+      {
+        onSuccess: () => {
+          setNewGroupName("");
+          setShowGroupDialog(false);
+        },
+      }
+    );
   };
 
   const handleStartMixedQuiz = () => {
@@ -124,20 +134,37 @@ export const SavedQuizzesSection = ({
   };
 
   const handleUpdateQuizMeta = (id: string, title: string, groupId: string) => {
-    const updated = savedQuizzes.map(q => 
-      q.id === id 
-        ? { 
-            ...q, 
-            quiz: { ...q.quiz, quizTitle: title },
-            groupId,
-            groupName: quizGroups.find(g => g.id === groupId)?.name || 'General',
-          }
-        : q
+    const quiz = savedQuizzes.find(q => q.id === id);
+    if (!quiz) return;
+
+    const updatedQuiz = { ...quiz.quiz, quizTitle: title };
+    const groupName = quizGroups.find(g => g.id === groupId)?.name || 'General';
+
+    updateQuizMutation.mutate(
+      { id, quiz: updatedQuiz, groupId, groupName },
+      {
+        onSuccess: () => {
+          setEditingQuiz(null);
+        },
+      }
     );
-    onUpdateQuizzes(updated);
-    setEditingQuiz(null);
-    toast.success("Quiz updated!");
   };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex gap-3">
+          <Skeleton className="h-10 w-[180px]" />
+          <Skeleton className="h-10 w-[120px]" />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {[1, 2, 3, 4].map(i => (
+            <Skeleton key={i} className="h-[200px]" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -176,7 +203,12 @@ export const SavedQuizzesSection = ({
                     placeholder="e.g., JEE Physics"
                   />
                 </div>
-                <Button onClick={handleCreateGroup} className="w-full">
+                <Button 
+                  onClick={handleCreateGroup} 
+                  className="w-full"
+                  disabled={createGroupMutation.isPending}
+                >
+                  {createGroupMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                   Create Group
                 </Button>
               </div>
@@ -186,7 +218,7 @@ export const SavedQuizzesSection = ({
 
         <Dialog open={showMixDialog} onOpenChange={setShowMixDialog}>
           <DialogTrigger asChild>
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" className="gap-2" disabled={savedQuizzes.length < 2}>
               <Shuffle className="w-4 h-4" />
               Mixed Quiz
             </Button>
@@ -380,7 +412,9 @@ export const SavedQuizzesSection = ({
                   editingQuiz.groupId || 'default'
                 )}
                 className="w-full"
+                disabled={updateQuizMutation.isPending}
               >
+                {updateQuizMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                 Save Changes
               </Button>
             </div>

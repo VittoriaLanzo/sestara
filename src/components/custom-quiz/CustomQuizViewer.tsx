@@ -20,7 +20,7 @@ import {
   Flag, RotateCcw, Send
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CustomQuiz } from "@/pages/CustomQuizPage";
+import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
 
 interface CustomQuizViewerProps {
   quiz: CustomQuiz;

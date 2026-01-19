@@ -61,6 +61,48 @@ export type Database = {
           },
         ]
       }
+      custom_quizzes: {
+        Row: {
+          best_score: number | null
+          created_at: string
+          group_id: string | null
+          group_name: string | null
+          id: string
+          last_opened_at: string | null
+          previous_score: number | null
+          quiz_data: Json
+          times_played: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          best_score?: number | null
+          created_at?: string
+          group_id?: string | null
+          group_name?: string | null
+          id?: string
+          last_opened_at?: string | null
+          previous_score?: number | null
+          quiz_data: Json
+          times_played?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          best_score?: number | null
+          created_at?: string
+          group_id?: string | null
+          group_name?: string | null
+          id?: string
+          last_opened_at?: string | null
+          previous_score?: number | null
+          quiz_data?: Json
+          times_played?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       flashcard_sets: {
         Row: {
           cards: Json
@@ -354,6 +396,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      quiz_groups: {
+        Row: {
+          color: string | null
+          created_at: string
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       reminders: {
         Row: {
