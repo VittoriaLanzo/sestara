@@ -12,7 +12,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CustomQuiz } from "@/pages/CustomQuizPage";
+import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
 import { motion } from "framer-motion";
 
 interface CustomQuizResultsProps {
@@ -22,7 +22,7 @@ interface CustomQuizResultsProps {
   timeTaken: number;
   onRetake: () => void;
   onNewQuiz: () => void;
-  onSaveQuiz: () => void;
+  onSaveQuiz?: () => void;
 }
 
 export const CustomQuizResults = ({
@@ -144,10 +144,12 @@ export const CustomQuizResults = ({
                   <RotateCcw className="w-4 h-4" />
                   Retake Quiz
                 </Button>
-                <Button onClick={onSaveQuiz} variant="outline" className="gap-2">
-                  <Save className="w-4 h-4" />
-                  Save to Library
-                </Button>
+                {onSaveQuiz && (
+                  <Button onClick={onSaveQuiz} variant="outline" className="gap-2">
+                    <Save className="w-4 h-4" />
+                    Save to Library
+                  </Button>
+                )}
                 <Button onClick={onNewQuiz} className="gap-2">
                   <Plus className="w-4 h-4" />
                   New Quiz
