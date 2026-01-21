@@ -12,6 +12,7 @@ import Onboarding from "./pages/Onboarding";
 import DashboardPage from "./pages/DashboardPage";
 import RoadmapView from "./pages/RoadmapView";
 import TopicPage from "./pages/TopicPage";
+import ResourcesPage from "./pages/ResourcesPage";
 import NotFound from "./pages/NotFound";
 import ImportantDatesPage from "./pages/ImportantDatesPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -48,6 +49,7 @@ const AppContent = () => {
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/roadmap/:id" element={<ProtectedRoute><RoadmapView /></ProtectedRoute>} />
         <Route path="/topic/:topicId" element={<ProtectedRoute><TopicPage /></ProtectedRoute>} />
+        <Route path="/roadmap/:id/resources" element={<ProtectedRoute><ResourcesPage /></ProtectedRoute>} />
         <Route path="/important-dates" element={<ProtectedRoute><ImportantDatesPage /></ProtectedRoute>} />
         <Route path="/todos" element={<ProtectedRoute><TodosPage /></ProtectedRoute>} />
         <Route path="/custom-quiz" element={<ProtectedRoute><CustomQuizPage /></ProtectedRoute>} />

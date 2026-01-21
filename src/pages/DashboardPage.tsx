@@ -20,6 +20,7 @@ import {
   Sparkles,
   Loader2,
   Map,
+  FolderOpen,
 } from "lucide-react";
 
 interface RoadmapWithProgress {
@@ -219,34 +220,53 @@ const DashboardPage = () => {
               ) : (
                 <div className="space-y-3">
                   {roadmaps.map((roadmap, index) => (
-                    <button
+                    <div
                       key={roadmap.id}
-                      onClick={() => navigate(`/roadmap/${roadmap.id}`)}
                       className={cn(
-                        "w-full glass-card p-5 hover-lift text-left flex items-center gap-4 animate-slide-up"
+                        "glass-card p-5 hover-lift animate-slide-up"
                       )}
                       style={{ animationDelay: `${0.1 * (index + 1)}s` }}
                     >
-                      <ProgressRing progress={roadmap.progress} size={56} strokeWidth={4}>
-                        <span className="text-xs font-semibold text-foreground">{roadmap.progress}%</span>
-                      </ProgressRing>
+                      <button
+                        onClick={() => navigate(`/roadmap/${roadmap.id}`)}
+                        className="w-full text-left flex items-center gap-4"
+                      >
+                        <ProgressRing progress={roadmap.progress} size={56} strokeWidth={4}>
+                          <span className="text-xs font-semibold text-foreground">{roadmap.progress}%</span>
+                        </ProgressRing>
 
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-display font-semibold text-foreground truncate group-hover:text-primary transition-colors">
-                          {roadmap.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {roadmap.completedTopics}/{roadmap.totalTopics} topics completed
-                          {roadmap.target_date && (
-                            <span className="ml-2">
-                              • Target: {new Date(roadmap.target_date).toLocaleDateString()}
-                            </span>
-                          )}
-                        </p>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-display font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+                            {roadmap.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {roadmap.completedTopics}/{roadmap.totalTopics} topics completed
+                            {roadmap.target_date && (
+                              <span className="ml-2">
+                                • Target: {new Date(roadmap.target_date).toLocaleDateString()}
+                              </span>
+                            )}
+                          </p>
+                        </div>
+
+                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                      </button>
+                      
+                      <div className="mt-3 pt-3 border-t border-border/50">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/roadmap/${roadmap.id}/resources`);
+                          }}
+                          className="w-full gap-2 text-muted-foreground hover:text-foreground"
+                        >
+                          <FolderOpen className="w-4 h-4" />
+                          Study Materials
+                        </Button>
                       </div>
-
-                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
-                    </button>
+                    </div>
                   ))}
                 </div>
               )}
