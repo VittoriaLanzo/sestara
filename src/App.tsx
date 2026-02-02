@@ -17,6 +17,7 @@ import ImportantDatesPage from "./pages/ImportantDatesPage";
 import SettingsPage from "./pages/SettingsPage";
 import TodosPage from "./pages/TodosPage";
 import CustomQuizPage from "./pages/CustomQuizPage";
+import ResourcesPage from "./pages/ResourcesPage";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const AppContent = () => {
         <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/roadmap/:id" element={<ProtectedRoute><RoadmapView /></ProtectedRoute>} />
+        <Route path="/roadmap/:id/resources" element={<ProtectedRoute><ResourcesPage /></ProtectedRoute>} />
         <Route path="/topic/:topicId" element={<ProtectedRoute><TopicPage /></ProtectedRoute>} />
         <Route path="/important-dates" element={<ProtectedRoute><ImportantDatesPage /></ProtectedRoute>} />
         <Route path="/todos" element={<ProtectedRoute><TodosPage /></ProtectedRoute>} />
