@@ -46,10 +46,10 @@ import { toast } from "sonner";
 const ResourcesPage = () => {
   const { roadmapId } = useParams<{ roadmapId: string }>();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const [roadmapTitle, setRoadmapTitle] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [roadmapLoading, setRoadmapLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterGroup, setFilterGroup] = useState<string>("all");
   const [filterWatched, setFilterWatched] = useState<string>("all");
@@ -70,10 +70,17 @@ const ResourcesPage = () => {
   const bulkUpdateOrder = useBulkUpdateResourceOrder();
 
   useEffect(() => {
-    if (roadmapId && user) {
+    if (authLoading) return;
+    
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+
+    if (roadmapId) {
       fetchRoadmap();
     }
-  }, [roadmapId, user]);
+  }, [roadmapId, user, authLoading]);
 
   const fetchRoadmap = async () => {
     const { data, error } = await supabase
@@ -89,7 +96,7 @@ const ResourcesPage = () => {
     }
 
     setRoadmapTitle(data.title);
-    setLoading(false);
+    setRoadmapLoading(false);
   };
 
   const handleToggleWatched = (id: string, watched: boolean) => {
@@ -132,7 +139,7 @@ const ResourcesPage = () => {
     resources: filteredResources.filter((r) => r.group_id === g.id),
   }));
 
-  const isLoading = loading || groupsLoading || resourcesLoading;
+  const isLoading = authLoading || roadmapLoading || groupsLoading || resourcesLoading;
 
   if (isLoading) {
     return (
