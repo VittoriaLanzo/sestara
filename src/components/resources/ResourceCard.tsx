@@ -8,20 +8,32 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { RoadmapResource, ResourceGroup, useUpdateResource, useDeleteResource } from "@/hooks/useRoadmapResources";
+import { EditVideoDialog } from "./EditVideoDialog";
 import { 
   Play, 
   MoreVertical, 
   Heart, 
-  HeartOff, 
   CheckCircle2, 
-  Circle,
   ExternalLink,
   Trash2,
-  GripVertical
+  GripVertical,
+  Pencil,
+  Globe
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 interface ResourceCardProps {
   resource: RoadmapResource;
@@ -35,6 +47,8 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
   const updateResource = useUpdateResource();
   const deleteResource = useDeleteResource();
   const [imageError, setImageError] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
 
   const group = groups.find((g) => g.id === resource.group_id);
 
@@ -44,6 +58,7 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
       roadmapId,
       updates: { is_watched: !resource.is_watched },
     });
+    toast.success(resource.is_watched ? "Marked as unwatched" : "Marked as watched");
   };
 
   const toggleFavorite = () => {
@@ -52,16 +67,17 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
       roadmapId,
       updates: { is_favorite: !resource.is_favorite },
     });
+    toast.success(resource.is_favorite ? "Removed from favorites" : "Added to favorites");
   };
 
   const handleDelete = () => {
-    if (confirm("Are you sure you want to delete this resource?")) {
-      deleteResource.mutate({ id: resource.id, roadmapId });
-    }
+    deleteResource.mutate({ id: resource.id, roadmapId });
+    setShowDeleteDialog(false);
   };
 
   const openInBrowser = () => {
     window.open(resource.url, "_blank", "noopener,noreferrer");
+    toast.success("Opening in browser...");
   };
 
   const getColorClass = (color: string | null) => {
@@ -79,127 +95,166 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
   };
 
   return (
-    <div
-      className={cn(
-        "glass-card p-3 flex gap-3 items-start group transition-all",
-        isDragging && "opacity-50 scale-95",
-        resource.is_watched && "opacity-70"
-      )}
-    >
-      {/* Drag Handle */}
-      <div className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground mt-2">
-        <GripVertical className="w-4 h-4" />
-      </div>
+    <>
+      <div
+        className={cn(
+          "glass-card p-3 flex gap-3 items-start group transition-all",
+          isDragging && "opacity-50 scale-95",
+          resource.is_watched && "opacity-70"
+        )}
+      >
+        {/* Drag Handle */}
+        <div className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground mt-2 shrink-0">
+          <GripVertical className="w-4 h-4" />
+        </div>
 
-      {/* Thumbnail */}
-      <div className="relative shrink-0">
-        <div 
-          className="w-32 h-20 rounded-lg bg-secondary overflow-hidden cursor-pointer"
-          onClick={() => onPlay(resource)}
-        >
-          {resource.thumbnail_url && !imageError ? (
-            <img
-              src={resource.thumbnail_url}
-              alt={resource.title}
-              className="w-full h-full object-cover"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <Play className="w-8 h-8 text-muted-foreground" />
+        {/* Thumbnail */}
+        <div className="relative shrink-0">
+          <div 
+            className="w-28 sm:w-32 h-16 sm:h-20 rounded-lg bg-secondary overflow-hidden cursor-pointer"
+            onClick={() => onPlay(resource)}
+          >
+            {resource.thumbnail_url && !imageError ? (
+              <img
+                src={resource.thumbnail_url}
+                alt={resource.title}
+                className="w-full h-full object-cover"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <Play className="w-6 h-6 text-muted-foreground" />
+              </div>
+            )}
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <Play className="w-6 h-6 text-white" />
+            </div>
+          </div>
+          {resource.is_watched && (
+            <div className="absolute -top-1 -right-1">
+              <CheckCircle2 className="w-4 h-4 text-success" />
             </div>
           )}
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <Play className="w-8 h-8 text-white" />
-          </div>
-        </div>
-        {resource.is_watched && (
-          <div className="absolute top-1 right-1">
-            <CheckCircle2 className="w-5 h-5 text-success" />
-          </div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <h4 
-          className="font-medium text-foreground truncate cursor-pointer hover:text-primary transition-colors"
-          onClick={() => onPlay(resource)}
-        >
-          {resource.title}
-        </h4>
-        
-        <div className="flex items-center gap-2 mt-1 flex-wrap">
-          {resource.duration && (
-            <span className="text-xs text-muted-foreground">{resource.duration}</span>
+          {resource.is_favorite && (
+            <div className="absolute -top-1 -left-1">
+              <Heart className="w-4 h-4 text-destructive fill-destructive" />
+            </div>
           )}
-          <span className="text-xs text-muted-foreground">
-            Added {format(new Date(resource.created_at), "MMM d, yyyy")}
-          </span>
         </div>
 
-        {group && (
-          <Badge variant="outline" className={cn("mt-2 text-xs", getColorClass(group.color))}>
-            {group.name}
-          </Badge>
-        )}
+        {/* Content */}
+        <div className="flex-1 min-w-0 space-y-1">
+          <h4 
+            className="font-medium text-foreground text-sm sm:text-base line-clamp-2 cursor-pointer hover:text-primary transition-colors"
+            onClick={() => onPlay(resource)}
+          >
+            {resource.title}
+          </h4>
+          
+          <div className="flex items-center gap-2 flex-wrap">
+            {resource.duration && (
+              <span className="text-xs text-muted-foreground">{resource.duration}</span>
+            )}
+            <span className="text-xs text-muted-foreground">
+              {format(new Date(resource.created_at), "MMM d, yyyy")}
+            </span>
+          </div>
 
-        {resource.notes && (
-          <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{resource.notes}</p>
-        )}
+          {group && (
+            <Badge variant="outline" className={cn("text-xs", getColorClass(group.color))}>
+              {group.name}
+            </Badge>
+          )}
+
+          {resource.notes && (
+            <p className="text-xs text-muted-foreground line-clamp-1">{resource.notes}</p>
+          )}
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-1 shrink-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={toggleFavorite}
+            title={resource.is_favorite ? "Remove from favorites" : "Add to favorites"}
+          >
+            <Heart className={cn(
+              "w-4 h-4",
+              resource.is_favorite 
+                ? "text-destructive fill-destructive" 
+                : "text-muted-foreground hover:text-destructive"
+            )} />
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={() => onPlay(resource)}>
+                <Play className="w-4 h-4 mr-2" />
+                Play in App
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={openInBrowser}>
+                <Globe className="w-4 h-4 mr-2" />
+                Open in Browser
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={toggleWatched}>
+                <CheckCircle2 className="w-4 h-4 mr-2" />
+                {resource.is_watched ? "Mark as Unwatched" : "Mark as Watched"}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={toggleFavorite}>
+                <Heart className="w-4 h-4 mr-2" />
+                {resource.is_favorite ? "Remove from Favorites" : "Add to Favorites"}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setShowEditDialog(true)}>
+                <Pencil className="w-4 h-4 mr-2" />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                onClick={() => setShowDeleteDialog(true)} 
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
-      {/* Actions */}
-      <div className="flex items-center gap-1">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          onClick={toggleFavorite}
-        >
-          {resource.is_favorite ? (
-            <Heart className="w-4 h-4 text-destructive fill-destructive" />
-          ) : (
-            <HeartOff className="w-4 h-4 text-muted-foreground" />
-          )}
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          onClick={toggleWatched}
-        >
-          {resource.is_watched ? (
-            <CheckCircle2 className="w-4 h-4 text-success" />
-          ) : (
-            <Circle className="w-4 h-4 text-muted-foreground" />
-          )}
-        </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <MoreVertical className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => onPlay(resource)}>
-              <Play className="w-4 h-4 mr-2" />
-              Play
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={openInBrowser}>
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Open in Browser
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete} className="text-destructive">
-              <Trash2 className="w-4 h-4 mr-2" />
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Video</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{resource.title}"? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
               Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </div>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Edit Dialog */}
+      <EditVideoDialog
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+        resource={resource}
+        roadmapId={roadmapId}
+        groups={groups}
+      />
+    </>
   );
 };

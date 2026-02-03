@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { 
   ResourceGroup as ResourceGroupType, 
   RoadmapResource, 
@@ -8,7 +18,7 @@ import {
   useDeleteGroup 
 } from "@/hooks/useRoadmapResources";
 import { ResourceCard } from "./ResourceCard";
-import { ChevronDown, ChevronRight, Pencil, Trash2, Check, X, GripVertical, ListVideo } from "lucide-react";
+import { ChevronDown, ChevronRight, Pencil, Trash2, Check, X, GripVertical, ListVideo, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -30,6 +40,7 @@ export const ResourceGroupComponent = ({
   const [isOpen, setIsOpen] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(group.name);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const updateGroup = useUpdateGroup();
   const deleteGroup = useDeleteGroup();
@@ -46,9 +57,8 @@ export const ResourceGroupComponent = ({
   };
 
   const handleDelete = () => {
-    if (confirm(`Delete group "${group.name}"? Videos will be moved to ungrouped.`)) {
-      deleteGroup.mutate({ id: group.id, roadmapId });
-    }
+    deleteGroup.mutate({ id: group.id, roadmapId });
+    setShowDeleteDialog(false);
   };
 
   const getColorClass = (color: string | null) => {
@@ -79,98 +89,145 @@ export const ResourceGroupComponent = ({
     return colorMap[color || "blue"] || colorMap.blue;
   };
 
+  const watchedCount = resources.filter(r => r.is_watched).length;
+
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <div className={cn("glass-card border-l-4", getColorClass(group.color))}>
-        {/* Group Header */}
-        <CollapsibleTrigger asChild>
-          <div className="flex items-center gap-3 p-4 cursor-pointer hover:bg-secondary/30 transition-colors">
-            <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab" />
-            
-            {isOpen ? (
-              <ChevronDown className="w-4 h-4 text-muted-foreground" />
-            ) : (
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            )}
+    <>
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <div className={cn("glass-card border-l-4", getColorClass(group.color))}>
+          {/* Group Header */}
+          <CollapsibleTrigger asChild>
+            <div className="flex items-center gap-3 p-4 cursor-pointer hover:bg-secondary/30 transition-colors">
+              <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab shrink-0" />
+              
+              {isOpen ? (
+                <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
+              ) : (
+                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+              )}
 
-            <div className={cn("w-3 h-3 rounded-full", getColorDotClass(group.color))} />
+              <div className={cn("w-3 h-3 rounded-full shrink-0", getColorDotClass(group.color))} />
 
-            {isEditing ? (
-              <div className="flex items-center gap-2 flex-1" onClick={(e) => e.stopPropagation()}>
-                <Input
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  className="h-8 text-sm"
-                  autoFocus
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSave();
-                    if (e.key === "Escape") setIsEditing(false);
-                  }}
-                />
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleSave}>
-                  <Check className="w-4 h-4 text-success" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => setIsEditing(false)}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center gap-2 flex-1">
-                  {group.is_playlist && <ListVideo className="w-4 h-4 text-muted-foreground" />}
-                  <span className="font-medium text-foreground">{group.name}</span>
-                  <span className="text-sm text-muted-foreground">({resources.length} videos)</span>
-                </div>
-
-                <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() => setIsEditing(true)}
-                  >
-                    <Pencil className="w-4 h-4" />
+              {isEditing ? (
+                <div className="flex items-center gap-2 flex-1" onClick={(e) => e.stopPropagation()}>
+                  <Input
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="h-8 text-sm"
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSave();
+                      if (e.key === "Escape") {
+                        setEditName(group.name);
+                        setIsEditing(false);
+                      }
+                    }}
+                  />
+                  <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleSave}>
+                    <Check className="w-4 h-4 text-success" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-destructive hover:text-destructive"
-                    onClick={handleDelete}
+                    className="h-8 w-8 shrink-0"
+                    onClick={() => {
+                      setEditName(group.name);
+                      setIsEditing(false);
+                    }}
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <X className="w-4 h-4" />
                   </Button>
                 </div>
-              </>
-            )}
-          </div>
-        </CollapsibleTrigger>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    {group.is_playlist ? (
+                      <ListVideo className="w-4 h-4 text-muted-foreground shrink-0" />
+                    ) : (
+                      <Video className="w-4 h-4 text-muted-foreground shrink-0" />
+                    )}
+                    <span className="font-medium text-foreground truncate">{group.name}</span>
+                    <span className="text-sm text-muted-foreground shrink-0">
+                      ({resources.length} videos{watchedCount > 0 ? `, ${watchedCount} watched` : ""})
+                    </span>
+                  </div>
 
-        {/* Group Content */}
-        <CollapsibleContent>
-          <div className="p-4 pt-0 space-y-2">
-            {resources.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                No videos in this group yet
-              </p>
-            ) : (
-              resources.map((resource) => (
-                <ResourceCard
-                  key={resource.id}
-                  resource={resource}
-                  roadmapId={roadmapId}
-                  groups={allGroups}
-                  onPlay={onPlayResource}
-                />
-              ))
-            )}
-          </div>
-        </CollapsibleContent>
-      </div>
-    </Collapsible>
+                  <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => setIsEditing(true)}
+                      title="Edit group name"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-destructive hover:text-destructive"
+                      onClick={() => setShowDeleteDialog(true)}
+                      title="Delete group"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          </CollapsibleTrigger>
+
+          {/* Group Content */}
+          <CollapsibleContent>
+            <div className="p-4 pt-0 space-y-2">
+              {resources.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No videos in this group yet. Drag videos here or add new ones.
+                </p>
+              ) : (
+                resources.map((resource) => (
+                  <ResourceCard
+                    key={resource.id}
+                    resource={resource}
+                    roadmapId={roadmapId}
+                    groups={allGroups}
+                    onPlay={onPlayResource}
+                  />
+                ))
+              )}
+            </div>
+          </CollapsibleContent>
+        </div>
+      </Collapsible>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Group</AlertDialogTitle>
+            <AlertDialogDescription>
+              {resources.length > 0 ? (
+                <>
+                  Are you sure you want to delete "{group.name}"? 
+                  <br /><br />
+                  <strong>{resources.length} video(s)</strong> in this group will be moved to "Ungrouped".
+                </>
+              ) : (
+                <>Are you sure you want to delete "{group.name}"?</>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDelete} 
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete Group
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
