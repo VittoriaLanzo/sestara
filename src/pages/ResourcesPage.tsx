@@ -81,9 +81,13 @@ const ResourcesPage = () => {
       // Watched filter
       if (watchedFilter === "watched" && !resource.is_watched) return false;
       if (watchedFilter === "unwatched" && resource.is_watched) return false;
+      if (watchedFilter === "favorites" && !resource.is_favorite) return false;
       return true;
     });
   }, [resources, searchQuery, groupFilter, watchedFilter]);
+
+  // Count favorites
+  const favoritesCount = resources.filter(r => r.is_favorite).length;
 
   // Group resources
   const ungroupedResources = filteredResources.filter((r) => !r.group_id);
@@ -244,11 +248,14 @@ const ResourcesPage = () => {
               </Select>
 
               <Select value={watchedFilter} onValueChange={setWatchedFilter}>
-                <SelectTrigger className="w-[140px]">
+                <SelectTrigger className="w-[150px]">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Videos</SelectItem>
+                  <SelectItem value="favorites">
+                    ⭐ Favorites {favoritesCount > 0 && `(${favoritesCount})`}
+                  </SelectItem>
                   <SelectItem value="watched">Watched</SelectItem>
                   <SelectItem value="unwatched">Unwatched</SelectItem>
                 </SelectContent>

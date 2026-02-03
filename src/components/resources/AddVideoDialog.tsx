@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,14 +42,27 @@ export const AddVideoDialog = ({ open, onOpenChange, roadmapId, groups }: AddVid
     onOpenChange(false);
   };
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setUrl("");
+      setTitle("");
+      setNotes("");
+      setGroupId("");
+    }
+    onOpenChange(open);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Youtube className="w-5 h-5 text-destructive" />
             Add YouTube Video
           </DialogTitle>
+          <DialogDescription>
+            Add a single YouTube video to your study materials.
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -62,13 +75,16 @@ export const AddVideoDialog = ({ open, onOpenChange, roadmapId, groups }: AddVid
               onChange={(e) => setUrl(e.target.value)}
               required
             />
+            <p className="text-xs text-muted-foreground">
+              Video title will be automatically fetched if left empty below.
+            </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="title">Title (optional)</Label>
+            <Label htmlFor="title">Custom Title (optional)</Label>
             <Input
               id="title"
-              placeholder="Custom title for this video"
+              placeholder="Leave empty to auto-fetch from YouTube"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -103,7 +119,7 @@ export const AddVideoDialog = ({ open, onOpenChange, roadmapId, groups }: AddVid
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
               Cancel
             </Button>
             <Button type="submit" disabled={addResource.isPending || !url.trim()}>

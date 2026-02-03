@@ -56,6 +56,63 @@ const getThumbnailUrl = (videoId: string): string => {
   return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
 };
 
+// Fetch video metadata from edge function
+const fetchVideoMetadata = async (url: string): Promise<{
+  title: string;
+  thumbnail_url: string;
+  video_id: string;
+} | null> => {
+  try {
+    const { data, error } = await supabase.functions.invoke("youtube-metadata", {
+      body: { url, type: "video" },
+    });
+
+    if (error || !data.success) {
+      console.error("Error fetching video metadata:", error || data.error);
+      return null;
+    }
+
+    return {
+      title: data.title,
+      thumbnail_url: data.thumbnail_url,
+      video_id: data.video_id,
+    };
+  } catch (error) {
+    console.error("Error calling youtube-metadata function:", error);
+    return null;
+  }
+};
+
+// Fetch playlist videos from edge function
+const fetchPlaylistVideos = async (url: string): Promise<{
+  playlist_id: string;
+  videos: Array<{
+    video_id: string;
+    title: string;
+    thumbnail_url: string;
+    index: number;
+  }>;
+} | null> => {
+  try {
+    const { data, error } = await supabase.functions.invoke("youtube-metadata", {
+      body: { url, type: "playlist" },
+    });
+
+    if (error || !data.success) {
+      console.error("Error fetching playlist:", error || data.error);
+      throw new Error(data?.error || "Failed to fetch playlist videos");
+    }
+
+    return {
+      playlist_id: data.playlist_id,
+      videos: data.videos,
+    };
+  } catch (error) {
+    console.error("Error calling youtube-metadata function:", error);
+    throw error;
+  }
+};
+
 export const useResourceGroups = (roadmapId: string) => {
   const { user } = useAuth();
 
@@ -115,8 +172,19 @@ export const useAddResource = () => {
       const videoId = extractVideoId(url);
       if (!videoId) throw new Error("Invalid YouTube URL");
 
-      const thumbnailUrl = getThumbnailUrl(videoId);
-      const finalTitle = title || `Video ${videoId}`;
+      // Fetch video metadata if no title provided
+      let finalTitle = title;
+      let thumbnailUrl = getThumbnailUrl(videoId);
+
+      if (!title) {
+        const metadata = await fetchVideoMetadata(url);
+        if (metadata) {
+          finalTitle = metadata.title;
+          thumbnailUrl = metadata.thumbnail_url;
+        } else {
+          finalTitle = "Title unavailable";
+        }
+      }
 
       const { data, error } = await supabase
         .from("roadmap_resources")
@@ -163,29 +231,57 @@ export const useAddPlaylist = () => {
       const playlistId = extractPlaylistId(playlistUrl);
       if (!playlistId) throw new Error("Invalid YouTube playlist URL");
 
+      // Fetch playlist videos from edge function
+      const playlistData = await fetchPlaylistVideos(playlistUrl);
+      
+      if (!playlistData || playlistData.videos.length === 0) {
+        throw new Error("Could not fetch playlist videos. The playlist may be private or unavailable.");
+      }
+
       // Create a group for this playlist
       const { data: group, error: groupError } = await supabase
         .from("resource_groups")
         .insert({
           roadmap_id: roadmapId,
           user_id: user!.id,
-          name: groupName || `Playlist ${playlistId.slice(0, 8)}`,
+          name: groupName || `Playlist (${playlistData.videos.length} videos)`,
           is_playlist: true,
           playlist_url: playlistUrl,
+          color: "purple",
         })
         .select()
         .single();
 
       if (groupError) throw groupError;
 
-      // Note: In a production app, you'd use YouTube Data API to fetch all videos
-      // For now, we'll add a placeholder that the user can expand
-      return group;
+      // Add all videos from the playlist
+      const videosToInsert = playlistData.videos.map((video, index) => ({
+        roadmap_id: roadmapId,
+        user_id: user!.id,
+        url: `https://www.youtube.com/watch?v=${video.video_id}`,
+        title: video.title,
+        thumbnail_url: video.thumbnail_url,
+        group_id: group.id,
+        order_index: index,
+        resource_type: "video",
+      }));
+
+      const { error: resourcesError } = await supabase
+        .from("roadmap_resources")
+        .insert(videosToInsert);
+
+      if (resourcesError) {
+        // Cleanup: delete the group if resources insertion failed
+        await supabase.from("resource_groups").delete().eq("id", group.id);
+        throw resourcesError;
+      }
+
+      return { group, videosCount: playlistData.videos.length };
     },
-    onSuccess: (_, { roadmapId }) => {
+    onSuccess: (result, { roadmapId }) => {
       queryClient.invalidateQueries({ queryKey: ["resource-groups", roadmapId] });
       queryClient.invalidateQueries({ queryKey: ["roadmap-resources", roadmapId] });
-      toast.success("Playlist added successfully!");
+      toast.success(`Playlist added with ${result.videosCount} videos!`);
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to add playlist");
@@ -303,6 +399,10 @@ export const useUpdateGroup = () => {
     },
     onSuccess: (_, { roadmapId }) => {
       queryClient.invalidateQueries({ queryKey: ["resource-groups", roadmapId] });
+      toast.success("Group updated!");
+    },
+    onError: () => {
+      toast.error("Failed to update group");
     },
   });
 };
@@ -324,7 +424,7 @@ export const useDeleteGroup = () => {
     onSuccess: (_, { roadmapId }) => {
       queryClient.invalidateQueries({ queryKey: ["resource-groups", roadmapId] });
       queryClient.invalidateQueries({ queryKey: ["roadmap-resources", roadmapId] });
-      toast.success("Group deleted");
+      toast.success("Group deleted. Videos moved to ungrouped.");
     },
     onError: () => {
       toast.error("Failed to delete group");
