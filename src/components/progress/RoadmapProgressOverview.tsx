@@ -115,26 +115,6 @@ export const RoadmapProgressOverview = ({
         </div>
       </div>
 
-      {/* Subject Progress Grid */}
-      {subjects.length > 0 && (
-        <div>
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">
-            Subject Progress
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {subjects.map((subject) => (
-              <SubjectProgressCard
-                key={subject.id}
-                title={subject.title}
-                completedTopics={subject.completedTopics}
-                totalTopics={subject.totalTopics}
-                progress={subject.progress}
-                isCompleted={subject.isCompleted}
-              />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
