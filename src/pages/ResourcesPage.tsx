@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { 
   useResourceGroups, 
   useRoadmapResources, 
+  useReorderResources,
+  useUpdateResource,
   RoadmapResource 
 } from "@/hooks/useRoadmapResources";
 import { AddVideoDialog } from "@/components/resources/AddVideoDialog";
@@ -20,18 +22,17 @@ import { ResourceGroupComponent } from "@/components/resources/ResourceGroup";
 import { VideoPlayer } from "@/components/resources/VideoPlayer";
 import { 
   ArrowLeft, 
-  Plus, 
   Youtube, 
   ListVideo, 
   FolderPlus, 
   Search,
   Filter,
   Loader2,
-  Library,
+  Video,
   BookOpen
 } from "lucide-react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
-import { useReorderResources } from "@/hooks/useRoadmapResources";
+import { cn } from "@/lib/utils";
 
 const ResourcesPage = () => {
   const { id: roadmapId } = useParams<{ id: string }>();
@@ -63,6 +64,7 @@ const ResourcesPage = () => {
   const { data: groups = [], isLoading: groupsLoading } = useResourceGroups(roadmapId!);
   const { data: resources = [], isLoading: resourcesLoading } = useRoadmapResources(roadmapId!);
   const reorderResources = useReorderResources();
+  const updateResource = useUpdateResource();
 
   const isLoading = roadmapLoading || groupsLoading || resourcesLoading;
 
@@ -115,26 +117,47 @@ const ResourcesPage = () => {
     }
   };
 
-  // Drag and drop
+  // Drag and drop between groups
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
-    const sourceIndex = result.source.index;
-    const destIndex = result.destination.index;
+    const { source, destination, draggableId } = result;
+    const sourceDroppableId = source.droppableId;
+    const destDroppableId = destination.droppableId;
 
-    if (sourceIndex === destIndex) return;
+    // Determine the target group_id (null for "ungrouped")
+    const targetGroupId = destDroppableId === "ungrouped" ? null : destDroppableId;
+    const sourceGroupId = sourceDroppableId === "ungrouped" ? null : sourceDroppableId;
 
-    const newResources = [...filteredResources];
-    const [removed] = newResources.splice(sourceIndex, 1);
-    newResources.splice(destIndex, 0, removed);
+    // Find the dragged resource
+    const draggedResource = resources.find(r => r.id === draggableId);
+    if (!draggedResource) return;
 
-    const updates = newResources.map((r, idx) => ({
-      id: r.id,
-      order_index: idx,
-      group_id: r.group_id,
-    }));
+    // If moving to a different group, update the group_id
+    if (sourceGroupId !== targetGroupId) {
+      updateResource.mutate({
+        id: draggableId,
+        roadmapId: roadmapId!,
+        updates: { group_id: targetGroupId },
+      });
+    } else {
+      // Reorder within the same group
+      const groupResources = sourceGroupId === null 
+        ? ungroupedResources 
+        : filteredResources.filter(r => r.group_id === sourceGroupId);
+      
+      const newResources = [...groupResources];
+      const [removed] = newResources.splice(source.index, 1);
+      newResources.splice(destination.index, 0, removed);
 
-    reorderResources.mutate({ roadmapId: roadmapId!, updates });
+      const updates = newResources.map((r, idx) => ({
+        id: r.id,
+        order_index: idx,
+        group_id: r.group_id,
+      }));
+
+      reorderResources.mutate({ roadmapId: roadmapId!, updates });
+    }
   };
 
   if (isLoading) {
@@ -171,7 +194,7 @@ const ResourcesPage = () => {
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <Library className="w-8 h-8 text-primary" />
+                <Video className="w-8 h-8 text-primary" />
                 <h1 className="text-3xl font-display font-bold text-foreground">Study Materials</h1>
               </div>
               <div className="flex items-center gap-2">
@@ -268,7 +291,7 @@ const ResourcesPage = () => {
         <div className="space-y-4 animate-slide-up" style={{ animationDelay: "0.2s" }}>
           {resources.length === 0 ? (
             <div className="glass-card p-12 text-center">
-              <Library className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <Video className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-display font-semibold text-foreground mb-2">
                 No resources yet
               </h3>
@@ -291,7 +314,7 @@ const ResourcesPage = () => {
               <p className="text-muted-foreground">No videos match your filters</p>
             </div>
           ) : (
-            <>
+            <DragDropContext onDragEnd={handleDragEnd}>
               {/* Grouped Resources */}
               {groupedResources.map(
                 ({ group, resources: groupResources }) =>
@@ -313,41 +336,65 @@ const ResourcesPage = () => {
                   <h3 className="text-sm font-medium text-muted-foreground px-2">
                     Ungrouped ({ungroupedResources.length})
                   </h3>
-                  <DragDropContext onDragEnd={handleDragEnd}>
-                    <Droppable droppableId="ungrouped">
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.droppableProps}
-                          className="space-y-2"
-                        >
-                          {ungroupedResources.map((resource, index) => (
-                            <Draggable key={resource.id} draggableId={resource.id} index={index}>
-                              {(provided, snapshot) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                >
-                                  <ResourceCard
-                                    resource={resource}
-                                    roadmapId={roadmapId!}
-                                    groups={groups}
-                                    onPlay={setPlayingResource}
-                                    isDragging={snapshot.isDragging}
-                                  />
-                                </div>
-                              )}
-                            </Draggable>
-                          ))}
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
+                  <Droppable droppableId="ungrouped">
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className={cn(
+                          "space-y-2 min-h-[60px] p-2 rounded-lg transition-colors",
+                          snapshot.isDraggingOver && "bg-primary/10 ring-2 ring-primary/20"
+                        )}
+                      >
+                        {ungroupedResources.map((resource, index) => (
+                          <Draggable key={resource.id} draggableId={resource.id} index={index}>
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <ResourceCard
+                                  resource={resource}
+                                  roadmapId={roadmapId!}
+                                  groups={groups}
+                                  onPlay={setPlayingResource}
+                                  isDragging={snapshot.isDragging}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
                 </div>
               )}
-            </>
+
+              {/* Empty ungrouped drop zone - shown when there are groups but no ungrouped items */}
+              {ungroupedResources.length === 0 && groups.length > 0 && (
+                <Droppable droppableId="ungrouped">
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className={cn(
+                        "p-4 border-2 border-dashed rounded-lg transition-all text-center",
+                        snapshot.isDraggingOver 
+                          ? "border-primary bg-primary/10" 
+                          : "border-muted-foreground/30"
+                      )}
+                    >
+                      <p className="text-sm text-muted-foreground">
+                        {snapshot.isDraggingOver ? "Drop here to ungroup" : "Drag videos here to ungroup them"}
+                      </p>
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              )}
+            </DragDropContext>
           )}
         </div>
       </main>

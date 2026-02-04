@@ -21,6 +21,7 @@ import { ResourceCard } from "./ResourceCard";
 import { ChevronDown, ChevronRight, Pencil, Trash2, Check, X, GripVertical, ListVideo, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Droppable, Draggable } from "@hello-pangea/dnd";
 
 interface ResourceGroupProps {
   group: ResourceGroupType;
@@ -177,25 +178,49 @@ export const ResourceGroupComponent = ({
             </div>
           </CollapsibleTrigger>
 
-          {/* Group Content */}
+          {/* Group Content with Droppable */}
           <CollapsibleContent>
-            <div className="p-4 pt-0 space-y-2">
-              {resources.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  No videos in this group yet. Drag videos here or add new ones.
-                </p>
-              ) : (
-                resources.map((resource) => (
-                  <ResourceCard
-                    key={resource.id}
-                    resource={resource}
-                    roadmapId={roadmapId}
-                    groups={allGroups}
-                    onPlay={onPlayResource}
-                  />
-                ))
+            <Droppable droppableId={group.id}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={cn(
+                    "p-4 pt-0 space-y-2 min-h-[60px] transition-colors",
+                    snapshot.isDraggingOver && "bg-primary/5"
+                  )}
+                >
+                  {resources.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      {snapshot.isDraggingOver 
+                        ? "Drop here to add to this group" 
+                        : "No videos in this group yet. Drag videos here or add new ones."}
+                    </p>
+                  ) : (
+                    resources.map((resource, index) => (
+                      <Draggable key={resource.id} draggableId={resource.id} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <ResourceCard
+                              resource={resource}
+                              roadmapId={roadmapId}
+                              groups={allGroups}
+                              onPlay={onPlayResource}
+                              isDragging={snapshot.isDragging}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))
+                  )}
+                  {provided.placeholder}
+                </div>
               )}
-            </div>
+            </Droppable>
           </CollapsibleContent>
         </div>
       </Collapsible>
