@@ -18,6 +18,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { RoadmapResource, ResourceGroup, useUpdateResource, useDeleteResource } from "@/hooks/useRoadmapResources";
 import { EditVideoDialog } from "./EditVideoDialog";
 import { 
@@ -25,11 +31,10 @@ import {
   MoreVertical, 
   Heart, 
   CheckCircle2, 
-  ExternalLink,
   Trash2,
   GripVertical,
   Pencil,
-  Globe
+  ExternalLink
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -76,8 +81,10 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
   };
 
   const openInBrowser = () => {
-    window.open(resource.url, "_blank", "noopener,noreferrer");
-    toast.success("Opening in browser...");
+    // Ensure we open the correct YouTube URL
+    const url = resource.url;
+    window.open(url, "_blank", "noopener,noreferrer");
+    toast.success("Opening in your browser - use your preferred browser or YouTube app for the best experience");
   };
 
   const getColorClass = (color: string | null) => {
@@ -200,7 +207,7 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
                 Play in App
               </DropdownMenuItem>
               <DropdownMenuItem onClick={openInBrowser}>
-                <Globe className="w-4 h-4 mr-2" />
+                <ExternalLink className="w-4 h-4 mr-2" />
                 Open in Browser
               </DropdownMenuItem>
               <DropdownMenuSeparator />

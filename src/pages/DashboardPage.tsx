@@ -20,7 +20,7 @@ import {
   Sparkles,
   Loader2,
   Map,
-  Library,
+  Video,
 } from "lucide-react";
 
 interface RoadmapWithProgress {
@@ -263,7 +263,7 @@ const DashboardPage = () => {
                           }}
                           className="w-full gap-2 text-muted-foreground hover:text-foreground"
                         >
-                          <Library className="w-4 h-4" />
+                          <Video className="w-4 h-4" />
                           Study Materials
                         </Button>
                       </div>
