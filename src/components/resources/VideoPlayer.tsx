@@ -1,4 +1,5 @@
-import { useState } from "react";
+ import { useState } from "react";
+ import { OpenInBrowserDialog } from "./OpenInBrowserDialog";
 import { Button } from "@/components/ui/button";
 import { RoadmapResource, useUpdateResource } from "@/hooks/useRoadmapResources";
 import { 
@@ -44,7 +45,8 @@ export const VideoPlayer = ({
   hasNext,
   hasPrevious,
 }: VideoPlayerProps) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+   const [isFullscreen, setIsFullscreen] = useState(false);
+   const [showOpenBrowserDialog, setShowOpenBrowserDialog] = useState(false);
   const updateResource = useUpdateResource();
 
   const videoId = extractVideoId(resource.url);
@@ -65,9 +67,9 @@ export const VideoPlayer = ({
     });
   };
 
-  const openInBrowser = () => {
-    window.open(resource.url, "_blank", "noopener,noreferrer");
-  };
+   const openInBrowser = () => {
+     setShowOpenBrowserDialog(true);
+   };
 
   if (!videoId) {
     return (
@@ -128,16 +130,17 @@ export const VideoPlayer = ({
         </div>
       </div>
 
-      {/* Video */}
-      <div className={cn("relative bg-black", isFullscreen ? "h-[calc(100%-120px)]" : "aspect-video")}>
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-          title={resource.title}
-          className="absolute inset-0 w-full h-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      </div>
+       {/* Video */}
+       <div className={cn("relative bg-black", isFullscreen ? "h-[calc(100%-120px)]" : "aspect-video")}>
+         <iframe
+           src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+           title={resource.title}
+           className="absolute inset-0 w-full h-full"
+           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+           allowFullScreen
+           sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"
+         />
+       </div>
 
       {/* Controls */}
       <div className="flex items-center justify-between p-3 border-t border-border">
@@ -167,6 +170,13 @@ export const VideoPlayer = ({
           <SkipForward className="w-4 h-4" />
         </Button>
       </div>
-    </div>
-  );
+       {/* Open in Browser Dialog */}
+       <OpenInBrowserDialog
+         open={showOpenBrowserDialog}
+         onOpenChange={setShowOpenBrowserDialog}
+         url={resource.url}
+         title={resource.title}
+       />
+     </div>
+   );
 };
