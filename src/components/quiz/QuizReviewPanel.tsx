@@ -20,6 +20,7 @@ import {
   Lightbulb,
   TrendingUp,
   Loader2,
+  Users,
 } from "lucide-react";
 
 interface Question {
@@ -43,6 +44,7 @@ interface QuizReviewPanelProps {
   onConvertToFlashcards: (wrongQuestions: Question[]) => void;
   onClose: () => void;
   topicTitle: string;
+  onChallengeCreate?: () => void;
 }
 
 export const QuizReviewPanel = ({
@@ -55,6 +57,7 @@ export const QuizReviewPanel = ({
   onConvertToFlashcards,
   onClose,
   topicTitle,
+  onChallengeCreate,
 }: QuizReviewPanelProps) => {
   const [showDetails, setShowDetails] = useState(false);
   const [loadingExplanation, setLoadingExplanation] = useState<string | null>(null);
@@ -272,6 +275,16 @@ export const QuizReviewPanel = ({
           <Sparkles className="w-4 h-4" />
           New Quiz
         </Button>
+        {onChallengeCreate && (
+          <Button 
+            variant="outline" 
+            onClick={onChallengeCreate}
+            className="col-span-2 gap-2"
+          >
+            <Users className="w-4 h-4" />
+            Challenge Friends
+          </Button>
+        )}
         {wrongQuestions.length > 0 && (
           <Button 
             variant="outline" 

@@ -18,6 +18,7 @@ import {
   Trophy,
   Sparkles,
   RotateCcw,
+  Users,
 } from "lucide-react";
 
 interface Question {
@@ -36,6 +37,8 @@ interface QuizModalProps {
   questions: Question[] | null;
   topicId: string;
   userId: string;
+  topicTitle?: string;
+  onChallengeCreate?: (questions: Question[]) => void;
 }
 
 export const QuizModal = ({
@@ -44,6 +47,8 @@ export const QuizModal = ({
   questions,
   topicId,
   userId,
+  topicTitle,
+  onChallengeCreate,
 }: QuizModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -182,9 +187,19 @@ export const QuizModal = ({
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Try Again
               </Button>
+              {onChallengeCreate && (
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => onChallengeCreate(questions)}
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Challenge
+                </Button>
+              )}
               <Button
                 variant="default"
-                className="flex-1"
+                className={onChallengeCreate ? "" : "flex-1"}
                 onClick={() => onOpenChange(false)}
               >
                 Done

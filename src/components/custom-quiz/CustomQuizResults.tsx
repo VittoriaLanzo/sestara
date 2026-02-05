@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Trophy, Clock, Target, CheckCircle2, XCircle, 
   RotateCcw, Plus, Save, ChevronDown, ChevronUp,
-  Sparkles
+  Sparkles, Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
@@ -23,6 +23,7 @@ interface CustomQuizResultsProps {
   onRetake: () => void;
   onNewQuiz: () => void;
   onSaveQuiz?: () => void;
+  onChallengeCreate?: () => void;
 }
 
 export const CustomQuizResults = ({
@@ -33,6 +34,7 @@ export const CustomQuizResults = ({
   onRetake,
   onNewQuiz,
   onSaveQuiz,
+  onChallengeCreate,
 }: CustomQuizResultsProps) => {
   const [expandedQuestion, setExpandedQuestion] = useState<string | null>(null);
 
@@ -148,6 +150,12 @@ export const CustomQuizResults = ({
                   <Button onClick={onSaveQuiz} variant="outline" className="gap-2">
                     <Save className="w-4 h-4" />
                     Save to Library
+                  </Button>
+                )}
+                {onChallengeCreate && (
+                  <Button onClick={onChallengeCreate} variant="outline" className="gap-2">
+                    <Users className="w-4 h-4" />
+                    Challenge Friends
                   </Button>
                 )}
                 <Button onClick={onNewQuiz} className="gap-2">

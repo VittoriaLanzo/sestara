@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      challenge_attempts: {
+        Row: {
+          accuracy: number
+          answers: Json | null
+          challenge_id: string
+          completed_at: string
+          created_at: string
+          id: string
+          is_best_attempt: boolean
+          max_score: number
+          score: number
+          time_taken_seconds: number
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          accuracy?: number
+          answers?: Json | null
+          challenge_id: string
+          completed_at?: string
+          created_at?: string
+          id?: string
+          is_best_attempt?: boolean
+          max_score?: number
+          score?: number
+          time_taken_seconds?: number
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          accuracy?: number
+          answers?: Json | null
+          challenge_id?: string
+          completed_at?: string
+          created_at?: string
+          id?: string
+          is_best_attempt?: boolean
+          max_score?: number
+          score?: number
+          time_taken_seconds?: number
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_attempts_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content_sources: {
         Row: {
           created_at: string
@@ -358,6 +411,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      quiz_challenges: {
+        Row: {
+          challenge_code: string
+          created_at: string
+          creator_id: string
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          max_attempts: number | null
+          quiz_data: Json
+          quiz_type: string
+          source_quiz_id: string | null
+          title: string
+        }
+        Insert: {
+          challenge_code: string
+          created_at?: string
+          creator_id: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          max_attempts?: number | null
+          quiz_data: Json
+          quiz_type?: string
+          source_quiz_id?: string | null
+          title: string
+        }
+        Update: {
+          challenge_code?: string
+          created_at?: string
+          creator_id?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          max_attempts?: number | null
+          quiz_data?: Json
+          quiz_type?: string
+          source_quiz_id?: string | null
+          title?: string
+        }
+        Relationships: []
       }
       quiz_doubt_reports: {
         Row: {
