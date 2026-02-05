@@ -43,6 +43,7 @@ interface EnhancedQuizViewerProps {
   onClose: () => void;
   onNewQuiz: () => void;
   onConvertToFlashcards: (questions: Question[]) => void;
+  onChallengeCreate?: () => void;
 }
 
 export const EnhancedQuizViewer = ({
@@ -54,6 +55,7 @@ export const EnhancedQuizViewer = ({
   onClose,
   onNewQuiz,
   onConvertToFlashcards,
+  onChallengeCreate,
 }: EnhancedQuizViewerProps) => {
   const { recordActivity } = useStreak();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -260,6 +262,7 @@ export const EnhancedQuizViewer = ({
           onConvertToFlashcards={onConvertToFlashcards}
           onClose={onClose}
           topicTitle={topicTitle}
+          onChallengeCreate={onChallengeCreate}
         />
       </div>
     );

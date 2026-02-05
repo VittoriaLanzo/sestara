@@ -18,6 +18,7 @@ import SettingsPage from "./pages/SettingsPage";
 import TodosPage from "./pages/TodosPage";
 import CustomQuizPage from "./pages/CustomQuizPage";
 import ResourcesPage from "./pages/ResourcesPage";
+import ChallengePage from "./pages/ChallengePage";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const AppContent = () => {
         <Route path="/important-dates" element={<ProtectedRoute><ImportantDatesPage /></ProtectedRoute>} />
         <Route path="/todos" element={<ProtectedRoute><TodosPage /></ProtectedRoute>} />
         <Route path="/custom-quiz" element={<ProtectedRoute><CustomQuizPage /></ProtectedRoute>} />
+        <Route path="/challenge/:code" element={<ProtectedRoute><ChallengePage /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>

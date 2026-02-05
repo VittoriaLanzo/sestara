@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { 
   FolderOpen, Play, MoreVertical, Edit, Download, Trash2, 
-  Shuffle, Clock, Trophy, FolderPlus, Loader2 
+  Shuffle, Clock, Trophy, FolderPlus, Loader2, Users 
 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -48,6 +48,7 @@ interface SavedQuizzesSectionProps {
   quizGroups: QuizGroup[];
   isLoading?: boolean;
   onStartQuiz: (quiz: CustomQuiz, mode: 'timer' | 'track', minutes: number, quizId?: string) => void;
+  onCreateChallenge?: (quiz: CustomQuiz, quizId?: string) => void;
 }
 
 export const SavedQuizzesSection = ({
@@ -55,6 +56,7 @@ export const SavedQuizzesSection = ({
   quizGroups,
   isLoading,
   onStartQuiz,
+  onCreateChallenge,
 }: SavedQuizzesSectionProps) => {
   const [selectedGroup, setSelectedGroup] = useState<string>("all");
   const [selectedForMix, setSelectedForMix] = useState<string[]>([]);
@@ -315,6 +317,12 @@ export const SavedQuizzesSection = ({
                         <Edit className="w-4 h-4 mr-2" />
                         Edit
                       </DropdownMenuItem>
+                      {onCreateChallenge && (
+                        <DropdownMenuItem onClick={() => onCreateChallenge(quiz.quiz, quiz.id)}>
+                          <Users className="w-4 h-4 mr-2" />
+                          Challenge Friends
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuItem onClick={() => handleExportQuiz(quiz)}>
                         <Download className="w-4 h-4 mr-2" />
                         Export JSON

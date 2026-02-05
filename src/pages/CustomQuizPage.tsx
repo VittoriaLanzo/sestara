@@ -2,13 +2,17 @@ import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { useProfile } from "@/hooks/useProfile";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { HowItWorksSection } from "@/components/custom-quiz/HowItWorksSection";
 import { PromptBuilderSection } from "@/components/custom-quiz/PromptBuilderSection";
 import { PasteJsonSection } from "@/components/custom-quiz/PasteJsonSection";
 import { SavedQuizzesSection } from "@/components/custom-quiz/SavedQuizzesSection";
 import { CustomQuizViewer } from "@/components/custom-quiz/CustomQuizViewer";
 import { CustomQuizResults } from "@/components/custom-quiz/CustomQuizResults";
-import { Sparkles, BookOpen, ClipboardPaste, FolderOpen } from "lucide-react";
+import { CreateChallengeDialog } from "@/components/challenge/CreateChallengeDialog";
+import { JoinChallengeDialog } from "@/components/challenge/JoinChallengeDialog";
+import { MyChallengesSection } from "@/components/challenge/MyChallengesSection";
+import { Sparkles, BookOpen, ClipboardPaste, FolderOpen, Users, Trophy } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   useCustomQuizzes, 
@@ -34,6 +38,12 @@ const CustomQuizPage = () => {
   const [quizScore, setQuizScore] = useState(0);
   const [quizTime, setQuizTime] = useState(0);
   
+  // Challenge state
+  const [showChallengeDialog, setShowChallengeDialog] = useState(false);
+  const [showJoinDialog, setShowJoinDialog] = useState(false);
+  const [challengeQuiz, setChallengeQuiz] = useState<CustomQuiz | null>(null);
+  const [challengeQuizId, setChallengeQuizId] = useState<string | undefined>(undefined);
+
   // Database hooks
   const { data: savedQuizzes = [], isLoading: quizzesLoading } = useCustomQuizzes();
   const { data: quizGroups = [] } = useQuizGroups();
@@ -55,6 +65,12 @@ const CustomQuizPage = () => {
     setQuizScore(score);
     setQuizTime(timeTaken);
     setShowResults(true);
+  };
+
+  const handleCreateChallenge = (quiz: CustomQuiz, quizId?: string) => {
+    setChallengeQuiz(quiz);
+    setChallengeQuizId(quizId);
+    setShowChallengeDialog(true);
   };
 
   const handleSaveQuiz = (quiz: CustomQuiz, groupId?: string) => {
@@ -100,6 +116,7 @@ const CustomQuizPage = () => {
           handleSaveQuiz(activeQuiz);
           handleCloseQuiz();
         }}
+        onChallengeCreate={() => handleCreateChallenge(activeQuiz, activeQuizId || undefined)}
       />
     );
   }
@@ -130,7 +147,7 @@ const CustomQuizPage = () => {
 
           {/* Main Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid grid-cols-4 w-full max-w-2xl mx-auto h-auto p-1 bg-muted/50">
+            <TabsList className="grid grid-cols-5 w-full max-w-3xl mx-auto h-auto p-1 bg-muted/50">
               <TabsTrigger 
                 value="guide" 
                 className="flex items-center gap-2 py-3 data-[state=active]:bg-background data-[state=active]:shadow-sm"
@@ -163,6 +180,14 @@ const CustomQuizPage = () => {
                 <span className="hidden sm:inline">Library</span>
                 <span className="sm:hidden">Saved</span>
               </TabsTrigger>
+            <TabsTrigger 
+              value="challenges" 
+              className="flex items-center gap-2 py-3 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <Trophy className="w-4 h-4" />
+              <span className="hidden sm:inline">Challenges</span>
+              <span className="sm:hidden">Battle</span>
+            </TabsTrigger>
             </TabsList>
 
             <AnimatePresence mode="wait">
@@ -209,13 +234,53 @@ const CustomQuizPage = () => {
                     savedQuizzes={savedQuizzes}
                     quizGroups={quizGroups}
                     isLoading={quizzesLoading}
-                    onStartQuiz={(quiz, mode, minutes, quizId) => handleStartQuiz(quiz, mode, minutes, quizId)}
+                  onStartQuiz={(quiz, mode, minutes, quizId) => handleStartQuiz(quiz, mode, minutes, quizId)}
+                  onCreateChallenge={handleCreateChallenge}
                   />
                 </motion.div>
               </TabsContent>
+
+            <TabsContent value="challenges" className="mt-6">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="space-y-6"
+              >
+                {/* Join Challenge Card */}
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="gap-2"
+                    onClick={() => setShowJoinDialog(true)}
+                  >
+                    <Users className="w-5 h-5" />
+                    Join Challenge
+                  </Button>
+                </div>
+
+                <MyChallengesSection onJoinChallenge={() => setShowJoinDialog(true)} />
+              </motion.div>
+            </TabsContent>
             </AnimatePresence>
           </Tabs>
         </motion.div>
+
+      {/* Challenge Dialogs */}
+      {challengeQuiz && (
+        <CreateChallengeDialog
+          open={showChallengeDialog}
+          onOpenChange={setShowChallengeDialog}
+          quiz={challengeQuiz}
+          sourceQuizId={challengeQuizId}
+        />
+      )}
+
+      <JoinChallengeDialog
+        open={showJoinDialog}
+        onOpenChange={setShowJoinDialog}
+      />
       </main>
     </div>
   );
