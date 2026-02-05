@@ -33,13 +33,11 @@ import {
   CheckCircle2, 
   Trash2,
   GripVertical,
-  Pencil,
-  ExternalLink
+   Pencil
 } from "lucide-react";
 import { cn } from "@/lib/utils";
  import { format } from "date-fns";
  import { toast } from "sonner";
- import { OpenInBrowserDialog } from "./OpenInBrowserDialog";
 
 interface ResourceCardProps {
   resource: RoadmapResource;
@@ -55,7 +53,6 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
   const [imageError, setImageError] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
    const [showEditDialog, setShowEditDialog] = useState(false);
-   const [showOpenBrowserDialog, setShowOpenBrowserDialog] = useState(false);
 
   const group = groups.find((g) => g.id === resource.group_id);
 
@@ -81,10 +78,6 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
     deleteResource.mutate({ id: resource.id, roadmapId });
     setShowDeleteDialog(false);
   };
-
-   const openInBrowser = () => {
-     setShowOpenBrowserDialog(true);
-   };
 
   const getColorClass = (color: string | null) => {
     const colorMap: Record<string, string> = {
@@ -203,11 +196,7 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => onPlay(resource)}>
                 <Play className="w-4 h-4 mr-2" />
-                Play in App
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={openInBrowser}>
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Open in Browser
+                 Play Video
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={toggleWatched}>
@@ -253,14 +242,6 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
         </AlertDialogContent>
       </AlertDialog>
 
-       {/* Open in Browser Dialog */}
-       <OpenInBrowserDialog
-         open={showOpenBrowserDialog}
-         onOpenChange={setShowOpenBrowserDialog}
-         url={resource.url}
-         title={resource.title}
-       />
- 
        {/* Edit Dialog */}
        <EditVideoDialog
         open={showEditDialog}

@@ -1,16 +1,14 @@
  import { useState } from "react";
- import { OpenInBrowserDialog } from "./OpenInBrowserDialog";
 import { Button } from "@/components/ui/button";
 import { RoadmapResource, useUpdateResource } from "@/hooks/useRoadmapResources";
 import { 
-  X, 
-  Maximize2, 
-  Minimize2, 
-  SkipBack, 
-  SkipForward, 
-  CheckCircle2,
-  Heart,
-  ExternalLink
+   X, 
+   Maximize2, 
+   Minimize2, 
+   SkipBack, 
+   SkipForward, 
+   CheckCircle2,
+   Heart
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -46,7 +44,6 @@ export const VideoPlayer = ({
   hasPrevious,
 }: VideoPlayerProps) => {
    const [isFullscreen, setIsFullscreen] = useState(false);
-   const [showOpenBrowserDialog, setShowOpenBrowserDialog] = useState(false);
   const updateResource = useUpdateResource();
 
   const videoId = extractVideoId(resource.url);
@@ -59,16 +56,12 @@ export const VideoPlayer = ({
     });
   };
 
-  const toggleFavorite = () => {
-    updateResource.mutate({
-      id: resource.id,
-      roadmapId,
-      updates: { is_favorite: !resource.is_favorite },
-    });
-  };
-
-   const openInBrowser = () => {
-     setShowOpenBrowserDialog(true);
+   const toggleFavorite = () => {
+     updateResource.mutate({
+       id: resource.id,
+       roadmapId,
+       updates: { is_favorite: !resource.is_favorite },
+     });
    };
 
   if (!videoId) {
@@ -113,9 +106,6 @@ export const VideoPlayer = ({
               )}
             />
           </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={openInBrowser}>
-            <ExternalLink className="w-4 h-4" />
-          </Button>
           <Button
             variant="ghost"
             size="icon"
@@ -138,7 +128,7 @@ export const VideoPlayer = ({
            className="absolute inset-0 w-full h-full"
            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
            allowFullScreen
-           sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"
+          sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
          />
        </div>
 
@@ -170,13 +160,6 @@ export const VideoPlayer = ({
           <SkipForward className="w-4 h-4" />
         </Button>
       </div>
-       {/* Open in Browser Dialog */}
-       <OpenInBrowserDialog
-         open={showOpenBrowserDialog}
-         onOpenChange={setShowOpenBrowserDialog}
-         url={resource.url}
-         title={resource.title}
-       />
      </div>
    );
 };
