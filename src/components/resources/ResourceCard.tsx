@@ -37,8 +37,9 @@ import {
   ExternalLink
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { toast } from "sonner";
+ import { format } from "date-fns";
+ import { toast } from "sonner";
+ import { OpenInBrowserDialog } from "./OpenInBrowserDialog";
 
 interface ResourceCardProps {
   resource: RoadmapResource;
@@ -53,7 +54,8 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
   const deleteResource = useDeleteResource();
   const [imageError, setImageError] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
+   const [showEditDialog, setShowEditDialog] = useState(false);
+   const [showOpenBrowserDialog, setShowOpenBrowserDialog] = useState(false);
 
   const group = groups.find((g) => g.id === resource.group_id);
 
@@ -80,12 +82,9 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
     setShowDeleteDialog(false);
   };
 
-  const openInBrowser = () => {
-    // Ensure we open the correct YouTube URL
-    const url = resource.url;
-    window.open(url, "_blank", "noopener,noreferrer");
-    toast.success("Opening in your browser - use your preferred browser or YouTube app for the best experience");
-  };
+   const openInBrowser = () => {
+     setShowOpenBrowserDialog(true);
+   };
 
   const getColorClass = (color: string | null) => {
     const colorMap: Record<string, string> = {
@@ -254,8 +253,16 @@ export const ResourceCard = ({ resource, roadmapId, groups, onPlay, isDragging }
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Edit Dialog */}
-      <EditVideoDialog
+       {/* Open in Browser Dialog */}
+       <OpenInBrowserDialog
+         open={showOpenBrowserDialog}
+         onOpenChange={setShowOpenBrowserDialog}
+         url={resource.url}
+         title={resource.title}
+       />
+ 
+       {/* Edit Dialog */}
+       <EditVideoDialog
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
         resource={resource}
