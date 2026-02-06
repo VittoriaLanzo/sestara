@@ -3,24 +3,23 @@
  import { Navbar } from "@/components/Navbar";
  import { Button } from "@/components/ui/button";
  import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
- import { Badge } from "@/components/ui/badge";
- import { 
-   useChallengeByCode, 
-   useChallengeLeaderboard,
-   useSubmitChallengeAttempt 
- } from "@/hooks/useChallenges";
- import { useAuth } from "@/hooks/useAuth";
- import { useProfile } from "@/hooks/useProfile";
- import { ChallengeLeaderboard } from "@/components/challenge/ChallengeLeaderboard";
- import { CustomQuizViewer } from "@/components/custom-quiz/CustomQuizViewer";
- import { CustomQuizResults } from "@/components/custom-quiz/CustomQuizResults";
- import { 
-   Users, Play, Loader2, AlertCircle, Trophy, 
-   Clock, Target, ArrowLeft, Share2, Copy, Check 
- } from "lucide-react";
- import { motion } from "framer-motion";
- import { cn } from "@/lib/utils";
- import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { 
+  useChallengeByCode, 
+  useChallengeLeaderboard,
+  useSubmitChallengeAttempt 
+} from "@/hooks/useChallenges";
+import { useAuth } from "@/hooks/useAuth";
+import { useProfile } from "@/hooks/useProfile";
+import { ChallengeLeaderboard } from "@/components/challenge/ChallengeLeaderboard";
+import { CustomQuizViewer } from "@/components/custom-quiz/CustomQuizViewer";
+import { 
+  Users, Play, Loader2, AlertCircle, Trophy, 
+  Clock, Target, ArrowLeft, Share2, Copy, Check, RefreshCw
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
  
  const ChallengePage = () => {
    const { code } = useParams<{ code: string }>();
@@ -226,18 +225,23 @@
            animate={{ opacity: 1, y: 0 }}
            className="max-w-4xl mx-auto space-y-6"
          >
-           {/* Header */}
-           <div className="text-center">
-             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
-               <Users className="w-4 h-4" />
-               <span className="text-sm font-medium">Challenge</span>
-             </div>
-             <h1 className="text-3xl md:text-4xl font-bold mb-2">{challenge.title}</h1>
-             <div className="flex items-center justify-center gap-4 text-muted-foreground">
-               <Badge variant="secondary" className="font-mono">{code}</Badge>
-               <span>{challenge.quizData.questions.length} questions</span>
-             </div>
-           </div>
+            {/* Header */}
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
+                <Users className="w-4 h-4" />
+                <span className="text-sm font-medium">Challenge</span>
+                {leaderboard.length > 0 && (
+                  <Badge variant="secondary" className="bg-primary/20 text-primary">
+                    {leaderboard.length} player{leaderboard.length !== 1 ? 's' : ''}
+                  </Badge>
+                )}
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">{challenge.title}</h1>
+              <div className="flex items-center justify-center gap-4 text-muted-foreground">
+                <Badge variant="secondary" className="font-mono">{code}</Badge>
+                <span>{challenge.quizData.questions.length} questions</span>
+              </div>
+            </div>
  
            {/* Your Status */}
            {userBestAttempt && (

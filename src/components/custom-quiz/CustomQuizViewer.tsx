@@ -17,10 +17,11 @@ import {
 import { 
   ChevronLeft, ChevronRight, Check, X, HelpCircle, 
   Maximize, Minimize, Pause, Play, Timer, Clock,
-  Flag, RotateCcw, Send
+  Flag, RotateCcw, Send, Share2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
+import { InQuizChallengeButton } from "@/components/challenge/InQuizChallengeButton";
 
 interface CustomQuizViewerProps {
   quiz: CustomQuiz;
@@ -207,6 +208,9 @@ export const CustomQuizViewer = ({
                   {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
                 </Button>
               )}
+
+              {/* Challenge Button - available during quiz */}
+              <InQuizChallengeButton quiz={quiz} isCompact />
 
               <Button
                 variant="ghost"

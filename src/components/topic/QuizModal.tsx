@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { CreateChallengeDialog } from "@/components/challenge/CreateChallengeDialog";
+import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
 import {
   CheckCircle2,
   XCircle,
@@ -38,7 +40,6 @@ interface QuizModalProps {
   topicId: string;
   userId: string;
   topicTitle?: string;
-  onChallengeCreate?: (questions: Question[]) => void;
 }
 
 export const QuizModal = ({
@@ -48,7 +49,6 @@ export const QuizModal = ({
   topicId,
   userId,
   topicTitle,
-  onChallengeCreate,
 }: QuizModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -58,6 +58,7 @@ export const QuizModal = ({
   const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
+  const [showChallengeDialog, setShowChallengeDialog] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -149,65 +150,81 @@ export const QuizModal = ({
     return "Every attempt is a step forward! Review the material and give it another shot! 🌱";
   };
 
+  // Create challenge quiz from questions
+  const getChallengeQuiz = (): CustomQuiz => ({
+    quizTitle: topicTitle ? `${topicTitle} Quiz Challenge` : 'Quiz Challenge',
+    questions: questions.map((q, idx) => ({
+      id: q.id || `q-${idx}`,
+      question: q.question,
+      options: q.options || [],
+      correctAnswer: q.correctAnswer,
+    })),
+  });
+
   if (showResults) {
     const finalScore = score + (isCorrect ? 1 : 0);
     const percentage = Math.round((finalScore / questions.length) * 100);
 
     return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="glass-card max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center">Quiz Complete!</DialogTitle>
-          </DialogHeader>
+      <>
+        <Dialog open={open} onOpenChange={onOpenChange}>
+          <DialogContent className="glass-card max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-center">Quiz Complete!</DialogTitle>
+            </DialogHeader>
 
-          <div className="text-center py-6">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-primary/20 flex items-center justify-center">
-              <Trophy className={cn(
-                "w-12 h-12",
-                percentage >= 80 ? "text-yellow-400" : "text-primary"
-              )} />
-            </div>
+            <div className="text-center py-6">
+              <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-primary/20 flex items-center justify-center">
+                <Trophy className={cn(
+                  "w-12 h-12",
+                  percentage >= 80 ? "text-yellow-500" : "text-primary"
+                )} />
+              </div>
 
-            <h3 className="text-3xl font-bold text-foreground mb-2">
-              {finalScore} / {questions.length}
-            </h3>
-            <p className="text-xl text-muted-foreground mb-4">{percentage}% correct</p>
+              <h3 className="text-3xl font-bold text-foreground mb-2">
+                {finalScore} / {questions.length}
+              </h3>
+              <p className="text-xl text-muted-foreground mb-4">{percentage}% correct</p>
 
-            <div className="bg-primary/10 rounded-lg p-4 mb-6">
-              <Sparkles className="w-5 h-5 text-primary mx-auto mb-2" />
-              <p className="text-foreground">{getEncouragingMessage()}</p>
-            </div>
+              <div className="bg-primary/10 rounded-lg p-4 mb-6">
+                <Sparkles className="w-5 h-5 text-primary mx-auto mb-2" />
+                <p className="text-foreground">{getEncouragingMessage()}</p>
+              </div>
 
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={resetQuiz}
-              >
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Try Again
-              </Button>
-              {onChallengeCreate && (
+              <div className="flex gap-3">
                 <Button
                   variant="outline"
                   className="flex-1"
-                  onClick={() => onChallengeCreate(questions)}
+                  onClick={resetQuiz}
+                >
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Try Again
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowChallengeDialog(true)}
                 >
                   <Users className="w-4 h-4 mr-2" />
                   Challenge
                 </Button>
-              )}
-              <Button
-                variant="default"
-                className={onChallengeCreate ? "" : "flex-1"}
-                onClick={() => onOpenChange(false)}
-              >
-                Done
-              </Button>
+                <Button
+                  variant="default"
+                  onClick={() => onOpenChange(false)}
+                >
+                  Done
+                </Button>
+              </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+
+        <CreateChallengeDialog
+          open={showChallengeDialog}
+          onOpenChange={setShowChallengeDialog}
+          quiz={getChallengeQuiz()}
+        />
+      </>
     );
   }
 
