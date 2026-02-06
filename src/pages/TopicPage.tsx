@@ -16,6 +16,8 @@ import { EnhancedQuizViewer } from "@/components/quiz/EnhancedQuizViewer";
 import { QuizConfigPanel, QuizConfig } from "@/components/quiz/QuizConfigPanel";
 import { EnhancedFlashcardViewer } from "@/components/flashcard/EnhancedFlashcardViewer";
 import { FlashcardGenerator } from "@/components/flashcard/FlashcardGenerator";
+import { CreateChallengeDialog } from "@/components/challenge/CreateChallengeDialog";
+import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
 import {
   ChevronLeft,
   CheckCircle2,
@@ -105,7 +107,9 @@ const TopicPage = () => {
   // Completion dialog
   const [showCompletionDialog, setShowCompletionDialog] = useState(false);
 
-  // Exam context derived from roadmap
+  // Challenge dialog state
+  const [showChallengeDialog, setShowChallengeDialog] = useState(false);
+  const [challengeQuiz, setChallengeQuiz] = useState<CustomQuiz | null>(null);
   const examContext = {
     examName: roadmap?.title || '',
     examType: roadmap?.goal_type || '',
@@ -315,6 +319,24 @@ const TopicPage = () => {
     setShowQuizConfig(true);
   };
 
+  // Handle challenge creation from quiz
+  const handleChallengeCreate = () => {
+    if (quizQuestions.length > 0) {
+      const quiz: CustomQuiz = {
+        quizTitle: `${topic.title} Quiz Challenge`,
+        questions: quizQuestions.map((q, idx) => ({
+          id: q.id || `q-${idx}`,
+          question: q.question,
+          options: q.options || [],
+          correctAnswer: q.correctAnswer,
+          difficulty: q.difficulty,
+        })),
+      };
+      setChallengeQuiz(quiz);
+      setShowChallengeDialog(true);
+    }
+  };
+
   const handleConvertToFlashcards = async (questions: QuizQuestion[]) => {
     if (!user || !topicId) return;
     
@@ -421,16 +443,26 @@ const TopicPage = () => {
   // Quiz Taking View
   if (showQuiz && quizQuestions.length > 0 && quizConfig) {
     return (
-      <EnhancedQuizViewer
-        questions={quizQuestions}
-        config={quizConfig}
-        topicId={topicId!}
-        userId={user!.id}
-        topicTitle={topic.title}
-        onClose={handleCloseQuiz}
-        onNewQuiz={handleNewQuiz}
-        onConvertToFlashcards={handleConvertToFlashcards}
-      />
+      <>
+        <EnhancedQuizViewer
+          questions={quizQuestions}
+          config={quizConfig}
+          topicId={topicId!}
+          userId={user!.id}
+          topicTitle={topic.title}
+          onClose={handleCloseQuiz}
+          onNewQuiz={handleNewQuiz}
+          onConvertToFlashcards={handleConvertToFlashcards}
+          onChallengeCreate={handleChallengeCreate}
+        />
+        {challengeQuiz && (
+          <CreateChallengeDialog
+            open={showChallengeDialog}
+            onOpenChange={setShowChallengeDialog}
+            quiz={challengeQuiz}
+          />
+        )}
+      </>
     );
   }
 
