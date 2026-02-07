@@ -1,8 +1,9 @@
- import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
- import { supabase } from "@/integrations/supabase/client";
- import { useAuth } from "@/hooks/useAuth";
- import { toast } from "sonner";
- import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
+import { validateQuizForChallenge, createQuizSnapshot } from "@/lib/quizValidation";
  
  export interface Challenge {
    id: string;
@@ -184,43 +185,141 @@
    });
  };
  
- // Create a new challenge
- export const useCreateChallenge = () => {
-   const { user } = useAuth();
-   const queryClient = useQueryClient();
- 
-   return useMutation({
-     mutationFn: async ({ quiz, title, sourceQuizId }: { quiz: CustomQuiz; title?: string; sourceQuizId?: string }) => {
-       if (!user) throw new Error("Not authenticated");
- 
-       const challengeCode = generateChallengeCode();
-       
-       const { data, error } = await supabase
-         .from('quiz_challenges')
-         .insert({
-           creator_id: user.id,
-           challenge_code: challengeCode,
-           title: title || quiz.quizTitle,
-           quiz_data: quiz as any,
-           quiz_type: 'custom',
-           source_quiz_id: sourceQuizId,
-         })
-         .select()
-         .single();
- 
-       if (error) throw error;
-       return { ...data, challenge_code: challengeCode };
-     },
-     onSuccess: () => {
-       queryClient.invalidateQueries({ queryKey: ['user-challenges'] });
-       toast.success("Challenge created!");
-     },
-     onError: (error) => {
-       console.error('Failed to create challenge:', error);
-       toast.error("Failed to create challenge");
-     },
-   });
- };
+// Create a new challenge with validated and frozen quiz snapshot
+export const useCreateChallenge = () => {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ quiz, title, sourceQuizId }: { quiz: CustomQuiz; title?: string; sourceQuizId?: string }) => {
+      if (!user) throw new Error("Not authenticated");
+
+      // Validate quiz before creating challenge
+      const validation = validateQuizForChallenge(quiz);
+      if (!validation.isValid) {
+        throw new Error(`Quiz validation failed: ${validation.errors.join(', ')}`);
+      }
+
+      // Create an immutable snapshot of the quiz
+      const frozenQuiz = createQuizSnapshot(quiz);
+
+      const challengeCode = generateChallengeCode();
+      
+      const { data, error } = await supabase
+        .from('quiz_challenges')
+        .insert({
+          creator_id: user.id,
+          challenge_code: challengeCode,
+          title: title || frozenQuiz.quizTitle,
+          quiz_data: frozenQuiz as any,
+          quiz_type: 'custom',
+          source_quiz_id: sourceQuizId,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { ...data, challenge_code: challengeCode };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-challenges'] });
+      toast.success("Challenge created!");
+    },
+    onError: (error: Error) => {
+      console.error('Failed to create challenge:', error);
+      if (error.message.includes('Quiz validation failed')) {
+        toast.error(error.message);
+      } else {
+        toast.error("Failed to create challenge");
+      }
+    },
+  });
+};
+
+// Submit a challenge attempt with proper creator handling
+export const useSubmitChallengeAttemptWithCreator = () => {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      challengeId,
+      userName,
+      score,
+      maxScore,
+      timeTakenSeconds,
+      answers,
+      isCreator = false,
+    }: {
+      challengeId: string;
+      userName: string;
+      score: number;
+      maxScore: number;
+      timeTakenSeconds: number;
+      answers: Record<string, string>;
+      isCreator?: boolean;
+    }) => {
+      if (!user) throw new Error("Not authenticated");
+
+      const accuracy = maxScore > 0 ? (score / maxScore) * 100 : 0;
+
+      // Check if user already has a best attempt
+      const { data: existingAttempts } = await supabase
+        .from('challenge_attempts')
+        .select('*')
+        .eq('challenge_id', challengeId)
+        .eq('user_id', user.id)
+        .eq('is_best_attempt', true);
+
+      const existingBest = existingAttempts?.[0];
+      
+      // Determine if this is the new best attempt
+      let isBestAttempt = true;
+      if (existingBest) {
+        const existingScore = existingBest.score;
+        const existingTime = existingBest.time_taken_seconds;
+        
+        // New attempt is better if: higher score, or same score with less time
+        if (score < existingScore || (score === existingScore && timeTakenSeconds >= existingTime)) {
+          isBestAttempt = false;
+        } else {
+          // Mark old best as not best
+          await supabase
+            .from('challenge_attempts')
+            .update({ is_best_attempt: false })
+            .eq('id', existingBest.id);
+        }
+      }
+
+      const { data, error } = await supabase
+        .from('challenge_attempts')
+        .insert({
+          challenge_id: challengeId,
+          user_id: user.id,
+          user_name: userName,
+          score,
+          max_score: maxScore,
+          accuracy,
+          time_taken_seconds: timeTakenSeconds,
+          answers: answers as any,
+          is_best_attempt: isBestAttempt,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['challenge-leaderboard', variables.challengeId] });
+      queryClient.invalidateQueries({ queryKey: ['user-challenges'] });
+    },
+    onError: (error) => {
+      console.error('Failed to submit attempt:', error);
+      toast.error("Failed to submit your score");
+    },
+  });
+};
  
  // Submit a challenge attempt
  export const useSubmitChallengeAttempt = () => {
@@ -305,22 +404,41 @@
    });
  };
  
- // Deactivate a challenge
- export const useDeactivateChallenge = () => {
-   const queryClient = useQueryClient();
- 
-   return useMutation({
-     mutationFn: async (challengeId: string) => {
-       const { error } = await supabase
-         .from('quiz_challenges')
-         .update({ is_active: false })
-         .eq('id', challengeId);
- 
-       if (error) throw error;
-     },
-     onSuccess: () => {
-       queryClient.invalidateQueries({ queryKey: ['user-challenges'] });
-       toast.success("Challenge deactivated");
-     },
-   });
- };
+// Permanently delete a challenge and all its attempts
+export const useDeleteChallenge = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (challengeId: string) => {
+      // First delete all challenge attempts (leaderboard data)
+      const { error: attemptsError } = await supabase
+        .from('challenge_attempts')
+        .delete()
+        .eq('challenge_id', challengeId);
+
+      if (attemptsError) throw attemptsError;
+
+      // Then delete the challenge itself
+      const { error: challengeError } = await supabase
+        .from('quiz_challenges')
+        .delete()
+        .eq('id', challengeId);
+
+      if (challengeError) throw challengeError;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-challenges'] });
+      queryClient.invalidateQueries({ queryKey: ['challenge-leaderboard'] });
+      toast.success("Challenge deleted permanently");
+    },
+    onError: (error) => {
+      console.error('Failed to delete challenge:', error);
+      toast.error("Failed to delete challenge");
+    },
+  });
+};
+
+// Legacy deactivate function (kept for backwards compatibility but uses delete)
+export const useDeactivateChallenge = () => {
+  return useDeleteChallenge();
+};

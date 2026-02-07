@@ -115,7 +115,15 @@ export const CustomQuizViewer = ({
     if (isPaused) return;
     
     // Extract letter from option (e.g., "A) Answer" -> "A")
-    const letter = option.charAt(0).toUpperCase();
+    // Only proceed if the option starts with a valid letter format
+    const letterMatch = option.match(/^([A-Z])\)/i);
+    if (!letterMatch) return;
+    
+    const letter = letterMatch[1].toUpperCase();
+    
+    // Prevent selecting the same answer again (no toggle behavior)
+    if (answers[currentQuestion.id] === letter) return;
+    
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: letter }));
     
     const newStates = [...questionStates];
@@ -352,14 +360,18 @@ export const CustomQuizViewer = ({
                 {/* Options */}
                 <div className="space-y-3">
                   {currentQuestion.options.map((option, idx) => {
-                    const letter = option.charAt(0).toUpperCase();
+                    // Safely extract letter from option format "A) Answer text"
+                    const letterMatch = option.match(/^([A-Z])\)/i);
+                    const letter = letterMatch ? letterMatch[1].toUpperCase() : String.fromCharCode(65 + idx);
                     const isSelected = answers[currentQuestion.id] === letter;
+                    const optionText = option.replace(/^[A-Z]\)\s*/i, '');
                     
                     return (
                       <button
-                        key={idx}
+                        key={`${currentQuestion.id}-option-${idx}`}
                         onClick={() => handleSelectAnswer(option)}
                         disabled={isPaused}
+                        type="button"
                         className={cn(
                           "w-full p-4 rounded-xl border text-left transition-all",
                           "hover:border-primary/50 hover:bg-primary/5",
@@ -376,7 +388,7 @@ export const CustomQuizViewer = ({
                           )}>
                             {letter}
                           </div>
-                          <span className="flex-1 pt-1">{option.substring(3)}</span>
+                          <span className="flex-1 pt-1">{optionText}</span>
                           {isSelected && <Check className="w-5 h-5 text-primary flex-shrink-0" />}
                         </div>
                       </button>
