@@ -1,18 +1,20 @@
- import { useState } from "react";
- import {
-   Dialog,
-   DialogContent,
-   DialogDescription,
-   DialogHeader,
-   DialogTitle,
- } from "@/components/ui/dialog";
- import { Button } from "@/components/ui/button";
- import { Input } from "@/components/ui/input";
- import { Label } from "@/components/ui/label";
- import { useCreateChallenge } from "@/hooks/useChallenges";
- import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
- import { Copy, Link, Users, Check, Loader2 } from "lucide-react";
- import { toast } from "sonner";
+import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useCreateChallenge } from "@/hooks/useChallenges";
+import { validateQuizForChallenge } from "@/lib/quizValidation";
+import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
+import { Copy, Link, Users, Check, Loader2, AlertTriangle } from "lucide-react";
+import { toast } from "sonner";
  
  interface CreateChallengeDialogProps {
    open: boolean;
@@ -27,21 +29,42 @@
    quiz,
    sourceQuizId,
  }: CreateChallengeDialogProps) => {
-   const [title, setTitle] = useState(quiz.quizTitle);
-   const [challengeCode, setChallengeCode] = useState<string | null>(null);
-   const [copiedCode, setCopiedCode] = useState(false);
-   const [copiedLink, setCopiedLink] = useState(false);
-   
-   const createChallenge = useCreateChallenge();
- 
-   const handleCreate = async () => {
-     const result = await createChallenge.mutateAsync({
-       quiz,
-       title,
-       sourceQuizId,
-     });
-     setChallengeCode(result.challenge_code);
-   };
+  const [title, setTitle] = useState(quiz.quizTitle);
+  const [challengeCode, setChallengeCode] = useState<string | null>(null);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  
+  const createChallenge = useCreateChallenge();
+
+  // Validate quiz when dialog opens
+  useEffect(() => {
+    if (open) {
+      const validation = validateQuizForChallenge(quiz);
+      setValidationErrors(validation.errors);
+    }
+  }, [open, quiz]);
+
+  const handleCreate = async () => {
+    // Re-validate before creating
+    const validation = validateQuizForChallenge(quiz);
+    if (!validation.isValid) {
+      setValidationErrors(validation.errors);
+      toast.error("Quiz validation failed. Please fix the issues first.");
+      return;
+    }
+    
+    try {
+      const result = await createChallenge.mutateAsync({
+        quiz,
+        title,
+        sourceQuizId,
+      });
+      setChallengeCode(result.challenge_code);
+    } catch (error) {
+      // Error is handled by the mutation
+    }
+  };
  
    const getChallengeUrl = () => {
      return `${window.location.origin}/challenge/${challengeCode}`;
@@ -61,13 +84,16 @@
      setTimeout(() => setCopiedLink(false), 2000);
    };
  
-   const handleClose = () => {
-     setChallengeCode(null);
-     setCopiedCode(false);
-     setCopiedLink(false);
-     setTitle(quiz.quizTitle);
-     onOpenChange(false);
-   };
+  const handleClose = () => {
+    setChallengeCode(null);
+    setCopiedCode(false);
+    setCopiedLink(false);
+    setTitle(quiz.quizTitle);
+    setValidationErrors([]);
+    onOpenChange(false);
+  };
+
+  const hasValidationErrors = validationErrors.length > 0;
  
    return (
      <Dialog open={open} onOpenChange={handleClose}>
@@ -84,43 +110,61 @@
            </DialogDescription>
          </DialogHeader>
  
-         {!challengeCode ? (
-           <div className="space-y-4 py-4">
-             <div className="space-y-2">
-               <Label htmlFor="title">Challenge Title</Label>
-               <Input
-                 id="title"
-                 value={title}
-                 onChange={(e) => setTitle(e.target.value)}
-                 placeholder="Enter challenge title"
-               />
-             </div>
-             
-             <div className="text-sm text-muted-foreground space-y-1">
-               <p>• {quiz.questions.length} questions</p>
-               <p>• Same quiz for all participants</p>
-               <p>• Leaderboard based on score & time</p>
-             </div>
- 
-             <Button 
-               onClick={handleCreate} 
-               className="w-full gap-2"
-               disabled={createChallenge.isPending}
-             >
-               {createChallenge.isPending ? (
-                 <>
-                   <Loader2 className="w-4 h-4 animate-spin" />
-                   Creating...
-                 </>
-               ) : (
-                 <>
-                   <Users className="w-4 h-4" />
-                   Create Challenge
-                 </>
-               )}
-             </Button>
-           </div>
-         ) : (
+          {!challengeCode ? (
+            <div className="space-y-4 py-4">
+              {/* Validation Errors */}
+              {hasValidationErrors && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    <p className="font-medium mb-1">Quiz has issues that must be fixed:</p>
+                    <ul className="list-disc list-inside text-xs space-y-1">
+                      {validationErrors.slice(0, 3).map((error, i) => (
+                        <li key={i}>{error}</li>
+                      ))}
+                      {validationErrors.length > 3 && (
+                        <li>...and {validationErrors.length - 3} more issues</li>
+                      )}
+                    </ul>
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="title">Challenge Title</Label>
+                <Input
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Enter challenge title"
+                />
+              </div>
+              
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p>• {quiz.questions.length} questions</p>
+                <p>• Same quiz for all participants</p>
+                <p>• Leaderboard based on score & time</p>
+              </div>
+
+              <Button 
+                onClick={handleCreate} 
+                className="w-full gap-2"
+                disabled={createChallenge.isPending || hasValidationErrors}
+              >
+                {createChallenge.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    <Users className="w-4 h-4" />
+                    Create Challenge
+                  </>
+                )}
+              </Button>
+            </div>
+          ) : (
            <div className="space-y-4 py-4">
              {/* Challenge Code */}
              <div className="space-y-2">

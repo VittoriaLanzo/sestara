@@ -338,12 +338,14 @@ INTERNET-AWARE GENERATION:
 - Reference patterns from previous year questions
 - Cover high-weightage areas and commonly examined concepts`;
 
-        userPrompt = `Create a ${quizType === 'mcq' ? 'multiple choice' : quizType === 'short' ? 'short answer' : 'mixed format'} quiz with ${questionCount} questions about:\n\n${context}\n\n
+        userPrompt = `Create a ${quizType === 'mcq' ? 'multiple choice' : quizType === 'short' ? 'short answer' : 'mixed format'} quiz with EXACTLY ${questionCount} questions about:\n\n${context}\n\n
 Difficulty: ${difficulty === 'mixed' ? 'Mix of easy, medium, and hard questions matching exam pattern' : `All ${difficulty} difficulty`}
 
-IMPORTANT GUIDELINES:
+CRITICAL REQUIREMENTS:
+- You MUST generate EXACTLY ${questionCount} questions. Not more, not less.
 - Generate exam-realistic questions (not generic or shallow)
-- For MCQs: Create plausible distractors that test common misconceptions
+- For MCQs: Create 4 plausible options with one correct answer. Each option MUST start with "A)", "B)", "C)", or "D)" followed by the answer text.
+- Each MCQ must have exactly ONE correct answer indicated by a single letter (A, B, C, or D)
 - Include at least 30% application/scenario-based questions
 - Each explanation should teach the concept, not just state the answer
 - Consider what's commonly asked in ${examName || 'similar exams'}`;
@@ -521,6 +523,24 @@ Be encouraging and exam-focused.`;
       const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
       if (toolCall) {
         result = JSON.parse(toolCall.function.arguments);
+        
+        // Validate quiz generation - ensure we got the requested number of questions
+        if (action === 'quiz') {
+          const generatedCount = result.questions?.length || 0;
+          if (generatedCount < questionCount) {
+            console.warn(`Quiz generation returned ${generatedCount} questions instead of ${questionCount}`);
+            // If we got less than requested and only 1 question, this is a failure
+            if (generatedCount <= 1 && questionCount > 1) {
+              throw new Error(`Failed to generate quiz: Only ${generatedCount} question(s) generated instead of ${questionCount}. Please try again.`);
+            }
+          }
+          
+          // Ensure each question has a valid ID
+          result.questions = result.questions.map((q: any, index: number) => ({
+            ...q,
+            id: q.id || `q_${index}_${Date.now()}`
+          }));
+        }
       } else {
         throw new Error('Failed to get structured response from AI');
       }
