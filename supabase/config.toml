@@ -1,10 +1,1 @@
-project_id = "iicddxaiteujjsqtlcai"
-
-[functions.generate-roadmap]
-verify_jwt = false
-
-[functions.topic-ai]
-verify_jwt = false
-
-[functions.study-assistant]
-verify_jwt = false
+project_id = "gkwquwirgyqvyuzmizsz"
