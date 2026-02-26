@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Sparkles, ChevronRight, BookOpen, Target, Zap, Users } from "lucide-react";
+import { Sparkles, ChevronRight, BookOpen, Target, Zap, Shield, Lock, Eye, FileCheck } from "lucide-react";
 import { useEffect } from "react";
 
 const Index = () => {
@@ -74,6 +74,34 @@ const Index = () => {
               <p className="text-sm text-muted-foreground">{feature.desc}</p>
             </div>
           ))}
+        </div>
+
+        {/* Security & Compliance Section */}
+        <div className="mt-24 max-w-4xl mx-auto animate-slide-up" style={{ animationDelay: "0.7s" }}>
+          <div className="glass-card p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Shield className="w-5 h-5 text-primary" />
+              </div>
+              <h2 className="font-display font-semibold text-lg text-foreground">Security &amp; Compliance</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { icon: FileCheck, text: "GDPR-aligned data processing" },
+                { icon: Lock, text: "Encryption in transit (TLS)" },
+                { icon: Shield, text: "No data resale — ever" },
+                { icon: Eye, text: "Transparent data subject rights" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <item.icon className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-muted-foreground">{item.text}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-4">
+              All third-party processors are bound by Data Processing Agreements compliant with Article 28 GDPR.
+            </p>
+          </div>
         </div>
       </main>
     </div>
