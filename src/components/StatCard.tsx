@@ -26,7 +26,7 @@ export const StatCard = ({
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
-          <p className="text-3xl font-display font-bold gradient-text">{value}</p>
+          <p className="text-3xl font-display font-bold text-primary">{value}</p>
           {subtitle && (
             <p className="text-xs text-muted-foreground/80 mt-1">{subtitle}</p>
           )}
@@ -40,7 +40,7 @@ export const StatCard = ({
             </div>
           )}
         </div>
-        <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/20">
+        <div className="p-3 rounded-xl bg-primary/10 border border-primary/15">
           <Icon className="w-6 h-6 text-primary" />
         </div>
       </div>

@@ -18,17 +18,17 @@ const Index = () => {
     <div className="min-h-screen relative overflow-hidden">
       {/* Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
       {/* Navbar */}
       <nav className="relative z-10 container mx-auto px-4 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-accent">
+          <div className="p-2 rounded-lg bg-primary">
             <Sparkles className="w-5 h-5 text-primary-foreground" />
           </div>
-          <span className="font-display font-bold text-xl gradient-text">StudyPath</span>
+          <span className="font-display font-bold text-xl text-primary">StudyPath</span>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="ghost" onClick={() => navigate("/auth")}>Sign In</Button>
@@ -44,11 +44,11 @@ const Index = () => {
             AI-Powered Learning Platform
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-display font-bold text-foreground mb-6 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Master any subject with <span className="gradient-text">personalized roadmaps</span>
+          <h1 className="text-5xl md:text-7xl font-display font-bold text-foreground mb-8 hero-reveal" style={{ animationDelay: "0.1s" }}>
+            Master any subject with <span className="text-primary">personalized roadmaps</span>
           </h1>
           
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
             Whether you're preparing for competitive exams, college, job interviews, or certifications — StudyPath creates AI-powered study plans tailored to your goals.
           </p>
 
@@ -67,7 +67,7 @@ const Index = () => {
             { icon: Zap, title: "Smart Quizzes", desc: "Test your knowledge with AI-generated quizzes and flashcards" },
           ].map((feature, i) => (
             <div key={i} className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: `${0.4 + i * 0.1}s` }}>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-4">
+              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mx-auto mb-4">
                 <feature.icon className="w-6 h-6 text-primary-foreground" />
               </div>
               <h3 className="font-display font-semibold text-foreground mb-2">{feature.title}</h3>

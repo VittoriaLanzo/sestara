@@ -34,7 +34,7 @@ export const ProgressBar = ({
       <div className={cn("w-full rounded-full bg-muted/50 overflow-hidden", sizeClasses[size])}>
         <div
           className={cn(
-            "h-full rounded-full bg-gradient-to-r from-primary via-accent to-pink-500",
+            "h-full rounded-full bg-primary",
             animated && "transition-all duration-700 ease-out"
           )}
           style={{ width: `${clampedProgress}%` }}
