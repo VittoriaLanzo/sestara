@@ -1,3 +1,8 @@
+import { Link } from "react-router-dom";
+import { Navbar } from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
+
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="mb-10">
     <h2 className="font-display font-semibold text-xl text-foreground mb-3">{title}</h2>
@@ -23,7 +28,13 @@ const Li = ({ children }: { children: React.ReactNode }) => (
 const PrivacyPolicyPage = () => {
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16 max-w-3xl">
+      <Navbar />
+      <div className="container mx-auto px-4 pt-24 pb-16 max-w-3xl">
+        <nav className="flex items-center gap-1 text-sm text-muted-foreground mb-6">
+          <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-foreground font-medium">Privacy Policy</span>
+        </nav>
         <h1 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-2">Privacy Policy</h1>
         <p className="text-sm text-muted-foreground mb-10">Last updated: {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>
 
@@ -169,6 +180,12 @@ const PrivacyPolicyPage = () => {
             For all data subject requests, please contact: <a href="mailto:privacy@studypath.app" className="text-primary underline underline-offset-2">privacy@studypath.app</a>
           </P>
         </Section>
+
+        <div className="mt-12 text-center">
+          <Button asChild>
+            <Link to="/">Return to StudyPath</Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,8 @@
+import { Link } from "react-router-dom";
+import { Navbar } from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
+
 const P = ({ children }: { children: React.ReactNode }) => (
   <p className="text-sm text-muted-foreground leading-relaxed mb-2">{children}</p>
 );
@@ -12,7 +17,13 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 const TermsPage = () => {
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16 max-w-3xl">
+      <Navbar />
+      <div className="container mx-auto px-4 pt-24 pb-16 max-w-3xl">
+        <nav className="flex items-center gap-1 text-sm text-muted-foreground mb-6">
+          <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-foreground font-medium">Terms of Service</span>
+        </nav>
         <h1 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-2">Terms of Service</h1>
         <p className="text-sm text-muted-foreground mb-10">Last updated: {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>
 
@@ -86,6 +97,12 @@ const TermsPage = () => {
             <a href="mailto:privacy@studypath.app" className="text-primary underline underline-offset-2">privacy@studypath.app</a>
           </P>
         </Section>
+
+        <div className="mt-12 text-center">
+          <Button asChild>
+            <Link to="/">Return to StudyPath</Link>
+          </Button>
+        </div>
       </div>
     </div>
   );
