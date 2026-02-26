@@ -87,8 +87,8 @@ export const Dashboard = () => {
       
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
       <main className="relative z-10 container mx-auto px-4 pt-24 pb-12">
@@ -98,8 +98,8 @@ export const Dashboard = () => {
             <span>👋</span>
             <span>Welcome back, John</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">
-            Continue your <span className="gradient-text">learning journey</span>
+          <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-2">
+            Continue your <span className="text-primary">learning journey</span>
           </h1>
           <p className="text-muted-foreground">
             You're on track! Keep up the great work.
@@ -157,7 +157,7 @@ export const Dashboard = () => {
               {/* Current Topic Highlight */}
               <div className="glass-card p-6 mb-4 gradient-border">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-accent">
+                  <div className="p-3 rounded-xl bg-primary">
                     <Play className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div className="flex-1">
@@ -242,7 +242,7 @@ export const Dashboard = () => {
             <div className="animate-slide-up" style={{ animationDelay: "0.7s" }}>
               <div className="glass-card p-5 gradient-border">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-accent">
+                  <div className="p-2 rounded-lg bg-primary">
                     <Sparkles className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <h3 className="font-display font-semibold text-foreground">AI Study Assistant</h3>

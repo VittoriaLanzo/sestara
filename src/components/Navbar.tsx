@@ -49,10 +49,10 @@ export const Navbar = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <Link to="/dashboard" className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-accent">
+              <div className="p-2 rounded-lg bg-primary">
                 <Sparkles className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="font-display font-bold text-xl gradient-text">StudyPath</span>
+              <span className="font-display font-bold text-xl text-primary">StudyPath</span>
             </Link>
 
             <div className="hidden md:flex items-center gap-6">
@@ -93,7 +93,7 @@ export const Navbar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="gap-2 px-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
                       <span className="text-xs font-semibold text-primary-foreground">{initials}</span>
                     </div>
                     <span className="text-sm font-medium hidden lg:inline">{displayName}</span>
