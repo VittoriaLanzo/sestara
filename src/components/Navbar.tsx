@@ -56,22 +56,22 @@ export const Navbar = () => {
     "relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:bg-accent",
     "after:transition-all after:duration-200 after:ease-out",
     isActive(path)
-      ? "text-white after:w-full"
-      : "text-white/75 hover:text-white after:w-0 hover:after:w-full"
+      ? "text-foreground after:w-full"
+      : "text-muted-foreground hover:text-foreground after:w-0 hover:after:w-full"
   );
 
   const mobileLinkClass = (path: string) => cn(
     "px-3 py-2 rounded-lg flex items-center gap-2 transition-colors",
     isActive(path)
-      ? "text-accent bg-white/10 font-medium"
-      : "text-white/75 hover:bg-white/10"
+      ? "text-accent bg-accent/10 font-medium"
+      : "text-muted-foreground hover:bg-accent/5"
   );
 
   return (
     <>
       <nav className={cn(
-        "fixed top-0 left-0 right-0 z-50 bg-primary backdrop-blur-xl transition-all duration-300",
-        scrolledPastHero ? "border-b border-accent" : "border-b border-transparent"
+        "fixed top-0 left-0 right-0 z-50 bg-background backdrop-blur-xl transition-all duration-300",
+        scrolledPastHero ? "border-b border-border" : "border-b border-transparent"
       )}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
@@ -113,22 +113,22 @@ export const Navbar = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => setSearchOpen(true)}
-                    className="text-white/75 hover:text-white border-white/20 hover:border-white/40 hover:bg-white/10 gap-2 px-3"
+                    className="text-muted-foreground hover:text-foreground border-border hover:border-foreground/40 hover:bg-accent/5 gap-2 px-3"
                   >
                     <Search className="w-4 h-4" />
                     <span className="text-xs">Search</span>
-                    <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-white/20 bg-white/10 px-1.5 font-mono text-[10px] font-medium text-white/60">
+                    <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
                       <span className="text-xs">⌘</span>K
                     </kbd>
                   </Button>
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="gap-2 px-2 hover:bg-white/10">
+                      <Button variant="ghost" className="gap-2 px-2 hover:bg-accent/5">
                         <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
                           <span className="text-xs font-semibold text-white">{initials}</span>
                         </div>
-                        <span className="text-sm font-medium text-white hidden lg:inline">{displayName}</span>
+                        <span className="text-sm font-medium text-foreground hidden lg:inline">{displayName}</span>
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
@@ -158,13 +158,13 @@ export const Navbar = () => {
                   <Button
                     variant="ghost"
                     onClick={() => navigate("/auth")}
-                    className="text-white/80 hover:text-white hover:bg-white/10"
+                    className="text-muted-foreground hover:text-foreground hover:bg-accent/5"
                   >
                     Sign In
                   </Button>
                   <Button
                     onClick={() => navigate("/auth")}
-                    className="bg-white text-primary font-sans font-bold text-sm uppercase tracking-widest border-b-[3px] border-accent hover:brightness-[0.88] transition-all duration-150"
+                    className="bg-primary text-primary-foreground font-sans font-bold text-sm uppercase tracking-widest border-b-[3px] border-accent hover:brightness-[0.88] transition-all duration-150"
                   >
                     Get Started
                   </Button>
@@ -172,7 +172,7 @@ export const Navbar = () => {
               )}
             </div>
 
-            <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <Button variant="ghost" size="icon" className="md:hidden text-foreground hover:bg-accent/5" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
           </div>
@@ -184,7 +184,7 @@ export const Navbar = () => {
                 <>
                   <button
                     onClick={() => { setSearchOpen(true); setIsMenuOpen(false); }}
-                    className="px-3 py-2 rounded-lg text-white/75 hover:bg-white/10 flex items-center gap-2"
+                    className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-accent/5 flex items-center gap-2"
                   >
                     <Search className="w-4 h-4" />
                     Search
@@ -205,13 +205,13 @@ export const Navbar = () => {
                     <GraduationCap className="w-4 h-4" />
                     Practice
                   </Link>
-                  <Link to="/settings" className="px-3 py-2 rounded-lg text-white/75 hover:bg-white/10 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/settings" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-accent/5 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
                     <Settings className="w-4 h-4" />
                     Settings
                   </Link>
                   <button 
                     onClick={handleSignOut} 
-                    className="px-3 py-2 rounded-lg text-destructive hover:bg-white/10 text-left flex items-center gap-2"
+                    className="px-3 py-2 rounded-lg text-destructive hover:bg-accent/5 text-left flex items-center gap-2"
                   >
                     <LogOut className="w-4 h-4" />
                     Sign Out
@@ -221,13 +221,13 @@ export const Navbar = () => {
                 <>
                   <button
                     onClick={() => { navigate("/auth"); setIsMenuOpen(false); }}
-                    className="px-3 py-2 rounded-lg text-white/75 hover:bg-white/10 flex items-center gap-2"
+                    className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-accent/5 flex items-center gap-2"
                   >
                     Sign In
                   </button>
                   <button
                     onClick={() => { navigate("/auth"); setIsMenuOpen(false); }}
-                    className="px-3 py-2 rounded-lg text-accent font-semibold hover:bg-white/10 flex items-center gap-2"
+                    className="px-3 py-2 rounded-lg text-accent font-semibold hover:bg-accent/5 flex items-center gap-2"
                   >
                     Get Started
                   </button>
