@@ -22,6 +22,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
 import { InQuizChallengeButton } from "@/components/challenge/InQuizChallengeButton";
+import { evaluateAnswer } from "@/lib/quizScoring";
 
 interface CustomQuizViewerProps {
   quiz: CustomQuiz;
@@ -152,7 +153,7 @@ export const CustomQuizViewer = ({
     let score = 0;
     quiz.questions.forEach(q => {
       const userAnswer = answers[q.id];
-      if (userAnswer && userAnswer.toUpperCase() === q.correctAnswer.toUpperCase()) {
+      if (evaluateAnswer(userAnswer, q.correctAnswer, 'mcq', q.options)) {
         score++;
       }
     });

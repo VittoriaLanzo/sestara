@@ -21,6 +21,13 @@ import { toast } from "sonner";
    onOpenChange: (open: boolean) => void;
    quiz: CustomQuiz;
    sourceQuizId?: string;
+   creatorAttempt?: {
+     score: number;
+     maxScore: number;
+     timeTakenSeconds: number;
+     answers: Record<string, string>;
+     userName: string;
+   };
  }
  
  export const CreateChallengeDialog = ({
@@ -28,6 +35,7 @@ import { toast } from "sonner";
    onOpenChange,
    quiz,
    sourceQuizId,
+   creatorAttempt,
  }: CreateChallengeDialogProps) => {
   const [title, setTitle] = useState(quiz.quizTitle);
   const [challengeCode, setChallengeCode] = useState<string | null>(null);
@@ -59,6 +67,7 @@ import { toast } from "sonner";
         quiz,
         title,
         sourceQuizId,
+        creatorAttempt,
       });
       setChallengeCode(result.challenge_code);
     } catch (error) {

@@ -22,6 +22,7 @@ import {
   Maximize2,
   Minimize2,
 } from "lucide-react";
+import { evaluateAnswer } from "@/lib/quizScoring";
 
 interface Question {
   id: string;
@@ -107,16 +108,12 @@ export const EnhancedQuizViewer = ({
       return;
     }
 
-    let correct = false;
-    if (currentQuestion.type === 'mcq') {
-      correct = userAnswer === currentQuestion.correctAnswer;
-    } else {
-      const normalizedUser = userAnswer.toLowerCase().trim();
-      const normalizedCorrect = currentQuestion.correctAnswer.toLowerCase().trim();
-      correct = normalizedUser === normalizedCorrect || 
-                normalizedCorrect.includes(normalizedUser) ||
-                normalizedUser.includes(normalizedCorrect);
-    }
+    const correct = evaluateAnswer(
+      userAnswer,
+      currentQuestion.correctAnswer,
+      currentQuestion.type || 'mcq',
+      currentQuestion.options
+    );
 
     setIsCorrect(correct);
     setIsAnswered(true);
@@ -357,7 +354,10 @@ export const EnhancedQuizViewer = ({
 
         {currentQuestion.type === 'mcq' ? (
           <div className="space-y-3">
-            {currentQuestion.options?.map((option, index) => (
+            {currentQuestion.options?.map((option, index) => {
+              const isCorrectOption = evaluateAnswer(option, currentQuestion.correctAnswer, 'mcq', currentQuestion.options);
+              const isSelectedOption = selectedAnswer === option;
+              return (
               <button
                 key={index}
                 onClick={() => !isAnswered && setSelectedAnswer(option)}
@@ -366,21 +366,22 @@ export const EnhancedQuizViewer = ({
                   "w-full p-4 rounded-lg border text-left transition-all",
                   "hover:bg-primary/5 hover:border-primary/50",
                   selectedAnswer === option && !isAnswered && "border-primary bg-primary/10",
-                  isAnswered && option === currentQuestion.correctAnswer && "border-green-500 bg-green-500/10",
-                  isAnswered && selectedAnswer === option && option !== currentQuestion.correctAnswer && "border-red-500 bg-red-500/10"
+                  isAnswered && isCorrectOption && "border-green-500 bg-green-500/10",
+                  isAnswered && isSelectedOption && !isCorrectOption && "border-red-500 bg-red-500/10"
                 )}
               >
                 <div className="flex items-center justify-between">
                   <span>{option}</span>
-                  {isAnswered && option === currentQuestion.correctAnswer && (
+                  {isAnswered && isCorrectOption && (
                     <CheckCircle2 className="w-5 h-5 text-green-500" />
                   )}
-                  {isAnswered && selectedAnswer === option && option !== currentQuestion.correctAnswer && (
+                  {isAnswered && isSelectedOption && !isCorrectOption && (
                     <XCircle className="w-5 h-5 text-red-500" />
                   )}
                 </div>
               </button>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <Input

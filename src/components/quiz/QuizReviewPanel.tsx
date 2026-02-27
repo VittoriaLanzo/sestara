@@ -22,6 +22,7 @@ import {
   Loader2,
   Users,
 } from "lucide-react";
+import { evaluateAnswer } from "@/lib/quizScoring";
 
 interface Question {
   id: string;
@@ -68,10 +69,7 @@ export const QuizReviewPanel = ({
   const wrongQuestions = questions.filter(q => {
     const userAnswer = answers[q.id];
     if (!userAnswer) return true;
-    if (q.type === 'mcq') return userAnswer !== q.correctAnswer;
-    const normalized = userAnswer.toLowerCase().trim();
-    const correct = q.correctAnswer.toLowerCase().trim();
-    return normalized !== correct && !correct.includes(normalized) && !normalized.includes(correct);
+    return !evaluateAnswer(userAnswer, q.correctAnswer, q.type || 'mcq', q.options);
   });
 
   const getPerformanceMessage = () => {
