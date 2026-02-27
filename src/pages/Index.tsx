@@ -1,8 +1,104 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Sparkles, ChevronRight, BookOpen, Target, Zap, Shield, Lock, Eye, FileCheck } from "lucide-react";
-import { useEffect } from "react";
+import { ChevronRight, BookOpen, Target, Zap, Shield, Lock, Eye, FileCheck } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import sestaraLogo from "@/assets/sestara-logo.svg";
+
+// Inline Hero Arc SVG — semicircular protractor with tick marks
+const HeroArc = () => (
+  <svg
+    viewBox="0 0 800 420"
+    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[75vw] pointer-events-none z-0"
+    style={{ opacity: 0.06 }}
+    aria-hidden="true"
+  >
+    {/* Main arc */}
+    <path
+      d="M 60 400 A 340 340 0 0 1 740 400"
+      fill="none"
+      stroke="hsl(227 56% 25%)"
+      strokeWidth="3"
+      strokeLinecap="round"
+    />
+    {/* Tick marks along the arc */}
+    {Array.from({ length: 19 }, (_, i) => {
+      const angle = Math.PI - (i * Math.PI) / 18;
+      const cx = 400 + 340 * Math.cos(angle);
+      const cy = 400 - 340 * Math.sin(angle);
+      const ix = 400 + 320 * Math.cos(angle);
+      const iy = 400 - 320 * Math.sin(angle);
+      return (
+        <line
+          key={i}
+          x1={cx} y1={cy} x2={ix} y2={iy}
+          stroke="hsl(227 56% 25%)"
+          strokeWidth={i % 3 === 0 ? "2.5" : "1.5"}
+          strokeLinecap="round"
+        />
+      );
+    })}
+  </svg>
+);
+
+// Inline Alidade SVG — diagonal line with star, animated on mount
+const HeroAlidade = () => {
+  const lineRef = useRef<SVGPathElement>(null);
+  const starRef = useRef<SVGPolygonElement>(null);
+  const [animated, setAnimated] = useState(false);
+
+  useEffect(() => {
+    const line = lineRef.current;
+    if (!line) return;
+    const length = line.getTotalLength();
+    line.style.strokeDasharray = `${length}`;
+    line.style.strokeDashoffset = `${length}`;
+    // Trigger animation
+    requestAnimationFrame(() => {
+      line.style.transition = 'stroke-dashoffset 0.8s ease-out';
+      line.style.strokeDashoffset = '0';
+    });
+    const timer = setTimeout(() => setAnimated(true), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 8-pointed star at the tip
+  const starPoints = Array.from({ length: 16 }, (_, i) => {
+    const angle = (i * Math.PI) / 8 - Math.PI / 2;
+    const r = i % 2 === 0 ? 12 : 5;
+    return `${r * Math.cos(angle)},${r * Math.sin(angle)}`;
+  }).join(' ');
+
+  return (
+    <svg
+      viewBox="0 0 500 500"
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] max-w-[500px] pointer-events-none z-[1]"
+      aria-hidden="true"
+    >
+      <path
+        ref={lineRef}
+        d="M 250 450 L 420 80"
+        fill="none"
+        stroke="hsl(38 66% 48%)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <polygon
+        ref={starRef}
+        points={starPoints}
+        fill="hsl(38 66% 48%)"
+        transform="translate(420, 80)"
+        style={{
+          transformOrigin: '420px 80px',
+          transition: animated ? 'none' : 'transform 0.3s ease-out',
+          transform: `translate(420px, 80px) scale(${animated ? 1 : 1.08})`,
+          animation: animated ? 'none' : undefined,
+        }}
+        className={animated ? "animate-none" : ""}
+      />
+    </svg>
+  );
+};
 
 const Index = () => {
   const { user, loading } = useAuth();
@@ -14,76 +110,102 @@ const Index = () => {
     }
   }, [user, loading, navigate]);
 
+  // Format "Sestara" with gold A
+  const brandName = (
+    <>SEST<span className="text-accent">A</span>RA</>
+  );
+
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-      </div>
-
       {/* Navbar */}
       <nav className="relative z-10 container mx-auto px-4 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-primary">
-            <Sparkles className="w-5 h-5 text-primary-foreground" />
+          <div className="h-12 w-12 lg:w-auto overflow-hidden flex-shrink-0">
+            <img src={sestaraLogo} alt="Sestara" className="h-12 object-contain object-left" />
           </div>
-          <span className="font-display font-bold text-xl text-primary">StudyPath</span>
+          <span className="font-serif font-semibold text-xl text-white hidden lg:inline tracking-wide">
+            {brandName}
+          </span>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="ghost" onClick={() => navigate("/auth")}>Sign In</Button>
-          <Button variant="gradient" onClick={() => navigate("/auth")}>Get Started</Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/auth")}
+            className="text-white/80 hover:text-white hover:bg-white/10"
+          >
+            Sign In
+          </Button>
+          <Button
+            onClick={() => navigate("/auth")}
+            className="bg-white text-primary font-sans font-bold text-sm uppercase tracking-widest border-b-[3px] border-accent hover:brightness-[0.88] transition-all duration-150"
+            size="lg"
+          >
+            Get Started
+          </Button>
         </div>
       </nav>
 
       {/* Hero */}
       <main className="relative z-10 container mx-auto px-4 pt-20 pb-32">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm mb-6 animate-slide-up">
-            <Sparkles className="w-4 h-4" />
-            AI-Powered Learning Platform
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-foreground mb-8 hero-reveal" style={{ animationDelay: "0.1s" }}>
-            Master any subject with <span className="text-primary">personalized roadmaps</span>
-          </h1>
-          
-          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
-            Whether you're preparing for competitive exams, college, job interviews, or certifications — StudyPath creates AI-powered study plans tailored to your goals.
-          </p>
+        {/* Hero background — navy */}
+        <div className="absolute inset-0 -z-10 bg-primary" style={{ top: '-120px', left: '-50vw', right: '-50vw', width: '200vw' }} />
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <Button variant="gradient" size="xl" onClick={() => navigate("/auth")} className="gap-2">
-              Start Learning Free <ChevronRight className="w-5 h-5" />
-            </Button>
+        <div className="max-w-4xl mx-auto text-center relative">
+          {/* Arc background */}
+          <HeroArc />
+          {/* Alidade animation */}
+          <HeroAlidade />
+
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-accent text-sm mb-6 animate-slide-up font-sans font-medium uppercase tracking-widest">
+              AI-Powered Learning Platform
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-serif font-semibold text-white mb-8 hero-reveal" style={{ animationDelay: "0.1s", lineHeight: 1.1 }}>
+              Master any subject with{" "}
+              <span className="text-accent">personalized roadmaps</span>
+            </h1>
+            
+            <p className="text-lg font-sans text-white/75 mb-10 max-w-[560px] mx-auto animate-slide-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
+              Whether you're preparing for competitive exams, college, job interviews, or certifications — {brandName} creates AI-powered study plans tailored to your goals.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
+              <Button
+                onClick={() => navigate("/auth")}
+                className="bg-white text-primary font-sans font-bold text-sm uppercase tracking-widest border-b-[3px] border-accent hover:brightness-[0.88] transition-all duration-150 h-14 px-10 rounded-xl text-lg gap-2"
+              >
+                Start Learning Free <ChevronRight className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 max-w-5xl mx-auto relative z-10">
           {[
             { icon: Target, title: "AI Roadmaps", desc: "Get personalized study plans generated by AI based on your goals" },
             { icon: BookOpen, title: "Topic Tracking", desc: "Track progress at granular topic level across multiple roadmaps" },
             { icon: Zap, title: "Smart Quizzes", desc: "Test your knowledge with AI-generated quizzes and flashcards" },
           ].map((feature, i) => (
-            <div key={i} className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: `${0.4 + i * 0.1}s` }}>
+            <div key={i} className="bg-card border border-border border-t-[3px] border-t-accent rounded-xl p-6 text-center animate-slide-up hover:-translate-y-[3px] hover:shadow-lg transition-all duration-200" style={{ animationDelay: `${0.4 + i * 0.1}s` }}>
               <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mx-auto mb-4">
                 <feature.icon className="w-6 h-6 text-primary-foreground" />
               </div>
-              <h3 className="font-display font-semibold text-foreground mb-2">{feature.title}</h3>
+              <h3 className="font-serif font-semibold text-foreground mb-2 text-xl">{feature.title}</h3>
               <p className="text-sm text-muted-foreground">{feature.desc}</p>
             </div>
           ))}
         </div>
 
         {/* Security & Compliance Section */}
-        <div className="mt-24 max-w-4xl mx-auto animate-slide-up" style={{ animationDelay: "0.7s" }}>
-          <div className="glass-card p-8">
+        <div className="mt-24 max-w-4xl mx-auto animate-slide-up relative z-10" style={{ animationDelay: "0.7s" }}>
+          <div className="bg-card border border-border border-t-[3px] border-t-accent rounded-xl p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                 <Shield className="w-5 h-5 text-primary" />
               </div>
-              <h2 className="font-display font-semibold text-lg text-foreground">Security &amp; Compliance</h2>
+              <h2 className="font-serif font-medium text-2xl text-foreground">Security &amp; Compliance</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
@@ -93,7 +215,7 @@ const Index = () => {
                 { icon: Eye, text: "Transparent data subject rights" },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <item.icon className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <item.icon className="w-4 h-4 text-accent mt-0.5 shrink-0" />
                   <span className="text-sm text-muted-foreground">{item.text}</span>
                 </div>
               ))}
