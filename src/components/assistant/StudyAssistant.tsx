@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Sparkles, Send, Loader2, Bot, User, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
 
 interface Message {
   role: "user" | "assistant";
@@ -265,7 +266,11 @@ export const StudyAssistant = () => {
                         : "bg-secondary text-foreground"
                     )}
                   >
-                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    {msg.role === "assistant" ? (
+                      <MarkdownRenderer content={msg.content} className="text-sm" />
+                    ) : (
+                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    )}
                   </div>
                   {msg.role === "user" && (
                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">

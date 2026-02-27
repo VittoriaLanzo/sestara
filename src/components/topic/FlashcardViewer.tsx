@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MathText } from "@/components/ui/math-text";
 import {
   Dialog,
   DialogContent,
@@ -99,7 +100,7 @@ export const FlashcardViewer = ({
             >
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Question</p>
-                <p className="text-lg font-medium text-foreground">{currentCard.front}</p>
+                <p className="text-lg font-medium text-foreground"><MathText>{currentCard.front}</MathText></p>
               </div>
             </div>
 
@@ -115,7 +116,7 @@ export const FlashcardViewer = ({
             >
               <div>
                 <p className="text-xs text-green-400 uppercase tracking-wider mb-2">Answer</p>
-                <p className="text-lg font-medium text-foreground">{currentCard.back}</p>
+                <p className="text-lg font-medium text-foreground"><MathText>{currentCard.back}</MathText></p>
               </div>
             </div>
           </div>
@@ -131,7 +132,7 @@ export const FlashcardViewer = ({
                 <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 animate-fade-in">
                   <p className="text-sm text-yellow-400">
                     <Lightbulb className="w-4 h-4 inline mr-2" />
-                    {currentCard.hint}
+                    <MathText>{currentCard.hint}</MathText>
                   </p>
                 </div>
               ) : (
