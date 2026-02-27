@@ -101,7 +101,7 @@ const Auth = () => {
 
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <img src={sestaraLogo} alt="Sestara" className="h-16" />
+          <img src={sestaraLogo} alt="Sestara" className="w-[220px] h-auto" />
         </div>
 
         {/* Auth Card */}
