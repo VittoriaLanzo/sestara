@@ -192,7 +192,7 @@ export const StudyAssistant = () => {
       <SheetTrigger asChild>
         <Button
           size="lg"
-          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg bg-gradient-to-br from-primary to-accent hover:opacity-90 transition-all duration-300 animate-pulse-glow"
+          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg bg-primary hover:opacity-90 transition-all duration-300 animate-pulse-glow"
         >
           <Sparkles className="w-6 h-6" />
         </Button>
@@ -200,8 +200,8 @@ export const StudyAssistant = () => {
       <SheetContent className="w-full sm:max-w-md p-0 flex flex-col bg-background border-border">
         <SheetHeader className="p-4 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-accent">
-              <Bot className="w-5 h-5 text-primary-foreground" />
+            <div className="p-2 rounded-lg bg-primary">
+              <Bot className="w-5 h-5 text-accent" />
             </div>
             <div>
               <SheetTitle className="text-left text-foreground">StudyBuddy</SheetTitle>
@@ -214,8 +214,8 @@ export const StudyAssistant = () => {
           {messages.length === 0 ? (
             <div className="space-y-4">
               <div className="text-center py-8">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                  <MessageSquare className="w-8 h-8 text-primary" />
+                 <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary/10 flex items-center justify-center">
+                   <MessageSquare className="w-8 h-8 text-accent" />
                 </div>
                 <h3 className="font-semibold text-foreground mb-2">How can I help you study?</h3>
                 <p className="text-sm text-muted-foreground">
@@ -249,8 +249,8 @@ export const StudyAssistant = () => {
                   )}
                 >
                   {msg.role === "assistant" && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
-                      <Bot className="w-4 h-4 text-primary-foreground" />
+                     <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                       <Bot className="w-4 h-4 text-accent" />
                     </div>
                   )}
                   <div
@@ -272,8 +272,8 @@ export const StudyAssistant = () => {
               ))}
               {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                    <Bot className="w-4 h-4 text-primary-foreground" />
+                   <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                     <Bot className="w-4 h-4 text-accent" />
                   </div>
                   <div className="bg-secondary rounded-2xl px-4 py-3">
                     <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />

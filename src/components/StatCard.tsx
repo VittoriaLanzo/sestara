@@ -40,8 +40,8 @@ export const StatCard = ({
             </div>
           )}
         </div>
-        <div className="p-3 rounded-xl bg-primary/10 border border-primary/15">
-          <Icon className="w-6 h-6 text-primary" />
+        <div className="p-3 rounded-xl bg-primary">
+          <Icon className="w-6 h-6 text-accent" />
         </div>
       </div>
     </div>

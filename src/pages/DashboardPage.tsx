@@ -203,9 +203,9 @@ const DashboardPage = () => {
 
               {roadmaps.length === 0 ? (
                 <div className="glass-card p-12 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-4">
-                    <Sparkles className="w-8 h-8 text-primary-foreground" />
-                  </div>
+                   <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4">
+                     <Sparkles className="w-8 h-8 text-accent" />
+                   </div>
                   <h3 className="text-xl font-display font-semibold text-foreground mb-2">
                     Create your first roadmap
                   </h3>
