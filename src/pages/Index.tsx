@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import sestaraLogo from "@/assets/sestara-logo.svg";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, BookOpen, Target, Zap, Shield, Lock, Eye, FileCheck } from "lucide-react";
@@ -109,9 +110,9 @@ const Index = () => {
     }
   }, [user, loading, navigate]);
 
-  // Format "Sestara" with gold A
+  // Brand name as inline logo
   const brandName = (
-    <>SEST<span className="text-accent">A</span>RA</>
+    <img src={sestaraLogo} alt="Sestara" className="inline-block w-[100px] h-auto align-baseline" />
   );
 
   return (
