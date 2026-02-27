@@ -5,7 +5,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Sparkles, Send, Loader2, Bot, User, X, MessageSquare } from "lucide-react";
+import { Sparkles, Send, Loader2, Bot, User, MessageSquare } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: "user" | "assistant";
@@ -27,11 +28,14 @@ async function streamChat({
   onDone: () => void;
   onError: (error: string) => void;
 }) {
-  const supabaseSession = localStorage.getItem("sb-iicddxaiteujjsqtlcai-auth-token");
-  const session = supabaseSession ? JSON.parse(supabaseSession) : null;
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
+
   const accessToken = session?.access_token;
 
-  if (!accessToken) {
+  if (sessionError || !accessToken) {
     onError("Please sign in to use the study assistant");
     return;
   }
