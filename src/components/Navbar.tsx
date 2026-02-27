@@ -79,7 +79,7 @@ export const Navbar = () => {
               <img
                 src={sestaraLogo}
                 alt="Sestara"
-                className="hidden md:block h-[48px] w-auto flex-shrink-0"
+                className="hidden md:block w-[200px] h-auto flex-shrink-0"
               />
               <span className="font-serif font-semibold text-xl text-white md:hidden tracking-wide">
                 SEST<span className="text-accent">A</span>RA

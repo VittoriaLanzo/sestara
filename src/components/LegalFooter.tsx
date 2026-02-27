@@ -15,7 +15,7 @@ export const LegalFooter = ({ onManageCookies }: { onManageCookies: () => void }
       <div className="container mx-auto px-4 py-6 relative z-10">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>
           <div className="flex items-center gap-3">
-            <img src={sestaraLogo} alt="Sestara" className="h-8 object-contain" />
+            <img src={sestaraLogo} alt="Sestara" className="w-[160px] h-auto object-contain" />
             <span className="font-serif font-semibold text-white tracking-wide">
               SEST<span className="text-accent">A</span>RA
             </span>
