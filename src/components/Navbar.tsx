@@ -79,7 +79,7 @@ export const Navbar = () => {
               <img
                 src={sestaraLogo}
                 alt="Sestara"
-                className="w-[140px] md:w-[200px] h-auto flex-shrink-0 mt-1"
+                className="w-[140px] md:w-[200px] h-auto flex-shrink-0 mt-3"
               />
             </Link>
 
