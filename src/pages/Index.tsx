@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, BookOpen, Target, Zap, Shield, Lock, Eye, FileCheck } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import sestaraLogo from "@/assets/sestara-logo.svg";
+import { Navbar } from "@/components/Navbar";
 
 // Inline Hero Arc SVG — semicircular protractor with tick marks
 const HeroArc = () => (
@@ -116,39 +116,9 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Navbar */}
-      <nav className="relative z-10 container mx-auto px-4 py-6 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-12 w-12 lg:w-auto overflow-hidden flex-shrink-0">
-            <img src={sestaraLogo} alt="Sestara" className="h-12 object-contain object-left" />
-          </div>
-          <span className="font-serif font-semibold text-xl text-white hidden lg:inline tracking-wide">
-            {brandName}
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/auth")}
-            className="text-white/80 hover:text-white hover:bg-white/10"
-          >
-            Sign In
-          </Button>
-          <Button
-            onClick={() => navigate("/auth")}
-            className="bg-white text-primary font-sans font-bold text-sm uppercase tracking-widest border-b-[3px] border-accent hover:brightness-[0.88] transition-all duration-150"
-            size="lg"
-          >
-            Get Started
-          </Button>
-        </div>
-      </nav>
-
-      {/* Hero */}
-      <main className="relative z-10 container mx-auto px-4 pt-20 pb-32">
-        {/* Hero background — navy */}
-        <div className="absolute inset-0 -z-10 bg-primary" style={{ top: '-120px', left: '-50vw', right: '-50vw', width: '200vw' }} />
+    <div className="min-h-screen relative overflow-hidden bg-primary">
+      <Navbar />
+      <main className="relative z-10 container mx-auto px-4 pt-24 pb-32">
 
         <div className="max-w-4xl mx-auto text-center relative">
           {/* Arc background */}
