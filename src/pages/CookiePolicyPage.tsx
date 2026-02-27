@@ -46,21 +46,21 @@ const CookiePolicyPage = () => {
                   <td className="p-2">Authentication session</td>
                   <td className="p-2">Maintains user login state</td>
                   <td className="p-2">Session</td>
-                  <td className="p-2">StudyPath</td>
+                   <td className="p-2">Sestara</td>
                 </tr>
                 <tr className="border-b border-border">
                   <td className="p-2 font-medium">Essential</td>
                   <td className="p-2">cookie_consent</td>
                   <td className="p-2">Stores your cookie preference choices</td>
                   <td className="p-2">1 year</td>
-                  <td className="p-2">StudyPath</td>
+                  <td className="p-2">Sestara</td>
                 </tr>
                 <tr className="border-b border-border">
                   <td className="p-2 font-medium">Essential</td>
                   <td className="p-2">CSRF token</td>
                   <td className="p-2">Security — prevents cross-site request forgery</td>
                   <td className="p-2">Session</td>
-                  <td className="p-2">StudyPath</td>
+                  <td className="p-2">Sestara</td>
                 </tr>
                 <tr className="border-b border-border">
                   <td className="p-2 font-medium">Analytics</td>
@@ -99,13 +99,13 @@ const CookiePolicyPage = () => {
           <h2 className="font-display font-semibold text-xl text-foreground mb-3">5. Contact</h2>
           <P>
             For questions regarding this Cookie Policy, contact us at{" "}
-            <a href="mailto:privacy@studypath.app" className="text-primary underline underline-offset-2">privacy@studypath.app</a>.
+            <a href="mailto:privacy@sestara.com" className="text-primary underline underline-offset-2">privacy@sestara.com</a>.
           </P>
         </section>
 
         <div className="mt-12 text-center">
           <Button asChild>
-            <Link to="/">Return to StudyPath</Link>
+            <Link to="/">Return to Sestara</Link>
           </Button>
         </div>
       </div>

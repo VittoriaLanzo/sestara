@@ -53,7 +53,6 @@ const HeroAlidade = () => {
     const length = line.getTotalLength();
     line.style.strokeDasharray = `${length}`;
     line.style.strokeDashoffset = `${length}`;
-    // Trigger animation
     requestAnimationFrame(() => {
       line.style.transition = 'stroke-dashoffset 0.8s ease-out';
       line.style.strokeDashoffset = '0';
@@ -62,7 +61,6 @@ const HeroAlidade = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // 8-pointed star at the tip
   const starPoints = Array.from({ length: 16 }, (_, i) => {
     const angle = (i * Math.PI) / 8 - Math.PI / 2;
     const r = i % 2 === 0 ? 12 : 5;
@@ -72,12 +70,13 @@ const HeroAlidade = () => {
   return (
     <svg
       viewBox="0 0 500 500"
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] max-w-[500px] pointer-events-none z-[1]"
+      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[50vw] max-w-[500px] pointer-events-none z-0"
+      style={{ opacity: 0.12 }}
       aria-hidden="true"
     >
       <path
         ref={lineRef}
-        d="M 250 450 L 420 80"
+        d="M 250 490 L 440 60"
         fill="none"
         stroke="hsl(38 66% 48%)"
         strokeWidth="2.5"
@@ -87,11 +86,11 @@ const HeroAlidade = () => {
         ref={starRef}
         points={starPoints}
         fill="hsl(38 66% 48%)"
-        transform="translate(420, 80)"
+        transform="translate(440, 60)"
         style={{
-          transformOrigin: '420px 80px',
+          transformOrigin: '440px 60px',
           transition: animated ? 'none' : 'transform 0.3s ease-out',
-          transform: `translate(420px, 80px) scale(${animated ? 1 : 1.08})`,
+          transform: `translate(440px, 60px) scale(${animated ? 1 : 1.08})`,
           animation: animated ? 'none' : undefined,
         }}
         className={animated ? "animate-none" : ""}

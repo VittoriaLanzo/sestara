@@ -41,7 +41,7 @@ const PrivacyPolicyPage = () => {
         <Section title="1. Data Controller">
           <P>[Legal Entity Name]</P>
           <P>Registered Address: [Registered Address]</P>
-          <P>Contact Email: privacy@studypath.app</P>
+          <P>Contact Email: privacy@sestara.com</P>
           <P>EU Representative (if applicable): [EU Representative Name and Address]</P>
           <P>Data Protection Officer (if applicable): [DPO Name and Contact Details]</P>
         </Section>
@@ -177,13 +177,13 @@ const PrivacyPolicyPage = () => {
 
         <Section title="13. Contact for Data Requests">
           <P>
-            For all data subject requests, please contact: <a href="mailto:privacy@studypath.app" className="text-primary underline underline-offset-2">privacy@studypath.app</a>
+            For all data subject requests, please contact: <a href="mailto:privacy@sestara.com" className="text-primary underline underline-offset-2">privacy@sestara.com</a>
           </P>
         </Section>
 
         <div className="mt-12 text-center">
           <Button asChild>
-            <Link to="/">Return to StudyPath</Link>
+            <Link to="/">Return to Sestara</Link>
           </Button>
         </div>
       </div>

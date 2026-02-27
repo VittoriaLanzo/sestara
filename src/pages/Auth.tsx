@@ -100,13 +100,8 @@ const Auth = () => {
         </Button>
 
         {/* Logo */}
-        <div className="flex items-center gap-2 justify-center mb-8">
-          <div className="h-12 w-12 lg:w-auto overflow-hidden flex-shrink-0">
-            <img src={sestaraLogo} alt="Sestara" className="h-12 object-contain" />
-          </div>
-          <span className="font-serif font-semibold text-2xl text-primary tracking-wide">
-            SEST<span className="text-accent">A</span>RA
-          </span>
+        <div className="flex justify-center mb-8">
+          <img src={sestaraLogo} alt="Sestara" className="h-16" />
         </div>
 
         {/* Auth Card */}
