@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Sparkles, Mail, Lock, User, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Mail, Lock, User, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { z } from "zod";
+import sestaraLogo from "@/assets/sestara-logo.svg";
 
 const emailSchema = z.string().email("Please enter a valid email address");
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters");
@@ -100,10 +101,12 @@ const Auth = () => {
 
         {/* Logo */}
         <div className="flex items-center gap-2 justify-center mb-8">
-          <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-accent">
-            <Sparkles className="w-6 h-6 text-primary-foreground" />
+          <div className="h-12 w-12 lg:w-auto overflow-hidden flex-shrink-0">
+            <img src={sestaraLogo} alt="Sestara" className="h-12 object-contain" />
           </div>
-          <span className="font-display font-bold text-2xl gradient-text">StudyPath</span>
+          <span className="font-serif font-semibold text-2xl text-primary tracking-wide">
+            SEST<span className="text-accent">A</span>RA
+          </span>
         </div>
 
         {/* Auth Card */}

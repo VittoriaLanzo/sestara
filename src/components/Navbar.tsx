@@ -75,7 +75,7 @@ export const Navbar = () => {
       )}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Link to="/dashboard" className="flex items-center gap-2">
+            <Link to={user ? "/dashboard" : "/"} className="flex items-center gap-2">
               <div className="h-12 w-12 lg:w-auto overflow-hidden flex-shrink-0">
                 <img
                   src={sestaraLogo}
@@ -88,69 +88,93 @@ export const Navbar = () => {
               </span>
             </Link>
 
-            <div className="hidden md:flex items-center gap-6">
-              <Link to="/dashboard" className={navLinkClass('/dashboard')}>
-                <LayoutDashboard className="w-4 h-4" />
-                Dashboard
-              </Link>
-              <Link to="/onboarding" className={navLinkClass('/onboarding')}>
-                <Map className="w-4 h-4" />
-                New Roadmap
-              </Link>
-              <Link to="/important-dates" className={navLinkClass('/important-dates')}>
-                <Bell className="w-4 h-4" />
-                Reminders
-              </Link>
-              <Link to="/custom-quiz" className={navLinkClass('/custom-quiz')}>
-                <GraduationCap className="w-4 h-4" />
-                Practice
-              </Link>
-            </div>
+            {/* Authenticated nav links */}
+            {user && (
+              <div className="hidden md:flex items-center gap-6">
+                <Link to="/dashboard" className={navLinkClass('/dashboard')}>
+                  <LayoutDashboard className="w-4 h-4" />
+                  Dashboard
+                </Link>
+                <Link to="/onboarding" className={navLinkClass('/onboarding')}>
+                  <Map className="w-4 h-4" />
+                  New Roadmap
+                </Link>
+                <Link to="/important-dates" className={navLinkClass('/important-dates')}>
+                  <Bell className="w-4 h-4" />
+                  Reminders
+                </Link>
+                <Link to="/custom-quiz" className={navLinkClass('/custom-quiz')}>
+                  <GraduationCap className="w-4 h-4" />
+                  Practice
+                </Link>
+              </div>
+            )}
 
+            {/* Right side */}
             <div className="hidden md:flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setSearchOpen(true)}
-                className="text-white/75 hover:text-white border-white/20 hover:border-white/40 hover:bg-white/10 gap-2 px-3"
-              >
-                <Search className="w-4 h-4" />
-                <span className="text-xs">Search</span>
-                <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-white/20 bg-white/10 px-1.5 font-mono text-[10px] font-medium text-white/60">
-                  <span className="text-xs">⌘</span>K
-                </kbd>
-              </Button>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="gap-2 px-2 hover:bg-white/10">
-                    <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
-                      <span className="text-xs font-semibold text-white">{initials}</span>
-                    </div>
-                    <span className="text-sm font-medium text-white hidden lg:inline">{displayName}</span>
+              {user ? (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setSearchOpen(true)}
+                    className="text-white/75 hover:text-white border-white/20 hover:border-white/40 hover:bg-white/10 gap-2 px-3"
+                  >
+                    <Search className="w-4 h-4" />
+                    <span className="text-xs">Search</span>
+                    <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-white/20 bg-white/10 px-1.5 font-mono text-[10px] font-medium text-white/60">
+                      <span className="text-xs">⌘</span>K
+                    </kbd>
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium">{displayName}</p>
-                    <p className="text-xs text-muted-foreground">{user?.email}</p>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
-                    <User className="w-4 h-4 mr-2" />
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
-                    <Settings className="w-4 h-4 mr-2" />
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive focus:text-destructive">
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="gap-2 px-2 hover:bg-white/10">
+                        <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+                          <span className="text-xs font-semibold text-white">{initials}</span>
+                        </div>
+                        <span className="text-sm font-medium text-white hidden lg:inline">{displayName}</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <div className="px-2 py-1.5">
+                        <p className="text-sm font-medium">{displayName}</p>
+                        <p className="text-xs text-muted-foreground">{user?.email}</p>
+                      </div>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
+                        <User className="w-4 h-4 mr-2" />
+                        Profile
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
+                        <Settings className="w-4 h-4 mr-2" />
+                        Settings
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive focus:text-destructive">
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("/auth")}
+                    className="text-white/80 hover:text-white hover:bg-white/10"
+                  >
+                    Sign In
+                  </Button>
+                  <Button
+                    onClick={() => navigate("/auth")}
+                    className="bg-white text-primary font-sans font-bold text-sm uppercase tracking-widest border-b-[3px] border-accent hover:brightness-[0.88] transition-all duration-150"
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              )}
             </div>
 
             <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -161,46 +185,65 @@ export const Navbar = () => {
           {/* Mobile Menu */}
           <div className={cn("md:hidden overflow-hidden transition-all duration-300", isMenuOpen ? "max-h-96 pb-4" : "max-h-0")}>
             <div className="flex flex-col gap-2">
-              <button
-                onClick={() => { setSearchOpen(true); setIsMenuOpen(false); }}
-                className="px-3 py-2 rounded-lg text-white/75 hover:bg-white/10 flex items-center gap-2"
-              >
-                <Search className="w-4 h-4" />
-                Search
-              </button>
-              <Link to="/dashboard" className={mobileLinkClass('/dashboard')} onClick={() => setIsMenuOpen(false)}>
-                <LayoutDashboard className="w-4 h-4" />
-                Dashboard
-              </Link>
-              <Link to="/onboarding" className={mobileLinkClass('/onboarding')} onClick={() => setIsMenuOpen(false)}>
-                <Map className="w-4 h-4" />
-                New Roadmap
-              </Link>
-              <Link to="/important-dates" className={mobileLinkClass('/important-dates')} onClick={() => setIsMenuOpen(false)}>
-                <Bell className="w-4 h-4" />
-                Reminders
-              </Link>
-              <Link to="/custom-quiz" className={mobileLinkClass('/custom-quiz')} onClick={() => setIsMenuOpen(false)}>
-                <GraduationCap className="w-4 h-4" />
-                Practice
-              </Link>
-              <Link to="/settings" className="px-3 py-2 rounded-lg text-white/75 hover:bg-white/10 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
-                <Settings className="w-4 h-4" />
-                Settings
-              </Link>
-              <button 
-                onClick={handleSignOut} 
-                className="px-3 py-2 rounded-lg text-destructive hover:bg-white/10 text-left flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </button>
+              {user ? (
+                <>
+                  <button
+                    onClick={() => { setSearchOpen(true); setIsMenuOpen(false); }}
+                    className="px-3 py-2 rounded-lg text-white/75 hover:bg-white/10 flex items-center gap-2"
+                  >
+                    <Search className="w-4 h-4" />
+                    Search
+                  </button>
+                  <Link to="/dashboard" className={mobileLinkClass('/dashboard')} onClick={() => setIsMenuOpen(false)}>
+                    <LayoutDashboard className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                  <Link to="/onboarding" className={mobileLinkClass('/onboarding')} onClick={() => setIsMenuOpen(false)}>
+                    <Map className="w-4 h-4" />
+                    New Roadmap
+                  </Link>
+                  <Link to="/important-dates" className={mobileLinkClass('/important-dates')} onClick={() => setIsMenuOpen(false)}>
+                    <Bell className="w-4 h-4" />
+                    Reminders
+                  </Link>
+                  <Link to="/custom-quiz" className={mobileLinkClass('/custom-quiz')} onClick={() => setIsMenuOpen(false)}>
+                    <GraduationCap className="w-4 h-4" />
+                    Practice
+                  </Link>
+                  <Link to="/settings" className="px-3 py-2 rounded-lg text-white/75 hover:bg-white/10 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </Link>
+                  <button 
+                    onClick={handleSignOut} 
+                    className="px-3 py-2 rounded-lg text-destructive hover:bg-white/10 text-left flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => { navigate("/auth"); setIsMenuOpen(false); }}
+                    className="px-3 py-2 rounded-lg text-white/75 hover:bg-white/10 flex items-center gap-2"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => { navigate("/auth"); setIsMenuOpen(false); }}
+                    className="px-3 py-2 rounded-lg text-accent font-semibold hover:bg-white/10 flex items-center gap-2"
+                  >
+                    Get Started
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
       </nav>
 
-      <GlobalSearch open={searchOpen} onOpenChange={setSearchOpen} />
+      {user && <GlobalSearch open={searchOpen} onOpenChange={setSearchOpen} />}
     </>
   );
 };
