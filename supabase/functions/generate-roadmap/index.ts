@@ -162,15 +162,34 @@ Make it practical and achievable.`;
 
     console.log("Raw AI response:", content);
 
-    // Clean the response - remove markdown code blocks if present
-    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    // Clean the response - remove markdown code blocks and extract JSON
+    content = content.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    
+    // Find JSON boundaries
+    const jsonStart = content.search(/[\{\[]/);
+    const jsonEnd = content.lastIndexOf('}');
+    
+    if (jsonStart === -1 || jsonEnd === -1) {
+      console.error("No JSON found in AI response:", content);
+      throw new Error("AI returned empty or invalid response. Please try again.");
+    }
+    
+    content = content.substring(jsonStart, jsonEnd + 1);
     
     let roadmapData;
     try {
       roadmapData = JSON.parse(content);
     } catch (parseError) {
-      console.error("Failed to parse AI response:", parseError);
-      throw new Error("Failed to parse roadmap data from AI");
+      // Fix common issues like trailing commas
+      const fixed = content
+        .replace(/,\s*}/g, '}')
+        .replace(/,\s*]/g, ']');
+      try {
+        roadmapData = JSON.parse(fixed);
+      } catch (e2) {
+        console.error("Failed to parse AI response:", parseError, "Content:", content.substring(0, 500));
+        throw new Error("Failed to parse roadmap data. Please try again.");
+      }
     }
 
     console.log("Parsed roadmap data:", roadmapData);
