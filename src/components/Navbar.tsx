@@ -76,14 +76,12 @@ export const Navbar = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <Link to={user ? "/dashboard" : "/"} className="flex items-center gap-2">
-              <div className="h-12 w-12 lg:w-auto overflow-hidden flex-shrink-0">
-                <img
-                  src={sestaraLogo}
-                  alt="Sestara"
-                  className="h-12 object-contain object-left"
-                />
-              </div>
-              <span className="font-serif font-semibold text-xl text-white hidden lg:inline tracking-wide">
+              <img
+                src={sestaraLogo}
+                alt="Sestara"
+                className="hidden md:block h-[48px] w-auto flex-shrink-0"
+              />
+              <span className="font-serif font-semibold text-xl text-white md:hidden tracking-wide">
                 SEST<span className="text-accent">A</span>RA
               </span>
             </Link>

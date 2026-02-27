@@ -29,7 +29,7 @@ const TermsPage = () => {
 
         <Section title="1. Service Description">
           <P>
-            StudyPath ("the Service") is an AI-powered learning platform that provides personalised study roadmaps, quizzes, flashcards, note-taking, and progress tracking functionality. The Service is provided on an "as-is" basis.
+            Sestara ("the Service") is an AI-powered learning platform that provides personalised study roadmaps, quizzes, flashcards, note-taking, and progress tracking functionality. The Service is provided on an "as-is" basis.
           </P>
         </Section>
 
@@ -46,7 +46,7 @@ const TermsPage = () => {
 
         <Section title="3. Intellectual Property">
           <P>
-            All content, design, software, and trademarks associated with StudyPath are the intellectual property of [Legal Entity Name] or its licensors. You retain ownership of content you create (notes, custom quizzes, etc.) but grant us a limited licence to host and display it as part of the Service.
+            All content, design, software, and trademarks associated with Sestara are the intellectual property of [Legal Entity Name] or its licensors. You retain ownership of content you create (notes, custom quizzes, etc.) but grant us a limited licence to host and display it as part of the Service.
           </P>
         </Section>
 
@@ -94,13 +94,13 @@ const TermsPage = () => {
         <Section title="10. Contact">
           <P>
             For questions regarding these Terms, please contact:{" "}
-            <a href="mailto:privacy@studypath.app" className="text-primary underline underline-offset-2">privacy@studypath.app</a>
+            <a href="mailto:privacy@sestara.com" className="text-primary underline underline-offset-2">privacy@sestara.com</a>
           </P>
         </Section>
 
         <div className="mt-12 text-center">
           <Button asChild>
-            <Link to="/">Return to StudyPath</Link>
+            <Link to="/">Return to Sestara</Link>
           </Button>
         </div>
       </div>

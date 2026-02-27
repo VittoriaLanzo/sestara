@@ -554,7 +554,7 @@ const TopicPage = () => {
                   </span>
                 )}
                 <span className={`flex items-center gap-1 ${
-                  isCompleted ? 'text-green-400' : isInProgress ? 'text-yellow-400' : ''
+                  isCompleted ? 'text-success' : isInProgress ? 'text-accent' : ''
                 }`}>
                   {isCompleted ? (
                     <>

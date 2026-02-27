@@ -31,7 +31,7 @@ export const LegalFooter = ({ onManageCookies }: { onManageCookies: () => void }
             <Link to="/terms" className="hover:text-accent transition-colors duration-150">
               Terms of Service
             </Link>
-            <a href="mailto:privacy@studypath.app" className="hover:text-accent transition-colors duration-150">
+            <a href="mailto:privacy@sestara.com" className="hover:text-accent transition-colors duration-150">
               Contact
             </a>
             <button
