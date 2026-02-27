@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { MathText } from "@/components/ui/math-text";
 import { useStreak } from "@/hooks/useStreak";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -295,12 +296,12 @@ export const EnhancedFlashcardViewer = ({
             }}
           >
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Question</p>
-            <p className={cn(
+            <div className={cn(
               "font-medium text-foreground",
               isFocusMode ? "text-2xl" : "text-lg"
             )}>
-              {currentCard.front}
-            </p>
+              <MathText>{currentCard.front}</MathText>
+            </div>
             {masteryData[currentCard.id] && (
               <Badge 
                 className={cn(
@@ -326,12 +327,12 @@ export const EnhancedFlashcardViewer = ({
             }}
           >
             <p className="text-xs text-green-400 uppercase tracking-wider mb-3">Answer</p>
-            <p className={cn(
+            <div className={cn(
               "font-medium text-foreground",
               isFocusMode ? "text-2xl" : "text-lg"
             )}>
-              {currentCard.back}
-            </p>
+              <MathText>{currentCard.back}</MathText>
+            </div>
           </div>
         </div>
       </div>
@@ -347,7 +348,7 @@ export const EnhancedFlashcardViewer = ({
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 animate-fade-in">
               <p className="text-sm text-yellow-400">
                 <Lightbulb className="w-4 h-4 inline mr-2" />
-                {currentCard.hint}
+                <MathText>{currentCard.hint}</MathText>
               </p>
             </div>
           ) : (
