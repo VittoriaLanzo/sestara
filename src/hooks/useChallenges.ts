@@ -186,12 +186,24 @@ import { validateQuizForChallenge, createQuizSnapshot } from "@/lib/quizValidati
  };
  
 // Create a new challenge with validated and frozen quiz snapshot
+// Optionally auto-adds creator's attempt to the leaderboard
 export const useCreateChallenge = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ quiz, title, sourceQuizId }: { quiz: CustomQuiz; title?: string; sourceQuizId?: string }) => {
+    mutationFn: async ({ quiz, title, sourceQuizId, creatorAttempt }: { 
+      quiz: CustomQuiz; 
+      title?: string; 
+      sourceQuizId?: string;
+      creatorAttempt?: {
+        score: number;
+        maxScore: number;
+        timeTakenSeconds: number;
+        answers: Record<string, string>;
+        userName: string;
+      };
+    }) => {
       if (!user) throw new Error("Not authenticated");
 
       // Validate quiz before creating challenge
@@ -219,10 +231,33 @@ export const useCreateChallenge = () => {
         .single();
 
       if (error) throw error;
+
+      // Auto-add creator's attempt to leaderboard if provided
+      if (creatorAttempt && data) {
+        const accuracy = creatorAttempt.maxScore > 0 
+          ? (creatorAttempt.score / creatorAttempt.maxScore) * 100 
+          : 0;
+
+        await supabase
+          .from('challenge_attempts')
+          .insert({
+            challenge_id: data.id,
+            user_id: user.id,
+            user_name: creatorAttempt.userName,
+            score: creatorAttempt.score,
+            max_score: creatorAttempt.maxScore,
+            accuracy,
+            time_taken_seconds: creatorAttempt.timeTakenSeconds,
+            answers: creatorAttempt.answers as any,
+            is_best_attempt: true,
+          });
+      }
+
       return { ...data, challenge_code: challengeCode };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-challenges'] });
+      queryClient.invalidateQueries({ queryKey: ['challenge-leaderboard'] });
       toast.success("Challenge created!");
     },
     onError: (error: Error) => {

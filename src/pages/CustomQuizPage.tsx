@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { useProfile } from "@/hooks/useProfile";
+import { useAuth } from "@/hooks/useAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { HowItWorksSection } from "@/components/custom-quiz/HowItWorksSection";
@@ -26,6 +27,7 @@ export type { CustomQuizQuestion, CustomQuiz, SavedQuiz, QuizGroup } from "@/hoo
 
 const CustomQuizPage = () => {
   const { profile } = useProfile();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("guide");
   
   // Quiz state
@@ -43,6 +45,13 @@ const CustomQuizPage = () => {
   const [showJoinDialog, setShowJoinDialog] = useState(false);
   const [challengeQuiz, setChallengeQuiz] = useState<CustomQuiz | null>(null);
   const [challengeQuizId, setChallengeQuizId] = useState<string | undefined>(undefined);
+  const [challengeCreatorAttempt, setChallengeCreatorAttempt] = useState<{
+    score: number;
+    maxScore: number;
+    timeTakenSeconds: number;
+    answers: Record<string, string>;
+    userName: string;
+  } | undefined>(undefined);
 
   // Database hooks
   const { data: savedQuizzes = [], isLoading: quizzesLoading } = useCustomQuizzes();
@@ -67,9 +76,10 @@ const CustomQuizPage = () => {
     setShowResults(true);
   };
 
-  const handleCreateChallenge = (quiz: CustomQuiz, quizId?: string) => {
+  const handleCreateChallenge = (quiz: CustomQuiz, quizId?: string, attemptData?: typeof challengeCreatorAttempt) => {
     setChallengeQuiz(quiz);
     setChallengeQuizId(quizId);
+    setChallengeCreatorAttempt(attemptData);
     setShowChallengeDialog(true);
   };
 
@@ -104,6 +114,14 @@ const CustomQuizPage = () => {
 
   // Show results
   if (activeQuiz && showResults) {
+    const creatorAttemptData = {
+      score: quizScore,
+      maxScore: activeQuiz.questions.length,
+      timeTakenSeconds: quizTime,
+      answers: quizAnswers,
+      userName: profile?.display_name || user?.email?.split('@')[0] || 'Anonymous',
+    };
+
     return (
       <CustomQuizResults
         quiz={activeQuiz}
@@ -116,7 +134,8 @@ const CustomQuizPage = () => {
           handleSaveQuiz(activeQuiz);
           handleCloseQuiz();
         }}
-        onChallengeCreate={() => handleCreateChallenge(activeQuiz, activeQuizId || undefined)}
+        onChallengeCreate={() => handleCreateChallenge(activeQuiz, activeQuizId || undefined, creatorAttemptData)}
+        creatorAttempt={creatorAttemptData}
       />
     );
   }
@@ -274,6 +293,7 @@ const CustomQuizPage = () => {
           onOpenChange={setShowChallengeDialog}
           quiz={challengeQuiz}
           sourceQuizId={challengeQuizId}
+          creatorAttempt={challengeCreatorAttempt}
         />
       )}
 

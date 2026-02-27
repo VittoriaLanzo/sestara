@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
 import { motion } from "framer-motion";
+import { evaluateAnswer } from "@/lib/quizScoring";
 
 interface CustomQuizResultsProps {
   quiz: CustomQuiz;
@@ -24,6 +25,13 @@ interface CustomQuizResultsProps {
   onNewQuiz: () => void;
   onSaveQuiz?: () => void;
   onChallengeCreate?: () => void;
+  creatorAttempt?: {
+    score: number;
+    maxScore: number;
+    timeTakenSeconds: number;
+    answers: Record<string, string>;
+    userName: string;
+  };
 }
 
 export const CustomQuizResults = ({
@@ -59,10 +67,10 @@ export const CustomQuizResults = ({
 
   const performance = getPerformanceMessage();
 
-  const getAnswerStatus = (questionId: string, correctAnswer: string) => {
+  const getAnswerStatus = (questionId: string, correctAnswer: string, options: string[]) => {
     const userAnswer = answers[questionId];
     if (!userAnswer) return 'skipped';
-    return userAnswer.toUpperCase() === correctAnswer.toUpperCase() ? 'correct' : 'incorrect';
+    return evaluateAnswer(userAnswer, correctAnswer, 'mcq', options) ? 'correct' : 'incorrect';
   };
 
   return (
@@ -193,7 +201,7 @@ export const CustomQuizResults = ({
                 <TabsContent value="incorrect">
                   <ReviewList 
                     questions={quiz.questions.filter(q => 
-                      answers[q.id] && answers[q.id].toUpperCase() !== q.correctAnswer.toUpperCase()
+                      answers[q.id] && !evaluateAnswer(answers[q.id], q.correctAnswer, 'mcq', q.options)
                     )}
                     answers={answers}
                     expandedQuestion={expandedQuestion}
@@ -238,7 +246,7 @@ const ReviewList = ({ questions, answers, expandedQuestion, setExpandedQuestion 
       <div className="space-y-3 pr-4">
         {questions.map((q, idx) => {
           const userAnswer = answers[q.id];
-          const isCorrect = userAnswer?.toUpperCase() === q.correctAnswer.toUpperCase();
+          const isCorrect = evaluateAnswer(userAnswer, q.correctAnswer, 'mcq', q.options);
           const isSkipped = !userAnswer;
           const isExpanded = expandedQuestion === q.id;
 
