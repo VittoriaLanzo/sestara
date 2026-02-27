@@ -112,7 +112,7 @@ const Index = () => {
 
   // Brand name as inline logo
   const brandName = (
-    <img src={sestaraLogo} alt="Sestara" className="inline-block w-[100px] h-auto align-baseline" />
+    <span className="font-serif font-semibold text-accent">Sestara</span>
   );
 
   return (
