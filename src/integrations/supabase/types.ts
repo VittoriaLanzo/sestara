@@ -1051,7 +1051,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_challenge_by_code: { Args: { p_code: string }; Returns: Json }
+      score_challenge_attempt: {
+        Args: { p_answers: Json; p_challenge_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

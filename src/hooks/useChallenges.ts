@@ -44,40 +44,58 @@ import { validateQuizForChallenge, createQuizSnapshot } from "@/lib/quizValidati
    return code;
  };
  
- // Fetch a challenge by code
- export const useChallengeByCode = (code: string | null) => {
-   return useQuery({
-     queryKey: ['challenge', code],
-     queryFn: async (): Promise<Challenge | null> => {
-       if (!code) return null;
-       
-       const { data, error } = await supabase
-         .from('quiz_challenges')
-         .select('*')
-         .eq('challenge_code', code.toUpperCase())
-         .eq('is_active', true)
-         .maybeSingle();
- 
-       if (error) throw error;
-       if (!data) return null;
- 
-       return {
-         id: data.id,
-         creatorId: data.creator_id,
-         challengeCode: data.challenge_code,
-         title: data.title,
-         quizData: data.quiz_data as unknown as CustomQuiz,
-         quizType: data.quiz_type,
-         sourceQuizId: data.source_quiz_id || undefined,
-         isActive: data.is_active,
-         maxAttempts: data.max_attempts || 1,
-         createdAt: data.created_at,
-         expiresAt: data.expires_at || undefined,
-       };
-     },
-     enabled: !!code,
-   });
- };
+// Fetch a challenge by code (answers stripped server-side for non-creators)
+export const useChallengeByCode = (code: string | null) => {
+  return useQuery({
+    queryKey: ['challenge', code],
+    queryFn: async (): Promise<Challenge | null> => {
+      if (!code) return null;
+      
+      const { data, error } = await supabase
+        .rpc('get_challenge_by_code', { p_code: code.toUpperCase() });
+
+      if (error) throw error;
+      if (!data) return null;
+
+      const d = data as Record<string, unknown>;
+      return {
+        id: d.id as string,
+        creatorId: d.creator_id as string,
+        challengeCode: d.challenge_code as string,
+        title: d.title as string,
+        quizData: d.quiz_data as unknown as CustomQuiz,
+        quizType: d.quiz_type as string,
+        sourceQuizId: (d.source_quiz_id as string) || undefined,
+        isActive: d.is_active as boolean,
+        maxAttempts: (d.max_attempts as number) || 1,
+        createdAt: d.created_at as string,
+        expiresAt: (d.expires_at as string) || undefined,
+      };
+    },
+    enabled: !!code,
+  });
+};
+
+// Score a challenge attempt server-side (answers verified against stored correct answers)
+export const useScoreChallengeAttempt = () => {
+  return async (challengeId: string, answers: Record<string, string>) => {
+    const { data, error } = await supabase
+      .rpc('score_challenge_attempt', { 
+        p_challenge_id: challengeId, 
+        p_answers: answers as unknown as Record<string, never>
+      });
+
+    if (error) throw error;
+    const result = data as Record<string, unknown>;
+    if (result.error) throw new Error(result.error as string);
+    
+    return {
+      score: result.score as number,
+      maxScore: result.max_score as number,
+      correctAnswers: result.correct_answers as Record<string, string>,
+    };
+  };
+};
  
  // Fetch leaderboard for a challenge
  export const useChallengeLeaderboard = (challengeId: string | null) => {
