@@ -79,8 +79,8 @@ export const evaluateAnswer = (
       // Check if user selected the correct option by full text match
       if (userAnswer.trim() === correctOptionText.trim()) return true;
       // Also check stripped text (without letter prefix)
-      const strippedUser = userAnswer.replace(/^[A-Za-z])\s*/, '').trim();
-      const strippedCorrect = correctOptionText.replace(/^[A-Za-z])\s*/, '').trim();
+      const strippedUser = userAnswer.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const strippedCorrect = correctOptionText.replace(/^[A-Za-z]\)\s*/, '').trim();
       if (strippedUser === strippedCorrect) return true;
     }
   }
