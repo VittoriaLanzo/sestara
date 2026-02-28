@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "واپس",
+    "back_to_home": "ہوم پر واپس جائیں",
+    "save": "محفوظ کریں",
+    "saving": "محفوظ ہو رہا ہے...",
+    "cancel": "منسوخ کریں",
+    "delete": "حذف کریں",
+    "deleting": "حذف ہو رہا ہے...",
+    "sign_in": "سائن ان",
+    "sign_up": "اکاؤنٹ بنائیں",
+    "sign_out": "سائن آؤٹ",
+    "get_started": "شروع کریں",
+    "loading": "براہ کرم انتظار کریں...",
+    "search": "تلاش کریں",
+    "profile": "پروفائل",
+    "settings": "ترتیبات",
+    "email": "ای میل",
+    "password": "پاس ورڈ",
+    "vs_last_week": "پچھلے ہفتے کے مقابلے",
+    "duplicate": "نقل بنائیں",
+    "duplicating": "نقل بن رہی ہے..."
+  },
+  "landing": {
+    "badge": "AI سے چلنے والا تعلیمی پلیٹ فارم",
+    "headline_start": "کسی بھی مضمون میں مہارت حاصل کریں",
+    "headline_accent": "ذاتی روڈ میپ کے ساتھ",
+    "subtitle": "مقابلے کے امتحانات، کالج، نوکری کے انٹرویو یا سرٹیفیکیشن کی تیاری کر رہے ہیں — Sestara آپ کے مقاصد کے مطابق AI سے چلنے والے مطالعاتی منصوبے بناتا ہے۔",
+    "cta": "مفت میں سیکھنا شروع کریں",
+    "features": {
+      "roadmaps_title": "AI روڈ میپ",
+      "roadmaps_desc": "آپ کے مقاصد کی بنیاد پر AI کے ذریعے تیار کردہ ذاتی مطالعاتی منصوبے",
+      "tracking_title": "موضوع ٹریکنگ",
+      "tracking_desc": "متعدد روڈ میپس میں موضوع کی سطح پر پیشرفت ٹریک کریں",
+      "quizzes_title": "سمارٹ کوئز",
+      "quizzes_desc": "AI سے تیار کردہ کوئز اور فلیش کارڈز سے اپنا علم جانچیں"
+    },
+    "security": {
+      "title": "سیکیورٹی اور تعمیل",
+      "gdpr": "GDPR کے مطابق ڈیٹا پروسیسنگ",
+      "encryption": "ٹرانزٹ میں انکرپشن (TLS)",
+      "no_resale": "ڈیٹا کی فروخت کبھی نہیں",
+      "transparency": "شفاف ڈیٹا حقوق",
+      "disclaimer": "تمام تیسرے فریق پروسیسرز Article 28 GDPR کے مطابق ڈیٹا پروسیسنگ معاہدوں سے بندھے ہوئے ہیں۔"
+    }
+  },
+  "auth": {
+    "welcome_back": "واپسی پر خوش آمدید",
+    "create_account": "اپنا اکاؤنٹ بنائیں",
+    "sign_in_subtitle": "اپنے سیکھنے کے سفر کو جاری رکھنے کے لیے سائن ان کریں",
+    "sign_up_subtitle": "اپنا ذاتی سیکھنے کا تجربہ شروع کریں",
+    "display_name": "ظاہری نام",
+    "display_name_placeholder": "آپ کا نام",
+    "email_placeholder": "you@example.com",
+    "no_account": "اکاؤنٹ نہیں ہے؟",
+    "have_account": "پہلے سے اکاؤنٹ ہے؟",
+    "create_account_btn": "اکاؤنٹ بنائیں",
+    "invalid_credentials": "غلط ای میل یا پاس ورڈ۔ دوبارہ کوشش کریں۔",
+    "already_registered": "یہ ای میل پہلے سے رجسٹرڈ ہے۔ لاگ ان کرکے دیکھیں۔",
+    "welcome_back_toast": "واپسی پر خوش آمدید!",
+    "account_created": "اکاؤنٹ کامیابی سے بنا لیا گیا!",
+    "invalid_email": "براہ کرم ایک درست ای میل پتہ درج کریں",
+    "password_min": "پاس ورڈ کم از کم 6 حروف کا ہونا چاہیے"
+  },
+  "navbar": {
+    "dashboard": "ڈیش بورڈ",
+    "new_roadmap": "نیا روڈ میپ",
+    "reminders": "یاد دہانیاں",
+    "practice": "مشق"
+  },
+  "dashboard": {
+    "welcome_back": "واپسی پر خوش آمدید",
+    "learning_dashboard_start": "آپ کا",
+    "learning_dashboard_accent": "تعلیمی ڈیش بورڈ",
+    "continue_message": "اپنے سیکھنے کے سفر کو جاری رکھیں یا نیا روڈ میپ بنائیں",
+    "get_started_message": "اپنا پہلا ذاتی روڈ میپ بنا کر شروع کریں",
+    "active_roadmaps": "فعال روڈ میپس",
+    "learning_paths": "سیکھنے کے راستے",
+    "topics_completed": "مکمل شدہ موضوعات",
+    "out_of_topics": "{{total}} موضوعات میں سے",
+    "overall_progress": "مجموعی پیشرفت",
+    "across_all_roadmaps": "تمام روڈ میپس میں",
+    "study_time": "مطالعے کا وقت",
+    "this_week": "اس ہفتے",
+    "your_roadmaps": "آپ کے روڈ میپس",
+    "new_roadmap": "نیا روڈ میپ",
+    "create_first_roadmap": "اپنا پہلا روڈ میپ بنائیں",
+    "create_first_roadmap_desc": "بتائیں آپ کس چیز کی تیاری کر رہے ہیں اور ہمارا AI آپ کے لیے ذاتی مطالعاتی منصوبہ بنائے گا",
+    "topics_completed_count": "{{completed}}/{{total}} موضوعات مکمل",
+    "target_label": "ہدف: {{date}}",
+    "study_materials": "مطالعاتی مواد"
+  },
+  "streak": {
+    "day_streak": "{{count}} دن کی سلسلہ!",
+    "start_streak": "اپنا سلسلہ شروع کریں!",
+    "best": "بہترین: {{count}} دن",
+    "start_message": "اپنا سلسلہ شروع کرنے کے لیے کوئز دیں، فلیش کارڈز پڑھیں یا موضوع مکمل کریں!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "افسوس! صفحہ نہیں ملا",
+    "return_home": "ہوم پر واپس جائیں"
+  },
+  "footer": {
+    "privacy_policy": "رازداری کی پالیسی",
+    "cookie_policy": "کوکی پالیسی",
+    "terms": "سروس کی شرائط",
+    "contact": "رابطہ",
+    "manage_cookies": "کوکی ترجیحات کا انتظام کریں",
+    "copyright": "© {{year}} Sestara. تمام حقوق محفوظ ہیں۔"
+  },
+  "settings": {
+    "title": "ترتیبات",
+    "profile": "پروفائل",
+    "manage_account": "اپنے اکاؤنٹ کی معلومات کا انتظام کریں",
+    "display_name": "ظاہری نام",
+    "enter_name": "اپنا نام درج کریں",
+    "study_language": "مطالعے کی زبان",
+    "study_language_desc": "AI سے تیار کردہ مواد (کوئز، فلیش کارڈز، وضاحتیں) آپ کی منتخب زبان میں ہوں گے۔",
+    "preferred_language": "پسندیدہ زبان",
+    "select_language": "زبان منتخب کریں",
+    "language_note": "نوٹ: UI لیبلز انگریزی میں رہیں گے۔ صرف تعلیمی مواد کا ترجمہ ہوگا۔",
+    "save_changes": "تبدیلیاں محفوظ کریں",
+    "saved_success": "ترتیبات کامیابی سے محفوظ ہو گئیں",
+    "saved_error": "ترتیبات محفوظ کرنے میں ناکامی"
+  }
+}

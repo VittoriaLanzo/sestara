@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "Terug",
+    "back_to_home": "Terug naar home",
+    "save": "Opslaan",
+    "saving": "Opslaan...",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "deleting": "Verwijderen...",
+    "sign_in": "Inloggen",
+    "sign_up": "Account aanmaken",
+    "sign_out": "Uitloggen",
+    "get_started": "Aan de slag",
+    "loading": "Even geduld...",
+    "search": "Zoeken",
+    "profile": "Profiel",
+    "settings": "Instellingen",
+    "email": "E-mail",
+    "password": "Wachtwoord",
+    "vs_last_week": "vergeleken met vorige week",
+    "duplicate": "Dupliceren",
+    "duplicating": "Dupliceren..."
+  },
+  "landing": {
+    "badge": "AI-gestuurd leerplatform",
+    "headline_start": "Beheers elk onderwerp met",
+    "headline_accent": "gepersonaliseerde leerroutes",
+    "subtitle": "Of je nu studeert voor examens, de universiteit, sollicitatiegesprekken of certificeringen — Sestara maakt AI-gestuurde studieplannen op maat van jouw doelen.",
+    "cta": "Gratis beginnen met leren",
+    "features": {
+      "roadmaps_title": "AI-leerroutes",
+      "roadmaps_desc": "Gepersonaliseerde studieplannen gegenereerd door AI op basis van jouw doelen",
+      "tracking_title": "Onderwerptracking",
+      "tracking_desc": "Volg je voortgang per onderwerp over meerdere leerroutes",
+      "quizzes_title": "Slimme quizzen",
+      "quizzes_desc": "Test je kennis met door AI gegenereerde quizzen en flashcards"
+    },
+    "security": {
+      "title": "Beveiliging & naleving",
+      "gdpr": "AVG-conforme gegevensverwerking",
+      "encryption": "Versleuteling tijdens overdracht (TLS)",
+      "no_resale": "Je gegevens worden nooit verkocht",
+      "transparency": "Transparante gegevensrechten",
+      "disclaimer": "Alle externe verwerkers zijn gebonden aan gegevensverwerkingsovereenkomsten conform Artikel 28 AVG."
+    }
+  },
+  "auth": {
+    "welcome_back": "Welkom terug",
+    "create_account": "Maak je account aan",
+    "sign_in_subtitle": "Log in om je leertraject voort te zetten",
+    "sign_up_subtitle": "Begin je gepersonaliseerde leerervaring",
+    "display_name": "Weergavenaam",
+    "display_name_placeholder": "Je naam",
+    "email_placeholder": "jij@voorbeeld.nl",
+    "no_account": "Nog geen account?",
+    "have_account": "Al een account?",
+    "create_account_btn": "Account aanmaken",
+    "invalid_credentials": "Onjuist e-mailadres of wachtwoord. Probeer opnieuw.",
+    "already_registered": "Dit e-mailadres is al geregistreerd. Probeer in te loggen.",
+    "welcome_back_toast": "Welkom terug!",
+    "account_created": "Account succesvol aangemaakt!",
+    "invalid_email": "Voer een geldig e-mailadres in",
+    "password_min": "Het wachtwoord moet minimaal 6 tekens bevatten"
+  },
+  "navbar": {
+    "dashboard": "Dashboard",
+    "new_roadmap": "Nieuwe leerroute",
+    "reminders": "Herinneringen",
+    "practice": "Oefenen"
+  },
+  "dashboard": {
+    "welcome_back": "Welkom terug",
+    "learning_dashboard_start": "Jouw",
+    "learning_dashboard_accent": "leerdashboard",
+    "continue_message": "Ga verder met je leertraject of maak een nieuwe leerroute",
+    "get_started_message": "Begin door je eerste gepersonaliseerde leerroute te maken",
+    "active_roadmaps": "Actieve leerroutes",
+    "learning_paths": "leertrajecten",
+    "topics_completed": "Voltooide onderwerpen",
+    "out_of_topics": "van {{total}} onderwerpen",
+    "overall_progress": "Algehele voortgang",
+    "across_all_roadmaps": "over alle leerroutes",
+    "study_time": "Studietijd",
+    "this_week": "deze week",
+    "your_roadmaps": "Jouw leerroutes",
+    "new_roadmap": "Nieuwe leerroute",
+    "create_first_roadmap": "Maak je eerste leerroute",
+    "create_first_roadmap_desc": "Vertel ons waarvoor je je voorbereidt en onze AI maakt een gepersonaliseerd studieplan voor je",
+    "topics_completed_count": "{{completed}}/{{total}} onderwerpen voltooid",
+    "target_label": "Doel: {{date}}",
+    "study_materials": "Studiemateriaal"
+  },
+  "streak": {
+    "day_streak": "{{count}} dagen op rij!",
+    "start_streak": "Begin je reeks!",
+    "best": "Record: {{count}} dagen",
+    "start_message": "Maak een quiz, bestudeer flashcards of rond een onderwerp af om je reeks te starten!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "Oeps! Pagina niet gevonden",
+    "return_home": "Terug naar home"
+  },
+  "footer": {
+    "privacy_policy": "Privacybeleid",
+    "cookie_policy": "Cookiebeleid",
+    "terms": "Servicevoorwaarden",
+    "contact": "Contact",
+    "manage_cookies": "Cookievoorkeuren beheren",
+    "copyright": "© {{year}} Sestara. Alle rechten voorbehouden."
+  },
+  "settings": {
+    "title": "Instellingen",
+    "profile": "Profiel",
+    "manage_account": "Beheer je accountinformatie",
+    "display_name": "Weergavenaam",
+    "enter_name": "Voer je naam in",
+    "study_language": "Studietaal",
+    "study_language_desc": "Door AI gegenereerde inhoud (quizzen, flashcards, uitleg) wordt in je gekozen taal weergegeven. Technische termen worden in het Engels en je taal getoond.",
+    "preferred_language": "Voorkeurstaal",
+    "select_language": "Kies een taal",
+    "language_note": "Let op: UI-labels blijven in het Engels. Alleen leerinhoud wordt vertaald.",
+    "save_changes": "Wijzigingen opslaan",
+    "saved_success": "Instellingen succesvol opgeslagen",
+    "saved_error": "Instellingen opslaan mislukt"
+  }
+}

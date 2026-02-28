@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "Zurück",
+    "back_to_home": "Zurück zur Startseite",
+    "save": "Speichern",
+    "saving": "Wird gespeichert...",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht...",
+    "sign_in": "Anmelden",
+    "sign_up": "Konto erstellen",
+    "sign_out": "Abmelden",
+    "get_started": "Loslegen",
+    "loading": "Bitte warten...",
+    "search": "Suchen",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "vs_last_week": "im Vergleich zur Vorwoche",
+    "duplicate": "Duplizieren",
+    "duplicating": "Wird dupliziert..."
+  },
+  "landing": {
+    "badge": "KI-gestützte Lernplattform",
+    "headline_start": "Meistere jedes Thema mit",
+    "headline_accent": "personalisierten Lernpfaden",
+    "subtitle": "Ob Prüfungsvorbereitung, Uni, Bewerbungsgespräche oder Zertifizierungen — Sestara erstellt KI-gestützte Lernpläne, die auf deine Ziele zugeschnitten sind.",
+    "cta": "Kostenlos mit dem Lernen starten",
+    "features": {
+      "roadmaps_title": "KI-Lernpfade",
+      "roadmaps_desc": "Personalisierte Lernpläne, die von KI basierend auf deinen Zielen erstellt werden",
+      "tracking_title": "Themen-Tracking",
+      "tracking_desc": "Verfolge deinen Fortschritt auf Themenebene über mehrere Lernpfade",
+      "quizzes_title": "Intelligente Quizze",
+      "quizzes_desc": "Teste dein Wissen mit KI-generierten Quizzen und Lernkarten"
+    },
+    "security": {
+      "title": "Sicherheit & Compliance",
+      "gdpr": "DSGVO-konforme Datenverarbeitung",
+      "encryption": "Verschlüsselung bei der Übertragung (TLS)",
+      "no_resale": "Kein Datenverkauf — niemals",
+      "transparency": "Transparente Betroffenenrechte",
+      "disclaimer": "Alle Auftragsverarbeiter sind durch Auftragsverarbeitungsverträge gemäß Artikel 28 DSGVO gebunden."
+    }
+  },
+  "auth": {
+    "welcome_back": "Willkommen zurück",
+    "create_account": "Erstelle dein Konto",
+    "sign_in_subtitle": "Melde dich an, um deine Lernreise fortzusetzen",
+    "sign_up_subtitle": "Starte dein personalisiertes Lernerlebnis",
+    "display_name": "Anzeigename",
+    "display_name_placeholder": "Dein Name",
+    "email_placeholder": "du@beispiel.de",
+    "no_account": "Noch kein Konto?",
+    "have_account": "Bereits ein Konto?",
+    "create_account_btn": "Konto erstellen",
+    "invalid_credentials": "Falsche E-Mail oder falsches Passwort. Bitte versuche es erneut.",
+    "already_registered": "Diese E-Mail ist bereits registriert. Versuche dich anzumelden.",
+    "welcome_back_toast": "Willkommen zurück!",
+    "account_created": "Konto erfolgreich erstellt!",
+    "invalid_email": "Bitte gib eine gültige E-Mail-Adresse ein",
+    "password_min": "Das Passwort muss mindestens 6 Zeichen haben"
+  },
+  "navbar": {
+    "dashboard": "Dashboard",
+    "new_roadmap": "Neuer Lernpfad",
+    "reminders": "Erinnerungen",
+    "practice": "Üben"
+  },
+  "dashboard": {
+    "welcome_back": "Willkommen zurück",
+    "learning_dashboard_start": "Dein",
+    "learning_dashboard_accent": "Lern-Dashboard",
+    "continue_message": "Setze deine Lernreise fort oder erstelle einen neuen Lernpfad",
+    "get_started_message": "Starte, indem du deinen ersten personalisierten Lernpfad erstellst",
+    "active_roadmaps": "Aktive Lernpfade",
+    "learning_paths": "Lernpfade",
+    "topics_completed": "Abgeschlossene Themen",
+    "out_of_topics": "von {{total}} Themen",
+    "overall_progress": "Gesamtfortschritt",
+    "across_all_roadmaps": "über alle Lernpfade",
+    "study_time": "Lernzeit",
+    "this_week": "diese Woche",
+    "your_roadmaps": "Deine Lernpfade",
+    "new_roadmap": "Neuer Lernpfad",
+    "create_first_roadmap": "Erstelle deinen ersten Lernpfad",
+    "create_first_roadmap_desc": "Sag uns, worauf du dich vorbereitest, und unsere KI erstellt einen personalisierten Lernplan für dich",
+    "topics_completed_count": "{{completed}}/{{total}} Themen abgeschlossen",
+    "target_label": "Ziel: {{date}}",
+    "study_materials": "Lernmaterialien"
+  },
+  "streak": {
+    "day_streak": "{{count}} Tage am Stück!",
+    "start_streak": "Starte deine Serie!",
+    "best": "Rekord: {{count}} Tage",
+    "start_message": "Absolviere ein Quiz, lerne Karteikarten oder schließe ein Thema ab, um deine Serie zu starten!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "Hoppla! Seite nicht gefunden",
+    "return_home": "Zurück zur Startseite"
+  },
+  "footer": {
+    "privacy_policy": "Datenschutzrichtlinie",
+    "cookie_policy": "Cookie-Richtlinie",
+    "terms": "Nutzungsbedingungen",
+    "contact": "Kontakt",
+    "manage_cookies": "Cookie-Einstellungen verwalten",
+    "copyright": "© {{year}} Sestara. Alle Rechte vorbehalten."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "profile": "Profil",
+    "manage_account": "Verwalte deine Kontoinformationen",
+    "display_name": "Anzeigename",
+    "enter_name": "Gib deinen Namen ein",
+    "study_language": "Lernsprache",
+    "study_language_desc": "KI-generierte Inhalte (Quizze, Lernkarten, Erklärungen) werden in deiner gewählten Sprache angezeigt. Fachbegriffe erscheinen sowohl auf Englisch als auch in deiner Sprache.",
+    "preferred_language": "Bevorzugte Sprache",
+    "select_language": "Sprache auswählen",
+    "language_note": "Hinweis: Die Benutzeroberfläche bleibt auf Englisch. Nur Lerninhalte werden übersetzt.",
+    "save_changes": "Änderungen speichern",
+    "saved_success": "Einstellungen erfolgreich gespeichert",
+    "saved_error": "Fehler beim Speichern der Einstellungen"
+  }
+}

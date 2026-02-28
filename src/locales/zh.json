@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "返回",
+    "back_to_home": "返回首页",
+    "save": "保存",
+    "saving": "保存中...",
+    "cancel": "取消",
+    "delete": "删除",
+    "deleting": "删除中...",
+    "sign_in": "登录",
+    "sign_up": "注册",
+    "sign_out": "退出",
+    "get_started": "开始使用",
+    "loading": "请稍候...",
+    "search": "搜索",
+    "profile": "个人资料",
+    "settings": "设置",
+    "email": "邮箱",
+    "password": "密码",
+    "vs_last_week": "与上周相比",
+    "duplicate": "复制",
+    "duplicating": "复制中..."
+  },
+  "landing": {
+    "badge": "AI 驱动的学习平台",
+    "headline_start": "借助",
+    "headline_accent": "个性化学习路线",
+    "subtitle": "无论你是在备考竞赛、升学、求职面试还是考取证书——Sestara 根据你的目标，用 AI 为你量身定制学习计划。",
+    "cta": "免费开始学习",
+    "features": {
+      "roadmaps_title": "AI 学习路线",
+      "roadmaps_desc": "基于你的目标，由 AI 生成的个性化学习计划",
+      "tracking_title": "主题追踪",
+      "tracking_desc": "在多条学习路线中按主题精细追踪学习进度",
+      "quizzes_title": "智能测验",
+      "quizzes_desc": "通过 AI 生成的测验和闪卡检验你的知识"
+    },
+    "security": {
+      "title": "安全与合规",
+      "gdpr": "符合 GDPR 的数据处理",
+      "encryption": "传输加密 (TLS)",
+      "no_resale": "绝不出售数据",
+      "transparency": "透明的数据权利",
+      "disclaimer": "所有第三方处理者均受 GDPR 第28条数据处理协议约束。"
+    }
+  },
+  "auth": {
+    "welcome_back": "欢迎回来",
+    "create_account": "创建你的账号",
+    "sign_in_subtitle": "登录以继续你的学习之旅",
+    "sign_up_subtitle": "开启你的个性化学习体验",
+    "display_name": "显示名称",
+    "display_name_placeholder": "你的名字",
+    "email_placeholder": "you@example.com",
+    "no_account": "还没有账号？",
+    "have_account": "已有账号？",
+    "create_account_btn": "创建账号",
+    "invalid_credentials": "邮箱或密码错误，请重试。",
+    "already_registered": "该邮箱已注册，请直接登录。",
+    "welcome_back_toast": "欢迎回来！",
+    "account_created": "账号创建成功！",
+    "invalid_email": "请输入有效的邮箱地址",
+    "password_min": "密码至少需要6个字符"
+  },
+  "navbar": {
+    "dashboard": "仪表盘",
+    "new_roadmap": "新建路线",
+    "reminders": "提醒",
+    "practice": "练习"
+  },
+  "dashboard": {
+    "welcome_back": "欢迎回来",
+    "learning_dashboard_start": "你的",
+    "learning_dashboard_accent": "学习仪表盘",
+    "continue_message": "继续你的学习之旅或创建新的学习路线",
+    "get_started_message": "创建你的第一条个性化学习路线，开始学习吧",
+    "active_roadmaps": "进行中的路线",
+    "learning_paths": "条学习路线",
+    "topics_completed": "已完成主题",
+    "out_of_topics": "共 {{total}} 个主题",
+    "overall_progress": "总体进度",
+    "across_all_roadmaps": "所有路线中",
+    "study_time": "学习时长",
+    "this_week": "本周",
+    "your_roadmaps": "你的学习路线",
+    "new_roadmap": "新建路线",
+    "create_first_roadmap": "创建你的第一条学习路线",
+    "create_first_roadmap_desc": "告诉我们你在准备什么，AI 将为你生成个性化的学习计划",
+    "topics_completed_count": "{{completed}}/{{total}} 个主题已完成",
+    "target_label": "目标日期：{{date}}",
+    "study_materials": "学习资料"
+  },
+  "streak": {
+    "day_streak": "连续 {{count}} 天！",
+    "start_streak": "开始你的连续学习！",
+    "best": "最长：{{count}} 天",
+    "start_message": "完成测验、学习闪卡或结束一个主题，开启你的学习连续记录！"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "哎呀！页面未找到",
+    "return_home": "返回首页"
+  },
+  "footer": {
+    "privacy_policy": "隐私政策",
+    "cookie_policy": "Cookie 政策",
+    "terms": "服务条款",
+    "contact": "联系我们",
+    "manage_cookies": "管理 Cookie 偏好",
+    "copyright": "© {{year}} Sestara。保留所有权利。"
+  },
+  "settings": {
+    "title": "设置",
+    "profile": "个人资料",
+    "manage_account": "管理你的账号信息",
+    "display_name": "显示名称",
+    "enter_name": "输入你的名字",
+    "study_language": "学习语言",
+    "study_language_desc": "AI 生成的内容（测验、闪卡、解释）将使用你选择的语言。专业术语会同时以英文和你的语言显示。",
+    "preferred_language": "首选语言",
+    "select_language": "选择语言",
+    "language_note": "注意：界面标签保持英文，仅学习内容会被翻译。",
+    "save_changes": "保存更改",
+    "saved_success": "设置保存成功",
+    "saved_error": "保存设置失败"
+  }
+}

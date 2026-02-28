@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "પાછા",
+    "back_to_home": "હોમ પર પાછા જાઓ",
+    "save": "સેવ કરો",
+    "saving": "સેવ થઈ રહ્યું છે...",
+    "cancel": "રદ કરો",
+    "delete": "કાઢી નાખો",
+    "deleting": "કાઢી નાખી રહ્યા છીએ...",
+    "sign_in": "સાઇન ઇન",
+    "sign_up": "એકાઉન્ટ બનાવો",
+    "sign_out": "સાઇન આઉટ",
+    "get_started": "શરૂ કરો",
+    "loading": "કૃપા કરીને રાહ જુઓ...",
+    "search": "શોધો",
+    "profile": "પ્રોફાઇલ",
+    "settings": "સેટિંગ્સ",
+    "email": "ઈમેઇલ",
+    "password": "પાસવર્ડ",
+    "vs_last_week": "ગયા અઠવાડિયા સાથે સરખામણીમાં",
+    "duplicate": "નકલ બનાવો",
+    "duplicating": "નકલ બની રહી છે..."
+  },
+  "landing": {
+    "badge": "AI-સંચાલિત શિક્ષણ પ્લેટફોર્મ",
+    "headline_start": "કોઈપણ વિષયમાં નિપુણતા મેળવો",
+    "headline_accent": "વ્યક્તિગત રોડમેપ સાથે",
+    "subtitle": "સ્પર્ધાત્મક પરીક્ષાઓ, કોલેજ, જોબ ઇન્ટરવ્યુ કે સર્ટિફિકેશન માટે તૈયારી કરી રહ્યા છો — Sestara તમારા લક્ષ્યો અનુસાર AI-સંચાલિત અભ્યાસ યોજનાઓ બનાવે છે.",
+    "cta": "મફતમાં શીખવાનું શરૂ કરો",
+    "features": {
+      "roadmaps_title": "AI રોડમેપ",
+      "roadmaps_desc": "તમારા લક્ષ્યો આધારિત AI દ્વારા બનાવેલી વ્યક્તિગત અભ્યાસ યોજનાઓ",
+      "tracking_title": "ટોપિક ટ્રેકિંગ",
+      "tracking_desc": "બહુવિધ રોડમેપમાં ટોપિક સ્તરે પ્રગતિ ટ્રેક કરો",
+      "quizzes_title": "સ્માર્ટ ક્વિઝ",
+      "quizzes_desc": "AI-જનરેટેડ ક્વિઝ અને ફ્લેશકાર્ડ્સથી તમારું જ્ઞાન ચકાસો"
+    },
+    "security": {
+      "title": "સુરક્ષા અને અનુપાલન",
+      "gdpr": "GDPR-અનુરૂપ ડેટા પ્રોસેસિંગ",
+      "encryption": "ટ્રાન્ઝિટમાં એન્ક્રિપ્શન (TLS)",
+      "no_resale": "ડેટા વેચાણ ક્યારેય નહીં",
+      "transparency": "પારદર્શક ડેટા અધિકારો",
+      "disclaimer": "તમામ તૃતીય-પક્ષ પ્રોસેસર્સ Article 28 GDPR અનુસાર ડેટા પ્રોસેસિંગ કરારોથી બંધાયેલા છે."
+    }
+  },
+  "auth": {
+    "welcome_back": "ફરી સ્વાગત છે",
+    "create_account": "તમારું એકાઉન્ટ બનાવો",
+    "sign_in_subtitle": "તમારી શીખવાની યાત્રા ચાલુ રાખવા સાઇન ઇન કરો",
+    "sign_up_subtitle": "તમારો વ્યક્તિગત શીખવાનો અનુભવ શરૂ કરો",
+    "display_name": "પ્રદર્શન નામ",
+    "display_name_placeholder": "તમારું નામ",
+    "email_placeholder": "you@example.com",
+    "no_account": "એકાઉન્ટ નથી?",
+    "have_account": "પહેલેથી એકાઉન્ટ છે?",
+    "create_account_btn": "એકાઉન્ટ બનાવો",
+    "invalid_credentials": "ખોટું ઈમેઇલ કે પાસવર્ડ. ફરી પ્રયાસ કરો.",
+    "already_registered": "આ ઈમેઇલ પહેલેથી નોંધાયેલું છે. લોગ ઇન કરીને જુઓ.",
+    "welcome_back_toast": "ફરી સ્વાગત છે!",
+    "account_created": "એકાઉન્ટ સફળતાપૂર્વક બનાવવામાં આવ્યું!",
+    "invalid_email": "કૃપા કરીને માન્ય ઈમેઇલ સરનામું દાખલ કરો",
+    "password_min": "પાસવર્ડ ઓછામાં ઓછા ૬ અક્ષરનો હોવો જોઈએ"
+  },
+  "navbar": {
+    "dashboard": "ડેશબોર્ડ",
+    "new_roadmap": "નવો રોડમેપ",
+    "reminders": "રિમાઇન્ડર્સ",
+    "practice": "પ્રેક્ટિસ"
+  },
+  "dashboard": {
+    "welcome_back": "ફરી સ્વાગત છે",
+    "learning_dashboard_start": "તમારું",
+    "learning_dashboard_accent": "શિક્ષણ ડેશબોર્ડ",
+    "continue_message": "તમારી શીખવાની યાત્રા ચાલુ રાખો અથવા નવો રોડમેપ બનાવો",
+    "get_started_message": "તમારો પ્રથમ વ્યક્તિગત રોડમેપ બનાવીને શરૂ કરો",
+    "active_roadmaps": "સક્રિય રોડમેપ",
+    "learning_paths": "શીખવાના માર્ગો",
+    "topics_completed": "પૂર્ણ થયેલા ટોપિક",
+    "out_of_topics": "{{total}} ટોપિકમાંથી",
+    "overall_progress": "એકંદર પ્રગતિ",
+    "across_all_roadmaps": "બધા રોડમેપમાં",
+    "study_time": "અભ્યાસનો સમય",
+    "this_week": "આ અઠવાડિયે",
+    "your_roadmaps": "તમારા રોડમેપ",
+    "new_roadmap": "નવો રોડમેપ",
+    "create_first_roadmap": "તમારો પ્રથમ રોડમેપ બનાવો",
+    "create_first_roadmap_desc": "તમે શેની તૈયારી કરી રહ્યા છો તે જણાવો અને અમારું AI તમારા માટે વ્યક્તિગત અભ્યાસ યોજના બનાવશે",
+    "topics_completed_count": "{{completed}}/{{total}} ટોપિક પૂર્ણ",
+    "target_label": "લક્ષ્ય: {{date}}",
+    "study_materials": "અભ્યાસ સામગ્રી"
+  },
+  "streak": {
+    "day_streak": "{{count}} દિવસની સ્ટ્રીક!",
+    "start_streak": "તમારી સ્ટ્રીક શરૂ કરો!",
+    "best": "શ્રેષ્ઠ: {{count}} દિવસ",
+    "start_message": "તમારી સ્ટ્રીક શરૂ કરવા ક્વિઝ આપો, ફ્લેશકાર્ડ્સ વાંચો અથવા ટોપિક પૂરું કરો!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "અરે! પેજ મળ્યું નથી",
+    "return_home": "હોમ પર પાછા જાઓ"
+  },
+  "footer": {
+    "privacy_policy": "ગોપનીયતા નીતિ",
+    "cookie_policy": "કૂકી નીતિ",
+    "terms": "સેવાની શરતો",
+    "contact": "સંપર્ક",
+    "manage_cookies": "કૂકી પસંદગીઓ વ્યવસ્થાપિત કરો",
+    "copyright": "© {{year}} Sestara. બધા હકો અનામત."
+  },
+  "settings": {
+    "title": "સેટિંગ્સ",
+    "profile": "પ્રોફાઇલ",
+    "manage_account": "તમારા એકાઉન્ટની માહિતી વ્યવસ્થાપિત કરો",
+    "display_name": "પ્રદર્શન નામ",
+    "enter_name": "તમારું નામ દાખલ કરો",
+    "study_language": "અભ્યાસ ભાષા",
+    "study_language_desc": "AI-જનરેટેડ કન્ટેન્ટ (ક્વિઝ, ફ્લેશકાર્ડ્સ, સમજૂતી) તમારી પસંદ કરેલી ભાષામાં હશે.",
+    "preferred_language": "પસંદગીની ભાષા",
+    "select_language": "ભાષા પસંદ કરો",
+    "language_note": "નોંધ: UI લેબલ્સ અંગ્રેજીમાં રહેશે. માત્ર શીખવાનું કન્ટેન્ટ અનુવાદિત થશે.",
+    "save_changes": "ફેરફારો સેવ કરો",
+    "saved_success": "સેટિંગ્સ સફળતાપૂર્વક સેવ થઈ",
+    "saved_error": "સેટિંગ્સ સેવ કરવામાં નિષ્ફળ"
+  }
+}

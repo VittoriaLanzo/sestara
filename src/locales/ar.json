@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "رجوع",
+    "back_to_home": "العودة للرئيسية",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ...",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "deleting": "جارٍ الحذف...",
+    "sign_in": "تسجيل الدخول",
+    "sign_up": "إنشاء حساب",
+    "sign_out": "تسجيل الخروج",
+    "get_started": "ابدأ الآن",
+    "loading": "يرجى الانتظار...",
+    "search": "بحث",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "vs_last_week": "مقارنة بالأسبوع الماضي",
+    "duplicate": "نسخ",
+    "duplicating": "جارٍ النسخ..."
+  },
+  "landing": {
+    "badge": "منصة تعليمية مدعومة بالذكاء الاصطناعي",
+    "headline_start": "أتقن أي مادة مع",
+    "headline_accent": "خطط تعلّم مخصصة",
+    "subtitle": "سواء كنت تستعد لامتحانات تنافسية أو الجامعة أو مقابلات العمل أو الشهادات المهنية — Sestara يصنع لك خطط دراسية مخصصة بالذكاء الاصطناعي حسب أهدافك.",
+    "cta": "ابدأ التعلّم مجاناً",
+    "features": {
+      "roadmaps_title": "خطط ذكية",
+      "roadmaps_desc": "خطط دراسية مخصصة يولّدها الذكاء الاصطناعي بناءً على أهدافك",
+      "tracking_title": "تتبع المواضيع",
+      "tracking_desc": "تابع تقدمك موضوعاً بموضوع عبر خطط تعلّم متعددة",
+      "quizzes_title": "اختبارات ذكية",
+      "quizzes_desc": "اختبر معرفتك باختبارات وبطاقات تعليمية من إنتاج الذكاء الاصطناعي"
+    },
+    "security": {
+      "title": "الأمان والامتثال",
+      "gdpr": "معالجة بيانات متوافقة مع GDPR",
+      "encryption": "تشفير أثناء النقل (TLS)",
+      "no_resale": "لا نبيع بياناتك أبداً",
+      "transparency": "حقوق بيانات شفافة",
+      "disclaimer": "جميع معالجي البيانات الخارجيين ملزمون باتفاقيات معالجة البيانات وفقاً للمادة 28 من GDPR."
+    }
+  },
+  "auth": {
+    "welcome_back": "أهلاً بعودتك",
+    "create_account": "أنشئ حسابك",
+    "sign_in_subtitle": "سجّل دخولك لمتابعة رحلة التعلّم",
+    "sign_up_subtitle": "ابدأ تجربة التعلّم المخصصة لك",
+    "display_name": "اسم العرض",
+    "display_name_placeholder": "اسمك",
+    "email_placeholder": "you@example.com",
+    "no_account": "ليس لديك حساب؟",
+    "have_account": "لديك حساب بالفعل؟",
+    "create_account_btn": "إنشاء حساب",
+    "invalid_credentials": "بريد إلكتروني أو كلمة مرور خاطئة. حاول مرة أخرى.",
+    "already_registered": "هذا البريد مسجل بالفعل. جرّب تسجيل الدخول.",
+    "welcome_back_toast": "أهلاً بعودتك!",
+    "account_created": "تم إنشاء الحساب بنجاح!",
+    "invalid_email": "يرجى إدخال بريد إلكتروني صالح",
+    "password_min": "يجب أن تكون كلمة المرور 6 أحرف على الأقل"
+  },
+  "navbar": {
+    "dashboard": "لوحة التحكم",
+    "new_roadmap": "خطة جديدة",
+    "reminders": "التذكيرات",
+    "practice": "تدريب"
+  },
+  "dashboard": {
+    "welcome_back": "أهلاً بعودتك",
+    "learning_dashboard_start": "لوحة",
+    "learning_dashboard_accent": "التعلّم الخاصة بك",
+    "continue_message": "تابع رحلة التعلّم أو أنشئ خطة جديدة",
+    "get_started_message": "ابدأ بإنشاء أول خطة تعلّم مخصصة لك",
+    "active_roadmaps": "الخطط النشطة",
+    "learning_paths": "مسارات تعلّم",
+    "topics_completed": "المواضيع المكتملة",
+    "out_of_topics": "من أصل {{total}} موضوع",
+    "overall_progress": "التقدم الإجمالي",
+    "across_all_roadmaps": "عبر جميع الخطط",
+    "study_time": "وقت الدراسة",
+    "this_week": "هذا الأسبوع",
+    "your_roadmaps": "خططك",
+    "new_roadmap": "خطة جديدة",
+    "create_first_roadmap": "أنشئ أول خطة لك",
+    "create_first_roadmap_desc": "أخبرنا بما تستعد له وسيقوم الذكاء الاصطناعي بإنشاء خطة دراسية مخصصة لك",
+    "topics_completed_count": "{{completed}}/{{total}} موضوع مكتمل",
+    "target_label": "الهدف: {{date}}",
+    "study_materials": "مواد الدراسة"
+  },
+  "streak": {
+    "day_streak": "{{count}} يوم متواصل!",
+    "start_streak": "ابدأ سلسلتك!",
+    "best": "الأفضل: {{count}} يوم",
+    "start_message": "أكمل اختباراً أو ادرس بطاقات تعليمية أو أنهِ موضوعاً لبدء سلسلتك!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "عذراً! الصفحة غير موجودة",
+    "return_home": "العودة للرئيسية"
+  },
+  "footer": {
+    "privacy_policy": "سياسة الخصوصية",
+    "cookie_policy": "سياسة ملفات تعريف الارتباط",
+    "terms": "شروط الخدمة",
+    "contact": "اتصل بنا",
+    "manage_cookies": "إدارة تفضيلات ملفات تعريف الارتباط",
+    "copyright": "© {{year}} Sestara. جميع الحقوق محفوظة."
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "profile": "الملف الشخصي",
+    "manage_account": "إدارة معلومات حسابك",
+    "display_name": "اسم العرض",
+    "enter_name": "أدخل اسمك",
+    "study_language": "لغة الدراسة",
+    "study_language_desc": "المحتوى المولّد بالذكاء الاصطناعي (اختبارات، بطاقات، شروحات) سيكون بلغتك المختارة. المصطلحات التقنية ستُعرض بالإنجليزية ولغتك.",
+    "preferred_language": "اللغة المفضلة",
+    "select_language": "اختر اللغة",
+    "language_note": "ملاحظة: واجهة المستخدم تبقى بالإنجليزية. فقط المحتوى التعليمي يُترجم.",
+    "save_changes": "حفظ التغييرات",
+    "saved_success": "تم حفظ الإعدادات بنجاح",
+    "saved_error": "فشل حفظ الإعدادات"
+  }
+}

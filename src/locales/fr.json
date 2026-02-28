@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "Retour",
+    "back_to_home": "Retour à l'accueil",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "deleting": "Suppression...",
+    "sign_in": "Se connecter",
+    "sign_up": "Créer un compte",
+    "sign_out": "Se déconnecter",
+    "get_started": "Commencer",
+    "loading": "Un instant...",
+    "search": "Rechercher",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "vs_last_week": "par rapport à la semaine dernière",
+    "duplicate": "Dupliquer",
+    "duplicating": "Duplication..."
+  },
+  "landing": {
+    "badge": "Plateforme d'apprentissage propulsée par l'IA",
+    "headline_start": "Maîtrisez n'importe quel sujet avec",
+    "headline_accent": "des parcours personnalisés",
+    "subtitle": "Que vous prépariez des concours, l'université, des entretiens d'embauche ou des certifications — Sestara crée des plans d'étude sur mesure grâce à l'IA.",
+    "cta": "Commencez à apprendre gratuitement",
+    "features": {
+      "roadmaps_title": "Parcours IA",
+      "roadmaps_desc": "Des plans d'étude personnalisés générés par l'IA selon vos objectifs",
+      "tracking_title": "Suivi par thème",
+      "tracking_desc": "Suivez votre progression thème par thème sur plusieurs parcours",
+      "quizzes_title": "Quiz intelligents",
+      "quizzes_desc": "Testez vos connaissances avec des quiz et fiches générés par l'IA"
+    },
+    "security": {
+      "title": "Sécurité et conformité",
+      "gdpr": "Traitement des données conforme au RGPD",
+      "encryption": "Chiffrement en transit (TLS)",
+      "no_resale": "Vos données ne sont jamais vendues",
+      "transparency": "Droits d'accès aux données transparents",
+      "disclaimer": "Tous les sous-traitants sont liés par des accords de traitement conformes à l'Article 28 du RGPD."
+    }
+  },
+  "auth": {
+    "welcome_back": "Content de vous revoir",
+    "create_account": "Créez votre compte",
+    "sign_in_subtitle": "Connectez-vous pour poursuivre votre apprentissage",
+    "sign_up_subtitle": "Commencez votre expérience d'apprentissage personnalisée",
+    "display_name": "Nom d'affichage",
+    "display_name_placeholder": "Votre nom",
+    "email_placeholder": "vous@exemple.com",
+    "no_account": "Pas encore de compte ?",
+    "have_account": "Déjà un compte ?",
+    "create_account_btn": "Créer un compte",
+    "invalid_credentials": "E-mail ou mot de passe incorrect. Réessayez.",
+    "already_registered": "Cet e-mail est déjà enregistré. Essayez de vous connecter.",
+    "welcome_back_toast": "Bon retour parmi nous !",
+    "account_created": "Compte créé avec succès !",
+    "invalid_email": "Veuillez entrer une adresse e-mail valide",
+    "password_min": "Le mot de passe doit contenir au moins 6 caractères"
+  },
+  "navbar": {
+    "dashboard": "Tableau de bord",
+    "new_roadmap": "Nouveau parcours",
+    "reminders": "Rappels",
+    "practice": "Entraînement"
+  },
+  "dashboard": {
+    "welcome_back": "Content de vous revoir",
+    "learning_dashboard_start": "Votre",
+    "learning_dashboard_accent": "tableau de bord",
+    "continue_message": "Poursuivez votre apprentissage ou créez un nouveau parcours",
+    "get_started_message": "Commencez par créer votre premier parcours personnalisé",
+    "active_roadmaps": "Parcours actifs",
+    "learning_paths": "parcours d'apprentissage",
+    "topics_completed": "Thèmes terminés",
+    "out_of_topics": "sur {{total}} thèmes",
+    "overall_progress": "Progression globale",
+    "across_all_roadmaps": "sur tous les parcours",
+    "study_time": "Temps d'étude",
+    "this_week": "cette semaine",
+    "your_roadmaps": "Vos parcours",
+    "new_roadmap": "Nouveau parcours",
+    "create_first_roadmap": "Créez votre premier parcours",
+    "create_first_roadmap_desc": "Dites-nous ce que vous préparez et notre IA créera un plan d'étude personnalisé pour vous",
+    "topics_completed_count": "{{completed}}/{{total}} thèmes terminés",
+    "target_label": "Objectif : {{date}}",
+    "study_materials": "Supports d'étude"
+  },
+  "streak": {
+    "day_streak": "{{count}} jours consécutifs !",
+    "start_streak": "Lancez votre série !",
+    "best": "Record : {{count}} jours",
+    "start_message": "Complétez un quiz, étudiez des fiches ou terminez un thème pour démarrer votre série !"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "Oups ! Page introuvable",
+    "return_home": "Retour à l'accueil"
+  },
+  "footer": {
+    "privacy_policy": "Politique de confidentialité",
+    "cookie_policy": "Politique de cookies",
+    "terms": "Conditions d'utilisation",
+    "contact": "Contact",
+    "manage_cookies": "Gérer les préférences de cookies",
+    "copyright": "© {{year}} Sestara. Tous droits réservés."
+  },
+  "settings": {
+    "title": "Paramètres",
+    "profile": "Profil",
+    "manage_account": "Gérez les informations de votre compte",
+    "display_name": "Nom d'affichage",
+    "enter_name": "Entrez votre nom",
+    "study_language": "Langue d'étude",
+    "study_language_desc": "Le contenu généré par l'IA (quiz, fiches, explications) sera dans votre langue choisie. Les termes techniques seront affichés en anglais et dans votre langue.",
+    "preferred_language": "Langue préférée",
+    "select_language": "Choisir une langue",
+    "language_note": "Note : Les libellés de l'interface restent en anglais. Seul le contenu d'apprentissage sera traduit.",
+    "save_changes": "Enregistrer les modifications",
+    "saved_success": "Paramètres enregistrés avec succès",
+    "saved_error": "Échec de l'enregistrement des paramètres"
+  }
+}
