@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Mail, Lock, User, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { z } from "zod";
 import sestaraLogo from "@/assets/sestara-logo.svg";
+import { SEOHead } from "@/components/SEOHead";
 
 const emailSchema = z.string().email("Please enter a valid email address");
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters");
@@ -81,6 +82,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      <SEOHead title="Sign In" description="Sign in or create your Sestara account to start learning with AI-powered roadmaps." path="/auth" />
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" />
