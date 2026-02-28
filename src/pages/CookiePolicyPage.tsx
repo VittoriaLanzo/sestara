@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
+import { SEOHead } from "@/components/SEOHead";
 
 const P = ({ children }: { children: React.ReactNode }) => (
   <p className="text-sm text-muted-foreground leading-relaxed mb-2">{children}</p>
@@ -10,6 +11,7 @@ const P = ({ children }: { children: React.ReactNode }) => (
 const CookiePolicyPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead title="Cookie Policy" description="Learn how Sestara uses cookies to keep your experience secure and functional." path="/cookie-policy" />
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-16 max-w-3xl">
         <nav className="flex items-center gap-1 text-sm text-muted-foreground mb-6">

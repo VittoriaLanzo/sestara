@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
+import { SEOHead } from "@/components/SEOHead";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="mb-10">
@@ -28,6 +29,7 @@ const Li = ({ children }: { children: React.ReactNode }) => (
 const PrivacyPolicyPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead title="Privacy Policy" description="How Sestara collects, uses, and protects your personal data under GDPR." path="/privacy-policy" />
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-16 max-w-3xl">
         <nav className="flex items-center gap-1 text-sm text-muted-foreground mb-6">
