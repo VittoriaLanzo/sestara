@@ -8,14 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { ChevronLeft, User, Languages, Save, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const languages = [
   { code: 'en', name: 'English' },
@@ -46,6 +43,7 @@ const SettingsPage = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const { profile, loading, updateProfile } = useProfile();
+  const { t } = useTranslation();
   
   const [displayName, setDisplayName] = useState('');
   const [studyLanguage, setStudyLanguage] = useState('en');
@@ -60,23 +58,12 @@ const SettingsPage = () => {
 
   const handleSave = async () => {
     setSaving(true);
-    const success = await updateProfile({
-      display_name: displayName || null,
-      study_language: studyLanguage,
-    });
+    const success = await updateProfile({ display_name: displayName || null, study_language: studyLanguage });
     setSaving(false);
-    
-    if (success) {
-      toast.success("Settings saved successfully");
-    } else {
-      toast.error("Failed to save settings");
-    }
+    if (success) { toast.success(t('settings.saved_success')); } else { toast.error(t('settings.saved_error')); }
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
-  };
+  const handleSignOut = async () => { await signOut(); navigate('/auth'); };
 
   if (loading) {
     return (
@@ -89,115 +76,62 @@ const SettingsPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
       </div>
 
       <main className="relative z-10 container mx-auto px-4 pt-24 pb-12 max-w-2xl">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate(-1)}
-          className="mb-6 text-muted-foreground hover:text-foreground"
-        >
+        <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-6 text-muted-foreground hover:text-foreground">
           <ChevronLeft className="w-4 h-4 mr-2" />
-          Back
+          {t('common.back')}
         </Button>
 
-        <h1 className="text-3xl font-display font-bold text-foreground mb-8">
-          Settings
-        </h1>
+        <h1 className="text-3xl font-display font-bold text-foreground mb-8">{t('settings.title')}</h1>
 
         <div className="space-y-6">
-          {/* Profile Settings */}
           <Card className="glass-card">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                Profile
-              </CardTitle>
-              <CardDescription>
-                Manage your account information
-              </CardDescription>
+              <CardTitle className="flex items-center gap-2"><User className="w-5 h-5" />{t('settings.profile')}</CardTitle>
+              <CardDescription>{t('settings.manage_account')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label>Email</Label>
+                <Label>{t('common.email')}</Label>
                 <Input value={user?.email || ''} disabled className="bg-muted" />
               </div>
               <div className="space-y-2">
-                <Label>Display Name</Label>
-                <Input
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="Enter your name"
-                />
+                <Label>{t('settings.display_name')}</Label>
+                <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder={t('settings.enter_name')} />
               </div>
             </CardContent>
           </Card>
 
-          {/* Language Settings */}
           <Card className="glass-card">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Languages className="w-5 h-5" />
-                Study Language
-              </CardTitle>
-              <CardDescription>
-                AI-generated content (quizzes, flashcards, explanations) will be in your selected language. 
-                Technical terms will be shown in both English and your chosen language.
-              </CardDescription>
+              <CardTitle className="flex items-center gap-2"><Languages className="w-5 h-5" />{t('settings.study_language')}</CardTitle>
+              <CardDescription>{t('settings.study_language_desc')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Label>Preferred Language</Label>
+                <Label>{t('settings.preferred_language')}</Label>
                 <Select value={studyLanguage} onValueChange={setStudyLanguage}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select language" />
-                  </SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={t('settings.select_language')} /></SelectTrigger>
                   <SelectContent>
-                    {languages.map((lang) => (
-                      <SelectItem key={lang.code} value={lang.code}>
-                        {lang.name}
-                      </SelectItem>
-                    ))}
+                    {languages.map((lang) => (<SelectItem key={lang.code} value={lang.code}>{lang.name}</SelectItem>))}
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Note: UI labels remain in English. Only learning content will be translated.
-                </p>
+                <p className="text-xs text-muted-foreground mt-2">{t('settings.language_note')}</p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Save Button */}
-          <Button
-            onClick={handleSave}
-            disabled={saving}
-            className="w-full gap-2"
-          >
-            {saving ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4" />
-                Save Changes
-              </>
-            )}
+          <Button onClick={handleSave} disabled={saving} className="w-full gap-2">
+            {saving ? (<><Loader2 className="w-4 h-4 animate-spin" />{t('common.saving')}</>) : (<><Save className="w-4 h-4" />{t('settings.save_changes')}</>)}
           </Button>
 
-          {/* Sign Out */}
-          <Button
-            variant="outline"
-            onClick={handleSignOut}
-            className="w-full text-destructive hover:text-destructive"
-          >
-            Sign Out
+          <Button variant="outline" onClick={handleSignOut} className="w-full text-destructive hover:text-destructive">
+            {t('common.sign_out')}
           </Button>
         </div>
       </main>
