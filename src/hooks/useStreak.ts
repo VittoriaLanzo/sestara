@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
-import { format, subDays, differenceInDays, parseISO, isToday, isYesterday } from "date-fns";
+import { format, subDays, parseISO, isToday, isYesterday } from "date-fns";
 
 interface StreakData {
   currentStreak: number;
@@ -59,19 +59,51 @@ export const useStreak = () => {
         weekData.push(activityDates.has(dateStr));
       }
 
-      // Calculate current streak
-      let currentStreak = streakRecord?.current_streak || 0;
-      let longestStreak = streakRecord?.longest_streak || 0;
+      // Calculate current streak from activity dates directly
+      // Sort all unique activity dates descending
+      const sortedDates = Array.from(activityDates).sort().reverse();
+      
+      // Also fetch more history to compute streak properly
+      const { data: allActivities } = await supabase
+        .from("study_activities")
+        .select("activity_date")
+        .eq("user_id", user.id)
+        .order("activity_date", { ascending: false });
 
-      // Check if streak needs to be reset (missed a day)
-      if (streakRecord?.last_activity_date) {
-        const lastActivityDate = parseISO(streakRecord.last_activity_date);
-        const daysDiff = differenceInDays(today, lastActivityDate);
-        
-        // If more than 1 day has passed without activity, reset streak
-        if (daysDiff > 1) {
-          currentStreak = activityDates.has(format(today, "yyyy-MM-dd")) ? 1 : 0;
+      const allDatesSet = new Set(allActivities?.map(a => a.activity_date) || []);
+      const todayStr = format(today, "yyyy-MM-dd");
+      
+      let currentStreak = 0;
+      if (allDatesSet.has(todayStr)) {
+        currentStreak = 1;
+        let checkDate = subDays(today, 1);
+        while (allDatesSet.has(format(checkDate, "yyyy-MM-dd"))) {
+          currentStreak++;
+          checkDate = subDays(checkDate, 1);
         }
+      }
+
+      let longestStreak = Math.max(streakRecord?.longest_streak || 0, currentStreak);
+
+      // Auto-create or update streak record to stay in sync
+      if (streakRecord) {
+        if (streakRecord.current_streak !== currentStreak || streakRecord.longest_streak !== longestStreak) {
+          await supabase
+            .from("user_streaks")
+            .update({
+              current_streak: currentStreak,
+              longest_streak: longestStreak,
+              last_activity_date: allDatesSet.has(todayStr) ? todayStr : streakRecord.last_activity_date,
+            })
+            .eq("user_id", user.id);
+        }
+      } else if (currentStreak > 0) {
+        await supabase.from("user_streaks").insert({
+          user_id: user.id,
+          current_streak: currentStreak,
+          longest_streak: longestStreak,
+          last_activity_date: todayStr,
+        });
       }
 
       setStreakData({
