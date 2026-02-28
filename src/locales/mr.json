@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "मागे",
+    "back_to_home": "होम वर परत जा",
+    "save": "सेव्ह करा",
+    "saving": "सेव्ह होत आहे...",
+    "cancel": "रद्द करा",
+    "delete": "हटवा",
+    "deleting": "हटवत आहे...",
+    "sign_in": "साइन इन",
+    "sign_up": "खाते तयार करा",
+    "sign_out": "साइन आउट",
+    "get_started": "सुरू करा",
+    "loading": "कृपया प्रतीक्षा करा...",
+    "search": "शोधा",
+    "profile": "प्रोफाइल",
+    "settings": "सेटिंग्ज",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "vs_last_week": "गेल्या आठवड्याच्या तुलनेत",
+    "duplicate": "प्रत तयार करा",
+    "duplicating": "प्रत तयार होत आहे..."
+  },
+  "landing": {
+    "badge": "AI-चालित शिक्षण प्लॅटफॉर्म",
+    "headline_start": "कोणत्याही विषयात प्रभुत्व मिळवा",
+    "headline_accent": "वैयक्तिक रोडमॅपसह",
+    "subtitle": "स्पर्धा परीक्षा, कॉलेज, नोकरीच्या मुलाखती किंवा प्रमाणपत्रांची तयारी करत आहात — Sestara तुमच्या उद्दिष्टांनुसार AI-चालित अभ्यास योजना तयार करतो.",
+    "cta": "मोफत शिकणे सुरू करा",
+    "features": {
+      "roadmaps_title": "AI रोडमॅप",
+      "roadmaps_desc": "तुमच्या उद्दिष्टांवर आधारित AI ने तयार केलेल्या वैयक्तिक अभ्यास योजना",
+      "tracking_title": "विषय ट्रॅकिंग",
+      "tracking_desc": "अनेक रोडमॅपमध्ये विषय स्तरावर प्रगती ट्रॅक करा",
+      "quizzes_title": "स्मार्ट क्विझ",
+      "quizzes_desc": "AI-निर्मित क्विझ आणि फ्लॅशकार्ड्सने तुमचे ज्ञान तपासा"
+    },
+    "security": {
+      "title": "सुरक्षा आणि अनुपालन",
+      "gdpr": "GDPR-अनुरूप डेटा प्रक्रिया",
+      "encryption": "ट्रान्झिटमध्ये एन्क्रिप्शन (TLS)",
+      "no_resale": "डेटा विक्री कधीच नाही",
+      "transparency": "पारदर्शक डेटा अधिकार",
+      "disclaimer": "सर्व तृतीय-पक्ष प्रोसेसर Article 28 GDPR अनुसार डेटा प्रोसेसिंग कराराने बांधलेले आहेत."
+    }
+  },
+  "auth": {
+    "welcome_back": "परत स्वागत आहे",
+    "create_account": "तुमचे खाते तयार करा",
+    "sign_in_subtitle": "तुमचा शिक्षण प्रवास सुरू ठेवण्यासाठी साइन इन करा",
+    "sign_up_subtitle": "तुमचा वैयक्तिक शिक्षण अनुभव सुरू करा",
+    "display_name": "प्रदर्शन नाव",
+    "display_name_placeholder": "तुमचे नाव",
+    "email_placeholder": "you@example.com",
+    "no_account": "खाते नाही?",
+    "have_account": "आधीच खाते आहे?",
+    "create_account_btn": "खाते तयार करा",
+    "invalid_credentials": "चुकीचा ईमेल किंवा पासवर्ड. पुन्हा प्रयत्न करा.",
+    "already_registered": "हा ईमेल आधीच नोंदणीकृत आहे. लॉग इन करून पहा.",
+    "welcome_back_toast": "परत स्वागत आहे!",
+    "account_created": "खाते यशस्वीरित्या तयार झाले!",
+    "invalid_email": "कृपया वैध ईमेल पत्ता प्रविष्ट करा",
+    "password_min": "पासवर्ड किमान ६ अक्षरांचा असावा"
+  },
+  "navbar": {
+    "dashboard": "डॅशबोर्ड",
+    "new_roadmap": "नवीन रोडमॅप",
+    "reminders": "स्मरणपत्रे",
+    "practice": "सराव"
+  },
+  "dashboard": {
+    "welcome_back": "परत स्वागत आहे",
+    "learning_dashboard_start": "तुमचे",
+    "learning_dashboard_accent": "शिक्षण डॅशबोर्ड",
+    "continue_message": "तुमचा शिक्षण प्रवास सुरू ठेवा किंवा नवीन रोडमॅप तयार करा",
+    "get_started_message": "तुमचा पहिला वैयक्तिक रोडमॅप तयार करून सुरू करा",
+    "active_roadmaps": "सक्रिय रोडमॅप",
+    "learning_paths": "शिक्षण मार्ग",
+    "topics_completed": "पूर्ण झालेले विषय",
+    "out_of_topics": "{{total}} विषयांपैकी",
+    "overall_progress": "एकूण प्रगती",
+    "across_all_roadmaps": "सर्व रोडमॅपमध्ये",
+    "study_time": "अभ्यासाचा वेळ",
+    "this_week": "या आठवड्यात",
+    "your_roadmaps": "तुमचे रोडमॅप",
+    "new_roadmap": "नवीन रोडमॅप",
+    "create_first_roadmap": "तुमचा पहिला रोडमॅप तयार करा",
+    "create_first_roadmap_desc": "तुम्ही कशाची तयारी करत आहात ते सांगा आणि आमचे AI तुमच्यासाठी वैयक्तिक अभ्यास योजना तयार करेल",
+    "topics_completed_count": "{{completed}}/{{total}} विषय पूर्ण",
+    "target_label": "लक्ष्य: {{date}}",
+    "study_materials": "अभ्यास साहित्य"
+  },
+  "streak": {
+    "day_streak": "{{count}} दिवसांची स्ट्रीक!",
+    "start_streak": "तुमची स्ट्रीक सुरू करा!",
+    "best": "सर्वोत्तम: {{count}} दिवस",
+    "start_message": "तुमची स्ट्रीक सुरू करण्यासाठी क्विझ द्या, फ्लॅशकार्ड्स वाचा किंवा एखादा विषय पूर्ण करा!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "अरेरे! पान सापडले नाही",
+    "return_home": "होम वर परत जा"
+  },
+  "footer": {
+    "privacy_policy": "गोपनीयता धोरण",
+    "cookie_policy": "कुकी धोरण",
+    "terms": "सेवा अटी",
+    "contact": "संपर्क",
+    "manage_cookies": "कुकी प्राधान्ये व्यवस्थापित करा",
+    "copyright": "© {{year}} Sestara. सर्व हक्क राखीव."
+  },
+  "settings": {
+    "title": "सेटिंग्ज",
+    "profile": "प्रोफाइल",
+    "manage_account": "तुमच्या खात्याची माहिती व्यवस्थापित करा",
+    "display_name": "प्रदर्शन नाव",
+    "enter_name": "तुमचे नाव प्रविष्ट करा",
+    "study_language": "अभ्यास भाषा",
+    "study_language_desc": "AI-निर्मित सामग्री (क्विझ, फ्लॅशकार्ड्स, स्पष्टीकरणे) तुमच्या निवडलेल्या भाषेत असेल.",
+    "preferred_language": "प्राधान्य भाषा",
+    "select_language": "भाषा निवडा",
+    "language_note": "टीप: UI लेबल्स इंग्रजीत राहतील. केवळ शिक्षण सामग्रीचे भाषांतर होईल.",
+    "save_changes": "बदल सेव्ह करा",
+    "saved_success": "सेटिंग्ज यशस्वीरित्या सेव्ह झाल्या",
+    "saved_error": "सेटिंग्ज सेव्ह करण्यात अयशस्वी"
+  }
+}

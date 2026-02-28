@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "वापस",
+    "back_to_home": "होम पर वापस जाएं",
+    "save": "सेव करें",
+    "saving": "सेव हो रहा है...",
+    "cancel": "रद्द करें",
+    "delete": "हटाएं",
+    "deleting": "हटा रहे हैं...",
+    "sign_in": "साइन इन",
+    "sign_up": "अकाउंट बनाएं",
+    "sign_out": "साइन आउट",
+    "get_started": "शुरू करें",
+    "loading": "कृपया प्रतीक्षा करें...",
+    "search": "खोजें",
+    "profile": "प्रोफ़ाइल",
+    "settings": "सेटिंग्स",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "vs_last_week": "पिछले हफ़्ते की तुलना में",
+    "duplicate": "कॉपी बनाएं",
+    "duplicating": "कॉपी बन रही है..."
+  },
+  "landing": {
+    "badge": "AI-संचालित लर्निंग प्लेटफ़ॉर्म",
+    "headline_start": "किसी भी विषय में महारत हासिल करें",
+    "headline_accent": "व्यक्तिगत रोडमैप के साथ",
+    "subtitle": "चाहे आप प्रतियोगी परीक्षाओं, कॉलेज, जॉब इंटरव्यू या सर्टिफिकेशन की तैयारी कर रहे हों — Sestara आपके लक्ष्यों के अनुसार AI-संचालित अध्ययन योजनाएं बनाता है।",
+    "cta": "मुफ़्त में सीखना शुरू करें",
+    "features": {
+      "roadmaps_title": "AI रोडमैप",
+      "roadmaps_desc": "आपके लक्ष्यों के आधार पर AI द्वारा तैयार व्यक्तिगत अध्ययन योजनाएं",
+      "tracking_title": "टॉपिक ट्रैकिंग",
+      "tracking_desc": "कई रोडमैप में टॉपिक-स्तर पर अपनी प्रगति ट्रैक करें",
+      "quizzes_title": "स्मार्ट क्विज़",
+      "quizzes_desc": "AI-जनित क्विज़ और फ़्लैशकार्ड से अपना ज्ञान परखें"
+    },
+    "security": {
+      "title": "सुरक्षा और अनुपालन",
+      "gdpr": "GDPR-अनुरूप डेटा प्रोसेसिंग",
+      "encryption": "ट्रांज़िट में एन्क्रिप्शन (TLS)",
+      "no_resale": "डेटा की बिक्री कभी नहीं",
+      "transparency": "पारदर्शी डेटा अधिकार",
+      "disclaimer": "सभी तृतीय-पक्ष प्रोसेसर Article 28 GDPR के अनुरूप डेटा प्रोसेसिंग समझौतों से बंधे हैं।"
+    }
+  },
+  "auth": {
+    "welcome_back": "वापस स्वागत है",
+    "create_account": "अपना अकाउंट बनाएं",
+    "sign_in_subtitle": "अपनी सीखने की यात्रा जारी रखने के लिए साइन इन करें",
+    "sign_up_subtitle": "अपना व्यक्तिगत सीखने का अनुभव शुरू करें",
+    "display_name": "प्रदर्शन नाम",
+    "display_name_placeholder": "आपका नाम",
+    "email_placeholder": "you@example.com",
+    "no_account": "अकाउंट नहीं है?",
+    "have_account": "पहले से अकाउंट है?",
+    "create_account_btn": "अकाउंट बनाएं",
+    "invalid_credentials": "गलत ईमेल या पासवर्ड। कृपया दोबारा कोशिश करें।",
+    "already_registered": "यह ईमेल पहले से पंजीकृत है। लॉग इन करके देखें।",
+    "welcome_back_toast": "वापस स्वागत है!",
+    "account_created": "अकाउंट सफलतापूर्वक बनाया गया!",
+    "invalid_email": "कृपया एक मान्य ईमेल पता दर्ज करें",
+    "password_min": "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए"
+  },
+  "navbar": {
+    "dashboard": "डैशबोर्ड",
+    "new_roadmap": "नया रोडमैप",
+    "reminders": "रिमाइंडर",
+    "practice": "अभ्यास"
+  },
+  "dashboard": {
+    "welcome_back": "वापस स्वागत है",
+    "learning_dashboard_start": "आपका",
+    "learning_dashboard_accent": "लर्निंग डैशबोर्ड",
+    "continue_message": "अपनी सीखने की यात्रा जारी रखें या एक नया रोडमैप बनाएं",
+    "get_started_message": "अपना पहला व्यक्तिगत रोडमैप बनाकर शुरुआत करें",
+    "active_roadmaps": "सक्रिय रोडमैप",
+    "learning_paths": "सीखने के रास्ते",
+    "topics_completed": "पूरे किए टॉपिक",
+    "out_of_topics": "{{total}} टॉपिक में से",
+    "overall_progress": "कुल प्रगति",
+    "across_all_roadmaps": "सभी रोडमैप में",
+    "study_time": "अध्ययन समय",
+    "this_week": "इस हफ़्ते",
+    "your_roadmaps": "आपके रोडमैप",
+    "new_roadmap": "नया रोडमैप",
+    "create_first_roadmap": "अपना पहला रोडमैप बनाएं",
+    "create_first_roadmap_desc": "बताएं कि आप किसकी तैयारी कर रहे हैं और हमारा AI आपके लिए एक व्यक्तिगत अध्ययन योजना बनाएगा",
+    "topics_completed_count": "{{completed}}/{{total}} टॉपिक पूरे",
+    "target_label": "लक्ष्य: {{date}}",
+    "study_materials": "अध्ययन सामग्री"
+  },
+  "streak": {
+    "day_streak": "{{count}} दिन की स्ट्रीक!",
+    "start_streak": "अपनी स्ट्रीक शुरू करें!",
+    "best": "सर्वश्रेष्ठ: {{count}} दिन",
+    "start_message": "अपनी स्ट्रीक शुरू करने के लिए एक क्विज़ दें, फ़्लैशकार्ड पढ़ें, या कोई टॉपिक पूरा करें!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "उफ़! पेज नहीं मिला",
+    "return_home": "होम पर वापस जाएं"
+  },
+  "footer": {
+    "privacy_policy": "गोपनीयता नीति",
+    "cookie_policy": "कुकी नीति",
+    "terms": "सेवा की शर्तें",
+    "contact": "संपर्क",
+    "manage_cookies": "कुकी प्राथमिकताएं प्रबंधित करें",
+    "copyright": "© {{year}} Sestara. सर्वाधिकार सुरक्षित।"
+  },
+  "settings": {
+    "title": "सेटिंग्स",
+    "profile": "प्रोफ़ाइल",
+    "manage_account": "अपनी खाता जानकारी प्रबंधित करें",
+    "display_name": "प्रदर्शन नाम",
+    "enter_name": "अपना नाम दर्ज करें",
+    "study_language": "अध्ययन भाषा",
+    "study_language_desc": "AI-जनित सामग्री (क्विज़, फ़्लैशकार्ड, व्याख्या) आपकी चुनी हुई भाषा में होगी। तकनीकी शब्द अंग्रेज़ी और आपकी चुनी हुई भाषा दोनों में दिखाए जाएंगे।",
+    "preferred_language": "पसंदीदा भाषा",
+    "select_language": "भाषा चुनें",
+    "language_note": "नोट: UI लेबल अंग्रेज़ी में रहेंगे। केवल सीखने की सामग्री का अनुवाद होगा।",
+    "save_changes": "बदलाव सेव करें",
+    "saved_success": "सेटिंग्स सफलतापूर्वक सेव हो गईं",
+    "saved_error": "सेटिंग्स सेव करने में विफल"
+  }
+}

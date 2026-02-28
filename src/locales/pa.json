@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "ਪਿੱਛੇ",
+    "back_to_home": "ਹੋਮ 'ਤੇ ਵਾਪਸ ਜਾਓ",
+    "save": "ਸੇਵ ਕਰੋ",
+    "saving": "ਸੇਵ ਹੋ ਰਿਹਾ ਹੈ...",
+    "cancel": "ਰੱਦ ਕਰੋ",
+    "delete": "ਮਿਟਾਓ",
+    "deleting": "ਮਿਟਾ ਰਿਹਾ ਹੈ...",
+    "sign_in": "ਸਾਈਨ ਇਨ",
+    "sign_up": "ਖਾਤਾ ਬਣਾਓ",
+    "sign_out": "ਸਾਈਨ ਆਊਟ",
+    "get_started": "ਸ਼ੁਰੂ ਕਰੋ",
+    "loading": "ਕਿਰਪਾ ਕਰਕੇ ਉਡੀਕ ਕਰੋ...",
+    "search": "ਖੋਜੋ",
+    "profile": "ਪ੍ਰੋਫਾਈਲ",
+    "settings": "ਸੈਟਿੰਗਾਂ",
+    "email": "ਈਮੇਲ",
+    "password": "ਪਾਸਵਰਡ",
+    "vs_last_week": "ਪਿਛਲੇ ਹਫ਼ਤੇ ਦੇ ਮੁਕਾਬਲੇ",
+    "duplicate": "ਕਾਪੀ ਬਣਾਓ",
+    "duplicating": "ਕਾਪੀ ਬਣ ਰਹੀ ਹੈ..."
+  },
+  "landing": {
+    "badge": "AI-ਸੰਚਾਲਿਤ ਸਿੱਖਣ ਪਲੇਟਫਾਰਮ",
+    "headline_start": "ਕਿਸੇ ਵੀ ਵਿਸ਼ੇ ਵਿੱਚ ਮੁਹਾਰਤ ਹਾਸਲ ਕਰੋ",
+    "headline_accent": "ਨਿੱਜੀ ਰੋਡਮੈਪਾਂ ਨਾਲ",
+    "subtitle": "ਮੁਕਾਬਲੇ ਦੀਆਂ ਪ੍ਰੀਖਿਆਵਾਂ, ਕਾਲਜ, ਨੌਕਰੀ ਦੀ ਇੰਟਰਵਿਊ ਜਾਂ ਸਰਟੀਫਿਕੇਸ਼ਨ ਲਈ ਤਿਆਰੀ ਕਰ ਰਹੇ ਹੋ — Sestara ਤੁਹਾਡੇ ਟੀਚਿਆਂ ਅਨੁਸਾਰ AI-ਸੰਚਾਲਿਤ ਪੜ੍ਹਾਈ ਯੋਜਨਾਵਾਂ ਬਣਾਉਂਦਾ ਹੈ।",
+    "cta": "ਮੁਫ਼ਤ ਵਿੱਚ ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ",
+    "features": {
+      "roadmaps_title": "AI ਰੋਡਮੈਪ",
+      "roadmaps_desc": "ਤੁਹਾਡੇ ਟੀਚਿਆਂ ਦੇ ਆਧਾਰ 'ਤੇ AI ਦੁਆਰਾ ਤਿਆਰ ਕੀਤੀਆਂ ਨਿੱਜੀ ਪੜ੍ਹਾਈ ਯੋਜਨਾਵਾਂ",
+      "tracking_title": "ਵਿਸ਼ਾ ਟਰੈਕਿੰਗ",
+      "tracking_desc": "ਕਈ ਰੋਡਮੈਪਾਂ ਵਿੱਚ ਵਿਸ਼ਾ ਪੱਧਰ 'ਤੇ ਤਰੱਕੀ ਟਰੈਕ ਕਰੋ",
+      "quizzes_title": "ਸਮਾਰਟ ਕੁਇਜ਼",
+      "quizzes_desc": "AI-ਤਿਆਰ ਕੁਇਜ਼ ਅਤੇ ਫਲੈਸ਼ਕਾਰਡਾਂ ਨਾਲ ਆਪਣਾ ਗਿਆਨ ਪਰਖੋ"
+    },
+    "security": {
+      "title": "ਸੁਰੱਖਿਆ ਅਤੇ ਪਾਲਣਾ",
+      "gdpr": "GDPR-ਅਨੁਕੂਲ ਡੇਟਾ ਪ੍ਰੋਸੈਸਿੰਗ",
+      "encryption": "ਟਰਾਂਜ਼ਿਟ ਵਿੱਚ ਐਨਕ੍ਰਿਪਸ਼ਨ (TLS)",
+      "no_resale": "ਡੇਟਾ ਦੀ ਵਿਕਰੀ ਕਦੇ ਨਹੀਂ",
+      "transparency": "ਪਾਰਦਰਸ਼ੀ ਡੇਟਾ ਅਧਿਕਾਰ",
+      "disclaimer": "ਸਾਰੇ ਤੀਜੀ-ਧਿਰ ਪ੍ਰੋਸੈਸਰ Article 28 GDPR ਅਨੁਸਾਰ ਡੇਟਾ ਪ੍ਰੋਸੈਸਿੰਗ ਸਮਝੌਤਿਆਂ ਨਾਲ ਬੱਝੇ ਹਨ।"
+    }
+  },
+  "auth": {
+    "welcome_back": "ਵਾਪਸ ਸੁਆਗਤ ਹੈ",
+    "create_account": "ਆਪਣਾ ਖਾਤਾ ਬਣਾਓ",
+    "sign_in_subtitle": "ਆਪਣੀ ਸਿੱਖਣ ਦੀ ਯਾਤਰਾ ਜਾਰੀ ਰੱਖਣ ਲਈ ਸਾਈਨ ਇਨ ਕਰੋ",
+    "sign_up_subtitle": "ਆਪਣਾ ਨਿੱਜੀ ਸਿੱਖਣ ਦਾ ਅਨੁਭਵ ਸ਼ੁਰੂ ਕਰੋ",
+    "display_name": "ਡਿਸਪਲੇ ਨਾਮ",
+    "display_name_placeholder": "ਤੁਹਾਡਾ ਨਾਮ",
+    "email_placeholder": "you@example.com",
+    "no_account": "ਖਾਤਾ ਨਹੀਂ ਹੈ?",
+    "have_account": "ਪਹਿਲਾਂ ਤੋਂ ਖਾਤਾ ਹੈ?",
+    "create_account_btn": "ਖਾਤਾ ਬਣਾਓ",
+    "invalid_credentials": "ਗਲਤ ਈਮੇਲ ਜਾਂ ਪਾਸਵਰਡ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "already_registered": "ਇਹ ਈਮੇਲ ਪਹਿਲਾਂ ਤੋਂ ਰਜਿਸਟਰ ਹੈ। ਲਾਗਇਨ ਕਰਕੇ ਵੇਖੋ।",
+    "welcome_back_toast": "ਵਾਪਸ ਸੁਆਗਤ ਹੈ!",
+    "account_created": "ਖਾਤਾ ਸਫਲਤਾਪੂਰਵਕ ਬਣਾਇਆ ਗਿਆ!",
+    "invalid_email": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ ਈਮੇਲ ਪਤਾ ਦਰਜ ਕਰੋ",
+    "password_min": "ਪਾਸਵਰਡ ਘੱਟੋ-ਘੱਟ 6 ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
+  },
+  "navbar": {
+    "dashboard": "ਡੈਸ਼ਬੋਰਡ",
+    "new_roadmap": "ਨਵਾਂ ਰੋਡਮੈਪ",
+    "reminders": "ਰੀਮਾਈਂਡਰ",
+    "practice": "ਅਭਿਆਸ"
+  },
+  "dashboard": {
+    "welcome_back": "ਵਾਪਸ ਸੁਆਗਤ ਹੈ",
+    "learning_dashboard_start": "ਤੁਹਾਡਾ",
+    "learning_dashboard_accent": "ਸਿੱਖਣ ਦਾ ਡੈਸ਼ਬੋਰਡ",
+    "continue_message": "ਆਪਣੀ ਸਿੱਖਣ ਦੀ ਯਾਤਰਾ ਜਾਰੀ ਰੱਖੋ ਜਾਂ ਨਵਾਂ ਰੋਡਮੈਪ ਬਣਾਓ",
+    "get_started_message": "ਆਪਣਾ ਪਹਿਲਾ ਨਿੱਜੀ ਰੋਡਮੈਪ ਬਣਾ ਕੇ ਸ਼ੁਰੂ ਕਰੋ",
+    "active_roadmaps": "ਸਰਗਰਮ ਰੋਡਮੈਪ",
+    "learning_paths": "ਸਿੱਖਣ ਦੇ ਰਸਤੇ",
+    "topics_completed": "ਪੂਰੇ ਕੀਤੇ ਵਿਸ਼ੇ",
+    "out_of_topics": "{{total}} ਵਿਸ਼ਿਆਂ ਵਿੱਚੋਂ",
+    "overall_progress": "ਕੁੱਲ ਤਰੱਕੀ",
+    "across_all_roadmaps": "ਸਾਰੇ ਰੋਡਮੈਪਾਂ ਵਿੱਚ",
+    "study_time": "ਪੜ੍ਹਾਈ ਦਾ ਸਮਾਂ",
+    "this_week": "ਇਸ ਹਫ਼ਤੇ",
+    "your_roadmaps": "ਤੁਹਾਡੇ ਰੋਡਮੈਪ",
+    "new_roadmap": "ਨਵਾਂ ਰੋਡਮੈਪ",
+    "create_first_roadmap": "ਆਪਣਾ ਪਹਿਲਾ ਰੋਡਮੈਪ ਬਣਾਓ",
+    "create_first_roadmap_desc": "ਦੱਸੋ ਤੁਸੀਂ ਕਿਸ ਦੀ ਤਿਆਰੀ ਕਰ ਰਹੇ ਹੋ ਅਤੇ ਸਾਡਾ AI ਤੁਹਾਡੇ ਲਈ ਨਿੱਜੀ ਪੜ੍ਹਾਈ ਯੋਜਨਾ ਬਣਾਏਗਾ",
+    "topics_completed_count": "{{completed}}/{{total}} ਵਿਸ਼ੇ ਪੂਰੇ",
+    "target_label": "ਟੀਚਾ: {{date}}",
+    "study_materials": "ਪੜ੍ਹਾਈ ਸਮੱਗਰੀ"
+  },
+  "streak": {
+    "day_streak": "{{count}} ਦਿਨਾਂ ਦੀ ਸਟ੍ਰੀਕ!",
+    "start_streak": "ਆਪਣੀ ਸਟ੍ਰੀਕ ਸ਼ੁਰੂ ਕਰੋ!",
+    "best": "ਸਭ ਤੋਂ ਵਧੀਆ: {{count}} ਦਿਨ",
+    "start_message": "ਆਪਣੀ ਸਟ੍ਰੀਕ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕੁਇਜ਼ ਦਿਓ, ਫਲੈਸ਼ਕਾਰਡ ਪੜ੍ਹੋ ਜਾਂ ਵਿਸ਼ਾ ਪੂਰਾ ਕਰੋ!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "ਓਹ! ਪੇਜ ਨਹੀਂ ਮਿਲਿਆ",
+    "return_home": "ਹੋਮ 'ਤੇ ਵਾਪਸ ਜਾਓ"
+  },
+  "footer": {
+    "privacy_policy": "ਗੋਪਨੀਯਤਾ ਨੀਤੀ",
+    "cookie_policy": "ਕੂਕੀ ਨੀਤੀ",
+    "terms": "ਸੇਵਾ ਦੀਆਂ ਸ਼ਰਤਾਂ",
+    "contact": "ਸੰਪਰਕ",
+    "manage_cookies": "ਕੂਕੀ ਤਰਜੀਹਾਂ ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
+    "copyright": "© {{year}} Sestara. ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ।"
+  },
+  "settings": {
+    "title": "ਸੈਟਿੰਗਾਂ",
+    "profile": "ਪ੍ਰੋਫਾਈਲ",
+    "manage_account": "ਆਪਣੇ ਖਾਤੇ ਦੀ ਜਾਣਕਾਰੀ ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
+    "display_name": "ਡਿਸਪਲੇ ਨਾਮ",
+    "enter_name": "ਆਪਣਾ ਨਾਮ ਦਰਜ ਕਰੋ",
+    "study_language": "ਪੜ੍ਹਾਈ ਦੀ ਭਾਸ਼ਾ",
+    "study_language_desc": "AI-ਤਿਆਰ ਸਮੱਗਰੀ (ਕੁਇਜ਼, ਫਲੈਸ਼ਕਾਰਡ, ਵਿਆਖਿਆ) ਤੁਹਾਡੀ ਚੁਣੀ ਹੋਈ ਭਾਸ਼ਾ ਵਿੱਚ ਹੋਵੇਗੀ।",
+    "preferred_language": "ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ",
+    "select_language": "ਭਾਸ਼ਾ ਚੁਣੋ",
+    "language_note": "ਨੋਟ: UI ਲੇਬਲ ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਰਹਿਣਗੇ। ਸਿਰਫ਼ ਸਿੱਖਣ ਦੀ ਸਮੱਗਰੀ ਦਾ ਅਨੁਵਾਦ ਹੋਵੇਗਾ।",
+    "save_changes": "ਬਦਲਾਅ ਸੇਵ ਕਰੋ",
+    "saved_success": "ਸੈਟਿੰਗਾਂ ਸਫਲਤਾਪੂਰਵਕ ਸੇਵ ਹੋ ਗਈਆਂ",
+    "saved_error": "ਸੈਟਿੰਗਾਂ ਸੇਵ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
+  }
+}

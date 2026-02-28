@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "뒤로",
+    "back_to_home": "홈으로 돌아가기",
+    "save": "저장",
+    "saving": "저장 중...",
+    "cancel": "취소",
+    "delete": "삭제",
+    "deleting": "삭제 중...",
+    "sign_in": "로그인",
+    "sign_up": "회원가입",
+    "sign_out": "로그아웃",
+    "get_started": "시작하기",
+    "loading": "잠시만 기다려 주세요...",
+    "search": "검색",
+    "profile": "프로필",
+    "settings": "설정",
+    "email": "이메일",
+    "password": "비밀번호",
+    "vs_last_week": "지난주 대비",
+    "duplicate": "복제",
+    "duplicating": "복제 중..."
+  },
+  "landing": {
+    "badge": "AI 기반 학습 플랫폼",
+    "headline_start": "어떤 과목이든 마스터하세요",
+    "headline_accent": "맞춤형 로드맵으로",
+    "subtitle": "시험 준비, 대학 입시, 취업 면접, 자격증 — 무엇을 준비하든 Sestara가 당신의 목표에 맞춘 AI 학습 계획을 만들어 드립니다.",
+    "cta": "무료로 학습 시작하기",
+    "features": {
+      "roadmaps_title": "AI 로드맵",
+      "roadmaps_desc": "당신의 목표에 기반한 AI 맞춤형 학습 계획",
+      "tracking_title": "주제별 추적",
+      "tracking_desc": "여러 로드맵에서 주제별로 진행 상황을 추적하세요",
+      "quizzes_title": "스마트 퀴즈",
+      "quizzes_desc": "AI가 만든 퀴즈와 플래시카드로 지식을 테스트하세요"
+    },
+    "security": {
+      "title": "보안 및 규정 준수",
+      "gdpr": "GDPR 준수 데이터 처리",
+      "encryption": "전송 중 암호화 (TLS)",
+      "no_resale": "데이터 판매 절대 불가",
+      "transparency": "투명한 데이터 권리",
+      "disclaimer": "모든 제3자 처리자는 GDPR 제28조에 따른 데이터 처리 계약에 구속됩니다."
+    }
+  },
+  "auth": {
+    "welcome_back": "다시 오셨군요!",
+    "create_account": "계정 만들기",
+    "sign_in_subtitle": "학습 여정을 계속하려면 로그인하세요",
+    "sign_up_subtitle": "맞춤형 학습 경험을 시작하세요",
+    "display_name": "표시 이름",
+    "display_name_placeholder": "당신의 이름",
+    "email_placeholder": "you@example.com",
+    "no_account": "계정이 없으신가요?",
+    "have_account": "이미 계정이 있으신가요?",
+    "create_account_btn": "계정 만들기",
+    "invalid_credentials": "이메일 또는 비밀번호가 올바르지 않습니다. 다시 시도해 주세요.",
+    "already_registered": "이 이메일은 이미 등록되어 있습니다. 로그인해 보세요.",
+    "welcome_back_toast": "다시 오신 걸 환영합니다!",
+    "account_created": "계정이 성공적으로 생성되었습니다!",
+    "invalid_email": "유효한 이메일 주소를 입력해 주세요",
+    "password_min": "비밀번호는 최소 6자 이상이어야 합니다"
+  },
+  "navbar": {
+    "dashboard": "대시보드",
+    "new_roadmap": "새 로드맵",
+    "reminders": "알림",
+    "practice": "연습"
+  },
+  "dashboard": {
+    "welcome_back": "다시 오셨군요!",
+    "learning_dashboard_start": "나의",
+    "learning_dashboard_accent": "학습 대시보드",
+    "continue_message": "학습 여정을 계속하거나 새 로드맵을 만드세요",
+    "get_started_message": "첫 번째 맞춤형 로드맵을 만들어 시작하세요",
+    "active_roadmaps": "진행 중인 로드맵",
+    "learning_paths": "학습 경로",
+    "topics_completed": "완료한 주제",
+    "out_of_topics": "{{total}}개 주제 중",
+    "overall_progress": "전체 진행률",
+    "across_all_roadmaps": "모든 로드맵에서",
+    "study_time": "학습 시간",
+    "this_week": "이번 주",
+    "your_roadmaps": "나의 로드맵",
+    "new_roadmap": "새 로드맵",
+    "create_first_roadmap": "첫 번째 로드맵 만들기",
+    "create_first_roadmap_desc": "무엇을 준비하고 있는지 알려주세요. AI가 맞춤형 학습 계획을 만들어 드립니다",
+    "topics_completed_count": "{{completed}}/{{total}}개 주제 완료",
+    "target_label": "목표: {{date}}",
+    "study_materials": "학습 자료"
+  },
+  "streak": {
+    "day_streak": "{{count}}일 연속!",
+    "start_streak": "연속 기록을 시작하세요!",
+    "best": "최고: {{count}}일",
+    "start_message": "퀴즈를 풀거나, 플래시카드를 공부하거나, 주제를 완료해서 연속 기록을 시작하세요!"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "이런! 페이지를 찾을 수 없습니다",
+    "return_home": "홈으로 돌아가기"
+  },
+  "footer": {
+    "privacy_policy": "개인정보 처리방침",
+    "cookie_policy": "쿠키 정책",
+    "terms": "이용약관",
+    "contact": "문의하기",
+    "manage_cookies": "쿠키 설정 관리",
+    "copyright": "© {{year}} Sestara. All rights reserved."
+  },
+  "settings": {
+    "title": "설정",
+    "profile": "프로필",
+    "manage_account": "계정 정보 관리",
+    "display_name": "표시 이름",
+    "enter_name": "이름을 입력하세요",
+    "study_language": "학습 언어",
+    "study_language_desc": "AI 생성 콘텐츠(퀴즈, 플래시카드, 설명)가 선택한 언어로 제공됩니다. 전문 용어는 영어와 선택한 언어 모두로 표시됩니다.",
+    "preferred_language": "선호 언어",
+    "select_language": "언어 선택",
+    "language_note": "참고: UI 라벨은 영어로 유지됩니다. 학습 콘텐츠만 번역됩니다.",
+    "save_changes": "변경 사항 저장",
+    "saved_success": "설정이 저장되었습니다",
+    "saved_error": "설정 저장에 실패했습니다"
+  }
+}

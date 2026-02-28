@@ -1,0 +1,127 @@
+{
+  "common": {
+    "back": "戻る",
+    "back_to_home": "ホームに戻る",
+    "save": "保存",
+    "saving": "保存中...",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "deleting": "削除中...",
+    "sign_in": "ログイン",
+    "sign_up": "アカウント作成",
+    "sign_out": "ログアウト",
+    "get_started": "始める",
+    "loading": "しばらくお待ちください...",
+    "search": "検索",
+    "profile": "プロフィール",
+    "settings": "設定",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "vs_last_week": "先週比",
+    "duplicate": "複製",
+    "duplicating": "複製中..."
+  },
+  "landing": {
+    "badge": "AI搭載の学習プラットフォーム",
+    "headline_start": "あらゆる科目をマスターしよう",
+    "headline_accent": "パーソナライズされたロードマップで",
+    "subtitle": "受験、就職活動、資格試験の準備中ですか？Sestaraがあなたの目標に合わせたAI学習プランを作成します。",
+    "cta": "無料で学習を始める",
+    "features": {
+      "roadmaps_title": "AIロードマップ",
+      "roadmaps_desc": "あなたの目標に基づいてAIが作成するパーソナライズされた学習プラン",
+      "tracking_title": "トピック追跡",
+      "tracking_desc": "複数のロードマップにわたってトピックレベルで進捗を追跡",
+      "quizzes_title": "スマートクイズ",
+      "quizzes_desc": "AI生成のクイズとフラッシュカードで知識をテスト"
+    },
+    "security": {
+      "title": "セキュリティとコンプライアンス",
+      "gdpr": "GDPR準拠のデータ処理",
+      "encryption": "通信の暗号化（TLS）",
+      "no_resale": "データの販売は一切なし",
+      "transparency": "透明性のあるデータ権利",
+      "disclaimer": "すべてのサードパーティプロセッサーは、GDPR第28条に準拠したデータ処理契約に拘束されています。"
+    }
+  },
+  "auth": {
+    "welcome_back": "おかえりなさい",
+    "create_account": "アカウントを作成",
+    "sign_in_subtitle": "学習の旅を続けるためにログインしてください",
+    "sign_up_subtitle": "パーソナライズされた学習体験を始めましょう",
+    "display_name": "表示名",
+    "display_name_placeholder": "あなたの名前",
+    "email_placeholder": "you@example.com",
+    "no_account": "アカウントをお持ちでないですか？",
+    "have_account": "すでにアカウントをお持ちですか？",
+    "create_account_btn": "アカウント作成",
+    "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。もう一度お試しください。",
+    "already_registered": "このメールアドレスは既に登録されています。ログインをお試しください。",
+    "welcome_back_toast": "おかえりなさい！",
+    "account_created": "アカウントが作成されました！",
+    "invalid_email": "有効なメールアドレスを入力してください",
+    "password_min": "パスワードは6文字以上必要です"
+  },
+  "navbar": {
+    "dashboard": "ダッシュボード",
+    "new_roadmap": "新しいロードマップ",
+    "reminders": "リマインダー",
+    "practice": "練習"
+  },
+  "dashboard": {
+    "welcome_back": "おかえりなさい",
+    "learning_dashboard_start": "あなたの",
+    "learning_dashboard_accent": "学習ダッシュボード",
+    "continue_message": "学習の旅を続けるか、新しいロードマップを作成しましょう",
+    "get_started_message": "最初のパーソナライズされたロードマップを作成して始めましょう",
+    "active_roadmaps": "アクティブなロードマップ",
+    "learning_paths": "学習パス",
+    "topics_completed": "完了したトピック",
+    "out_of_topics": "{{total}}トピック中",
+    "overall_progress": "全体の進捗",
+    "across_all_roadmaps": "すべてのロードマップで",
+    "study_time": "学習時間",
+    "this_week": "今週",
+    "your_roadmaps": "あなたのロードマップ",
+    "new_roadmap": "新しいロードマップ",
+    "create_first_roadmap": "最初のロードマップを作成",
+    "create_first_roadmap_desc": "何の準備をしているか教えてください。AIがあなた専用の学習プランを作成します",
+    "topics_completed_count": "{{completed}}/{{total}}トピック完了",
+    "target_label": "目標：{{date}}",
+    "study_materials": "学習教材"
+  },
+  "streak": {
+    "day_streak": "{{count}}日連続！",
+    "start_streak": "連続記録を始めよう！",
+    "best": "最長：{{count}}日",
+    "start_message": "クイズに挑戦、フラッシュカードを学習、またはトピックを完了して連続記録を始めましょう！"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "ページが見つかりません",
+    "return_home": "ホームに戻る"
+  },
+  "footer": {
+    "privacy_policy": "プライバシーポリシー",
+    "cookie_policy": "Cookieポリシー",
+    "terms": "利用規約",
+    "contact": "お問い合わせ",
+    "manage_cookies": "Cookie設定の管理",
+    "copyright": "© {{year}} Sestara. All rights reserved."
+  },
+  "settings": {
+    "title": "設定",
+    "profile": "プロフィール",
+    "manage_account": "アカウント情報を管理",
+    "display_name": "表示名",
+    "enter_name": "名前を入力",
+    "study_language": "学習言語",
+    "study_language_desc": "AI生成コンテンツ（クイズ、フラッシュカード、解説）は選択した言語で表示されます。専門用語は英語と選択した言語の両方で表示されます。",
+    "preferred_language": "優先言語",
+    "select_language": "言語を選択",
+    "language_note": "注意：UIラベルは英語のままです。学習コンテンツのみ翻訳されます。",
+    "save_changes": "変更を保存",
+    "saved_success": "設定が保存されました",
+    "saved_error": "設定の保存に失敗しました"
+  }
+}
