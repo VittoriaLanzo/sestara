@@ -61,6 +61,7 @@ i18n
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
       lookupLocalStorage: 'i18nextLng',
+      convertDetectedLanguage: (lng: string) => lng.split('-')[0].split('_')[0],
     },
   });
 
