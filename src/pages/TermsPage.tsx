@@ -25,7 +25,7 @@ const TermsPage = () => {
           <span className="text-foreground font-medium">Terms of Service</span>
         </nav>
         <h1 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-2">Terms of Service</h1>
-        <p className="text-sm text-muted-foreground mb-10">Last updated: {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>
+        <p className="text-sm text-muted-foreground mb-10">Last updated: 28 February 2026</p>
 
         <Section title="1. Service Description">
           <P>

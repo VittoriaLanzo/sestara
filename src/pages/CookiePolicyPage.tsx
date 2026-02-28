@@ -18,7 +18,7 @@ const CookiePolicyPage = () => {
           <span className="text-foreground font-medium">Cookie Policy</span>
         </nav>
         <h1 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-2">Cookie Policy</h1>
-        <p className="text-sm text-muted-foreground mb-10">Last updated: {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>
+        <p className="text-sm text-muted-foreground mb-10">Last updated: 28 February 2026</p>
 
         <section className="mb-10">
           <h2 className="font-display font-semibold text-xl text-foreground mb-3">1. What Are Cookies</h2>
@@ -61,20 +61,6 @@ const CookiePolicyPage = () => {
                   <td className="p-2">Security — prevents cross-site request forgery</td>
                   <td className="p-2">Session</td>
                   <td className="p-2">Sestara</td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="p-2 font-medium">Analytics</td>
-                  <td className="p-2">Usage analytics</td>
-                  <td className="p-2">Collects anonymised usage statistics to improve the service</td>
-                  <td className="p-2">Up to 2 years</td>
-                  <td className="p-2">[Analytics Provider]</td>
-                </tr>
-                <tr>
-                  <td className="p-2 font-medium">Marketing</td>
-                  <td className="p-2">Advertising identifiers</td>
-                  <td className="p-2">Delivers relevant advertisements</td>
-                  <td className="p-2">Up to 1 year</td>
-                  <td className="p-2">[Ad Provider]</td>
                 </tr>
               </tbody>
             </table>
