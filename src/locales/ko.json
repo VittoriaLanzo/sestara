@@ -109,6 +109,23 @@
     "manage_cookies": "쿠키 설정 관리",
     "copyright": "© {{year}} Sestara. All rights reserved."
   },
+  "cookies": {
+    "title": "쿠키 설정",
+    "description": "사이트의 필수 기능을 보장하기 위해 쿠키를 사용합니다. 비필수 쿠키는 명시적 동의가 있을 때만 설정됩니다.",
+    "read_policy": "쿠키 정책",
+    "reject": "비필수 거부",
+    "manage": "설정 관리",
+    "accept_all": "모두 수락",
+    "manage_title": "쿠키 설정 관리",
+    "essential_title": "필수 쿠키",
+    "essential_desc": "핵심 기능에 필요합니다. 비활성화할 수 없습니다.",
+    "analytics_title": "분석 쿠키",
+    "analytics_desc": "방문자가 사이트와 어떻게 상호작용하는지 이해하는 데 도움이 됩니다.",
+    "marketing_title": "마케팅 쿠키",
+    "marketing_desc": "관련 광고를 제공하는 데 사용됩니다.",
+    "manage_note": "푸터의 \"쿠키 설정 관리\" 링크를 통해 언제든지 설정을 변경할 수 있습니다.",
+    "save": "설정 저장"
+  },
   "settings": {
     "title": "설정",
     "profile": "프로필",

@@ -109,6 +109,23 @@
     "manage_cookies": "Gerenciar preferências de cookies",
     "copyright": "© {{year}} Sestara. Todos os direitos reservados."
   },
+  "cookies": {
+    "title": "Preferências de cookies",
+    "description": "Usamos cookies para garantir a funcionalidade essencial do site. Cookies não essenciais são ativados apenas com seu consentimento explícito.",
+    "read_policy": "Política de cookies",
+    "reject": "Rejeitar não essenciais",
+    "manage": "Gerenciar preferências",
+    "accept_all": "Aceitar todos",
+    "manage_title": "Gerenciar preferências de cookies",
+    "essential_title": "Cookies essenciais",
+    "essential_desc": "Necessários para a funcionalidade principal. Não podem ser desativados.",
+    "analytics_title": "Cookies analíticos",
+    "analytics_desc": "Ajudam a entender como os visitantes interagem com o site.",
+    "marketing_title": "Cookies de marketing",
+    "marketing_desc": "Usados para exibir anúncios relevantes.",
+    "manage_note": "Você pode alterar suas preferências a qualquer momento pelo link \"Gerenciar preferências de cookies\" no rodapé.",
+    "save": "Salvar preferências"
+  },
   "settings": {
     "title": "Configurações",
     "profile": "Perfil",

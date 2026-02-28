@@ -109,6 +109,23 @@
     "manage_cookies": "Cookie設定の管理",
     "copyright": "© {{year}} Sestara. All rights reserved."
   },
+  "cookies": {
+    "title": "Cookie の設定",
+    "description": "サイトの基本機能を確保するために Cookie を使用しています。必須でない Cookie は、お客様の明示的な同意がある場合のみ設定されます。",
+    "read_policy": "Cookie ポリシー",
+    "reject": "必須でないものを拒否",
+    "manage": "設定を管理",
+    "accept_all": "すべて受け入れる",
+    "manage_title": "Cookie の設定を管理",
+    "essential_title": "必須 Cookie",
+    "essential_desc": "基本機能に必要です。無効にできません。",
+    "analytics_title": "分析 Cookie",
+    "analytics_desc": "訪問者がサイトとどのようにやり取りしているかを理解するのに役立ちます。",
+    "marketing_title": "マーケティング Cookie",
+    "marketing_desc": "関連する広告を配信するために使用されます。",
+    "manage_note": "フッターの「Cookie の設定を管理」リンクからいつでも設定を変更できます。",
+    "save": "設定を保存"
+  },
   "settings": {
     "title": "設定",
     "profile": "プロフィール",
