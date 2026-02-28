@@ -32,7 +32,10 @@ const HeroArc = () => (
       return (
         <line
           key={i}
-          x1={cx} y1={cy} x2={ix} y2={iy}
+          x1={cx}
+          y1={cy}
+          x2={ix}
+          y2={iy}
           stroke="hsl(227 56% 25%)"
           strokeWidth={i % 3 === 0 ? "2.5" : "1.5"}
           strokeLinecap="round"
@@ -55,8 +58,8 @@ const HeroAlidade = () => {
     line.style.strokeDasharray = `${length}`;
     line.style.strokeDashoffset = `${length}`;
     requestAnimationFrame(() => {
-      line.style.transition = 'stroke-dashoffset 0.8s ease-out';
-      line.style.strokeDashoffset = '0';
+      line.style.transition = "stroke-dashoffset 0.8s ease-out";
+      line.style.strokeDashoffset = "0";
     });
     const timer = setTimeout(() => setAnimated(true), 800);
     return () => clearTimeout(timer);
@@ -66,7 +69,7 @@ const HeroAlidade = () => {
     const angle = (i * Math.PI) / 8 - Math.PI / 2;
     const r = i % 2 === 0 ? 12 : 5;
     return `${r * Math.cos(angle)},${r * Math.sin(angle)}`;
-  }).join(' ');
+  }).join(" ");
 
   return (
     <svg
@@ -89,10 +92,10 @@ const HeroAlidade = () => {
         fill="hsl(38 66% 48%)"
         transform="translate(440, 60)"
         style={{
-          transformOrigin: '440px 60px',
-          transition: animated ? 'none' : 'transform 0.3s ease-out',
+          transformOrigin: "440px 60px",
+          transition: animated ? "none" : "transform 0.3s ease-out",
           transform: `translate(440px, 60px) scale(${animated ? 1 : 1.08})`,
-          animation: animated ? 'none' : undefined,
+          animation: animated ? "none" : undefined,
         }}
         className={animated ? "animate-none" : ""}
       />
@@ -111,15 +114,12 @@ const Index = () => {
   }, [user, loading, navigate]);
 
   // Brand name as inline logo
-  const brandName = (
-    <span className="font-serif font-semibold text-accent">Sestara</span>
-  );
+  const brandName = <span className="font-serif font-semibold text-accent">Sestara</span>;
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-primary">
       <Navbar />
       <main className="relative z-10 container mx-auto px-4 pt-24 pb-32">
-
         <div className="max-w-4xl mx-auto text-center relative">
           {/* Arc background */}
           <HeroArc />
@@ -130,22 +130,31 @@ const Index = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-accent text-sm mb-6 animate-slide-up font-sans font-medium uppercase tracking-widest">
               AI-Powered Learning Platform
             </div>
-            
-            <h1 className="text-5xl md:text-7xl font-serif font-semibold text-white mb-8 hero-reveal" style={{ animationDelay: "0.1s", lineHeight: 1.1 }}>
-              Master any subject with{" "}
-              <span className="text-accent">personalized roadmaps</span>
+
+            <h1
+              className="text-5xl md:text-7xl font-serif font-semibold text-white mb-8 hero-reveal"
+              style={{ animationDelay: "0.1s", lineHeight: 1.1 }}
+            >
+              Master any subject with <span className="text-accent">personalized roadmaps</span>
             </h1>
-            
-            <p className="text-lg font-sans text-white/75 mb-10 max-w-[560px] mx-auto animate-slide-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
-              Whether you're preparing for competitive exams, college, job interviews, or certifications — {brandName} creates AI-powered study plans tailored to your goals.
+
+            <p
+              className="text-lg font-sans text-white/75 mb-10 max-w-[560px] mx-auto animate-slide-up leading-relaxed"
+              style={{ animationDelay: "0.2s" }}
+            >
+              Whether you're preparing for competitive exams, college, job interviews, or certifications — {brandName}{" "}
+              creates AI-powered study plans tailored to your goals.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
+            <div
+              className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up"
+              style={{ animationDelay: "0.3s" }}
+            >
               <Button
                 onClick={() => navigate("/auth")}
                 className="bg-white text-primary font-sans font-bold text-sm uppercase tracking-widest border-b-[3px] border-accent hover:brightness-[0.88] transition-all duration-150 h-14 px-10 rounded-xl text-lg gap-2"
               >
-                Start Learning Free <ChevronRight className="w-5 h-5" />
+                Start Learning for Free <ChevronRight className="w-5 h-5" />
               </Button>
             </div>
           </div>
@@ -154,11 +163,23 @@ const Index = () => {
         {/* Features */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 max-w-5xl mx-auto relative z-10">
           {[
-            { icon: Target, title: "AI Roadmaps", desc: "Get personalized study plans generated by AI based on your goals" },
-            { icon: BookOpen, title: "Topic Tracking", desc: "Track progress at granular topic level across multiple roadmaps" },
+            {
+              icon: Target,
+              title: "AI Roadmaps",
+              desc: "Get personalized study plans generated by AI based on your goals",
+            },
+            {
+              icon: BookOpen,
+              title: "Topic Tracking",
+              desc: "Track progress at granular topic level across multiple roadmaps",
+            },
             { icon: Zap, title: "Smart Quizzes", desc: "Test your knowledge with AI-generated quizzes and flashcards" },
           ].map((feature, i) => (
-            <div key={i} className="bg-card border border-border border-t-[3px] border-t-accent rounded-xl p-6 text-center animate-slide-up hover:-translate-y-[3px] hover:shadow-lg transition-all duration-200" style={{ animationDelay: `${0.4 + i * 0.1}s` }}>
+            <div
+              key={i}
+              className="bg-card border border-border border-t-[3px] border-t-accent rounded-xl p-6 text-center animate-slide-up hover:-translate-y-[3px] hover:shadow-lg transition-all duration-200"
+              style={{ animationDelay: `${0.4 + i * 0.1}s` }}
+            >
               <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mx-auto mb-4">
                 <feature.icon className="w-6 h-6 text-primary-foreground" />
               </div>
