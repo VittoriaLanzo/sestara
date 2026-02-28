@@ -219,6 +219,7 @@ body::after {
   }
 
   .animate-slide-up {
+    opacity: 0;
     animation: slide-up 0.5s ease-out forwards;
   }
 
