@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export type CookiePreferences = {
   essential: true;
@@ -81,31 +82,31 @@ export const CookieBanner = ({
   onRejectAll: () => void;
   onManage: () => void;
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[60] p-4 animate-slide-up" style={{ animationDelay: "0s" }}>
       <div className="container mx-auto max-w-3xl">
         <div className="bg-card border border-border rounded-xl p-5 shadow-lg">
           <div className="flex flex-col gap-4">
             <div>
-              <h3 className="font-display font-semibold text-foreground mb-1">Cookie Preferences</h3>
+              <h3 className="font-display font-semibold text-foreground mb-1">{t('cookies.title')}</h3>
               <p className="text-sm text-muted-foreground">
-                We use cookies to ensure essential site functionality. Non-essential cookies are only set with your explicit consent.
-                Read our{" "}
+                {t('cookies.description')}{" "}
                 <Link to="/cookie-policy" className="text-primary underline underline-offset-2">
-                  Cookie Policy
+                  {t('cookies.read_policy')}
                 </Link>{" "}
-                for details.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
               <Button variant="outline" size="sm" onClick={onRejectAll}>
-                Reject Non-Essential
+                {t('cookies.reject')}
               </Button>
               <Button variant="outline" size="sm" onClick={onManage}>
-                Manage Preferences
+                {t('cookies.manage')}
               </Button>
               <Button size="sm" onClick={onAcceptAll}>
-                Accept All
+                {t('cookies.accept_all')}
               </Button>
             </div>
           </div>
@@ -130,6 +131,7 @@ export const CookieManageDialog = ({
 }) => {
   const [analytics, setAnalytics] = useState(initialAnalytics);
   const [marketing, setMarketing] = useState(initialMarketing);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setAnalytics(initialAnalytics);
@@ -145,42 +147,42 @@ export const CookieManageDialog = ({
         <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
           <X className="w-5 h-5" />
         </button>
-        <h2 className="font-display font-semibold text-lg text-foreground mb-4">Manage Cookie Preferences</h2>
+        <h2 className="font-display font-semibold text-lg text-foreground mb-4">{t('cookies.manage_title')}</h2>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
             <div>
-              <p className="text-sm font-medium text-foreground">Essential Cookies</p>
-              <p className="text-xs text-muted-foreground">Required for core functionality. Cannot be disabled.</p>
+              <p className="text-sm font-medium text-foreground">{t('cookies.essential_title')}</p>
+              <p className="text-xs text-muted-foreground">{t('cookies.essential_desc')}</p>
             </div>
             <Switch checked disabled />
           </div>
 
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
             <div>
-              <p className="text-sm font-medium text-foreground">Analytics Cookies</p>
-              <p className="text-xs text-muted-foreground">Help us understand how visitors interact with the site.</p>
+              <p className="text-sm font-medium text-foreground">{t('cookies.analytics_title')}</p>
+              <p className="text-xs text-muted-foreground">{t('cookies.analytics_desc')}</p>
             </div>
             <Switch checked={analytics} onCheckedChange={setAnalytics} />
           </div>
 
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
             <div>
-              <p className="text-sm font-medium text-foreground">Marketing Cookies</p>
-              <p className="text-xs text-muted-foreground">Used to deliver relevant advertisements.</p>
+              <p className="text-sm font-medium text-foreground">{t('cookies.marketing_title')}</p>
+              <p className="text-xs text-muted-foreground">{t('cookies.marketing_desc')}</p>
             </div>
             <Switch checked={marketing} onCheckedChange={setMarketing} />
           </div>
         </div>
 
         <p className="text-xs text-muted-foreground mt-4">
-          You can change your preferences at any time via the "Manage Cookie Preferences" link in the footer.
-          See our <Link to="/cookie-policy" className="text-primary underline underline-offset-2">Cookie Policy</Link> for more information.
+          {t('cookies.manage_note')}{" "}
+          <Link to="/cookie-policy" className="text-primary underline underline-offset-2">{t('cookies.read_policy')}</Link>
         </p>
 
         <div className="flex gap-2 mt-5">
-          <Button variant="outline" size="sm" onClick={onClose}>Cancel</Button>
-          <Button size="sm" onClick={() => onSave(analytics, marketing)}>Save Preferences</Button>
+          <Button variant="outline" size="sm" onClick={onClose}>{t('common.cancel')}</Button>
+          <Button size="sm" onClick={() => onSave(analytics, marketing)}>{t('cookies.save')}</Button>
         </div>
       </div>
     </div>

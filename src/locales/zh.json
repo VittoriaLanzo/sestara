@@ -109,6 +109,23 @@
     "manage_cookies": "管理 Cookie 偏好",
     "copyright": "© {{year}} Sestara。保留所有权利。"
   },
+  "cookies": {
+    "title": "Cookie 偏好设置",
+    "description": "我们使用 Cookie 来确保网站的基本功能。非必要 Cookie 仅在您明确同意后才会启用。",
+    "read_policy": "Cookie 政策",
+    "reject": "拒绝非必要",
+    "manage": "管理偏好设置",
+    "accept_all": "全部接受",
+    "manage_title": "管理 Cookie 偏好设置",
+    "essential_title": "必要 Cookie",
+    "essential_desc": "核心功能所必需，无法禁用。",
+    "analytics_title": "分析 Cookie",
+    "analytics_desc": "帮助我们了解访客如何与网站互动。",
+    "marketing_title": "营销 Cookie",
+    "marketing_desc": "用于展示相关广告。",
+    "manage_note": "您可以随时通过页脚中的「管理 Cookie 偏好设置」链接更改您的偏好。",
+    "save": "保存偏好设置"
+  },
   "settings": {
     "title": "设置",
     "profile": "个人资料",

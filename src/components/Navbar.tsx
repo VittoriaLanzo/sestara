@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import sestaraLogo from "@/assets/sestara-logo.svg";
+import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,6 +24,7 @@ export const Navbar = () => {
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
+  const { t } = useTranslation();
   
   const displayName = profile?.display_name || user?.email?.split('@')[0] || 'User';
   const initials = displayName.slice(0, 2).toUpperCase();
@@ -88,19 +90,19 @@ export const Navbar = () => {
               <div className="hidden md:flex items-center gap-6">
                 <Link to="/dashboard" className={navLinkClass('/dashboard')}>
                   <LayoutDashboard className="w-4 h-4" />
-                  Dashboard
+                  {t('navbar.dashboard')}
                 </Link>
                 <Link to="/onboarding" className={navLinkClass('/onboarding')}>
                   <Map className="w-4 h-4" />
-                  New Roadmap
+                  {t('navbar.new_roadmap')}
                 </Link>
                 <Link to="/important-dates" className={navLinkClass('/important-dates')}>
                   <Bell className="w-4 h-4" />
-                  Reminders
+                  {t('navbar.reminders')}
                 </Link>
                 <Link to="/custom-quiz" className={navLinkClass('/custom-quiz')}>
                   <GraduationCap className="w-4 h-4" />
-                  Practice
+                  {t('navbar.practice')}
                 </Link>
               </div>
             )}
@@ -116,7 +118,7 @@ export const Navbar = () => {
                     className="text-muted-foreground hover:text-foreground border-border hover:border-foreground/40 hover:bg-accent/5 gap-2 px-3"
                   >
                     <Search className="w-4 h-4" />
-                    <span className="text-xs">Search</span>
+                    <span className="text-xs">{t('common.search')}</span>
                     <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
                       <span className="text-xs">⌘</span>K
                     </kbd>
@@ -139,16 +141,16 @@ export const Navbar = () => {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
                         <User className="w-4 h-4 mr-2" />
-                        Profile
+                        {t('common.profile')}
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
                         <Settings className="w-4 h-4 mr-2" />
-                        Settings
+                        {t('common.settings')}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive focus:text-destructive">
                         <LogOut className="w-4 h-4 mr-2" />
-                        Sign Out
+                        {t('common.sign_out')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -160,13 +162,13 @@ export const Navbar = () => {
                     onClick={() => navigate("/auth")}
                     className="text-muted-foreground hover:text-foreground hover:bg-accent/5"
                   >
-                    Sign In
+                    {t('common.sign_in')}
                   </Button>
                   <Button
                     onClick={() => navigate("/auth")}
                     className="bg-primary text-primary-foreground font-sans font-bold text-sm uppercase tracking-widest border-b-[3px] border-accent hover:brightness-[0.88] transition-all duration-150"
                   >
-                    Get Started
+                    {t('common.get_started')}
                   </Button>
                 </div>
               )}
@@ -187,34 +189,34 @@ export const Navbar = () => {
                     className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-accent/5 flex items-center gap-2"
                   >
                     <Search className="w-4 h-4" />
-                    Search
+                    {t('common.search')}
                   </button>
                   <Link to="/dashboard" className={mobileLinkClass('/dashboard')} onClick={() => setIsMenuOpen(false)}>
                     <LayoutDashboard className="w-4 h-4" />
-                    Dashboard
+                    {t('navbar.dashboard')}
                   </Link>
                   <Link to="/onboarding" className={mobileLinkClass('/onboarding')} onClick={() => setIsMenuOpen(false)}>
                     <Map className="w-4 h-4" />
-                    New Roadmap
+                    {t('navbar.new_roadmap')}
                   </Link>
                   <Link to="/important-dates" className={mobileLinkClass('/important-dates')} onClick={() => setIsMenuOpen(false)}>
                     <Bell className="w-4 h-4" />
-                    Reminders
+                    {t('navbar.reminders')}
                   </Link>
                   <Link to="/custom-quiz" className={mobileLinkClass('/custom-quiz')} onClick={() => setIsMenuOpen(false)}>
                     <GraduationCap className="w-4 h-4" />
-                    Practice
+                    {t('navbar.practice')}
                   </Link>
                   <Link to="/settings" className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-accent/5 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
                     <Settings className="w-4 h-4" />
-                    Settings
+                    {t('common.settings')}
                   </Link>
                   <button 
                     onClick={handleSignOut} 
                     className="px-3 py-2 rounded-lg text-destructive hover:bg-accent/5 text-left flex items-center gap-2"
                   >
                     <LogOut className="w-4 h-4" />
-                    Sign Out
+                    {t('common.sign_out')}
                   </button>
                 </>
               ) : (
@@ -223,13 +225,13 @@ export const Navbar = () => {
                     onClick={() => { navigate("/auth"); setIsMenuOpen(false); }}
                     className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-accent/5 flex items-center gap-2"
                   >
-                    Sign In
+                    {t('common.sign_in')}
                   </button>
                   <button
                     onClick={() => { navigate("/auth"); setIsMenuOpen(false); }}
                     className="px-3 py-2 rounded-lg text-accent font-semibold hover:bg-accent/5 flex items-center gap-2"
                   >
-                    Get Started
+                    {t('common.get_started')}
                   </button>
                 </>
               )}

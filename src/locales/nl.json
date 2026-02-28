@@ -109,6 +109,23 @@
     "manage_cookies": "Cookievoorkeuren beheren",
     "copyright": "© {{year}} Sestara. Alle rechten voorbehouden."
   },
+  "cookies": {
+    "title": "Cookie-voorkeuren",
+    "description": "We gebruiken cookies om de essentiële functionaliteit van de site te garanderen. Niet-essentiële cookies worden alleen ingesteld met uw uitdrukkelijke toestemming.",
+    "read_policy": "Cookiebeleid",
+    "reject": "Niet-essentiële afwijzen",
+    "manage": "Voorkeuren beheren",
+    "accept_all": "Alles accepteren",
+    "manage_title": "Cookie-voorkeuren beheren",
+    "essential_title": "Essentiële cookies",
+    "essential_desc": "Vereist voor kernfunctionaliteit. Kan niet worden uitgeschakeld.",
+    "analytics_title": "Analytische cookies",
+    "analytics_desc": "Helpen ons te begrijpen hoe bezoekers de site gebruiken.",
+    "marketing_title": "Marketing cookies",
+    "marketing_desc": "Worden gebruikt om relevante advertenties te tonen.",
+    "manage_note": "U kunt uw voorkeuren op elk moment wijzigen via de link \"Cookie-voorkeuren beheren\" in de voettekst.",
+    "save": "Voorkeuren opslaan"
+  },
   "settings": {
     "title": "Instellingen",
     "profile": "Profiel",

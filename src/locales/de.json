@@ -109,6 +109,23 @@
     "manage_cookies": "Cookie-Einstellungen verwalten",
     "copyright": "© {{year}} Sestara. Alle Rechte vorbehalten."
   },
+  "cookies": {
+    "title": "Cookie-Einstellungen",
+    "description": "Wir verwenden Cookies, um die wesentliche Funktionalität der Website sicherzustellen. Nicht wesentliche Cookies werden nur mit Ihrer ausdrücklichen Zustimmung gesetzt.",
+    "read_policy": "Cookie-Richtlinie",
+    "reject": "Nicht wesentliche ablehnen",
+    "manage": "Einstellungen verwalten",
+    "accept_all": "Alle akzeptieren",
+    "manage_title": "Cookie-Einstellungen verwalten",
+    "essential_title": "Wesentliche Cookies",
+    "essential_desc": "Für die Kernfunktionalität erforderlich. Können nicht deaktiviert werden.",
+    "analytics_title": "Analyse-Cookies",
+    "analytics_desc": "Helfen uns zu verstehen, wie Besucher mit der Website interagieren.",
+    "marketing_title": "Marketing-Cookies",
+    "marketing_desc": "Werden verwendet, um relevante Werbung anzuzeigen.",
+    "manage_note": "Sie können Ihre Einstellungen jederzeit über den Link \"Cookie-Einstellungen verwalten\" in der Fußzeile ändern.",
+    "save": "Einstellungen speichern"
+  },
   "settings": {
     "title": "Einstellungen",
     "profile": "Profil",
