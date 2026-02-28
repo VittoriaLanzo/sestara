@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { 
   useChallengeByCode, 
   useChallengeLeaderboard,
-  useSubmitChallengeAttempt 
+  useSubmitChallengeAttempt,
+  useScoreChallengeAttempt
 } from "@/hooks/useChallenges";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
@@ -29,7 +30,8 @@ import { toast } from "sonner";
    
    const { data: challenge, isLoading, isError } = useChallengeByCode(code || null);
    const { data: leaderboard = [] } = useChallengeLeaderboard(challenge?.id || null);
-   const submitAttempt = useSubmitChallengeAttempt();
+    const submitAttempt = useSubmitChallengeAttempt();
+    const scoreChallengeAttempt = useScoreChallengeAttempt();
  
    const [isPlaying, setIsPlaying] = useState(false);
    const [showResults, setShowResults] = useState(false);
@@ -52,26 +54,33 @@ import { toast } from "sonner";
      setShowResults(false);
    };
  
-   const handleQuizComplete = async (answers: Record<string, string>, score: number, timeTaken: number) => {
-     setQuizAnswers(answers);
-     setQuizScore(score);
-     setQuizTime(timeTaken);
-     setIsPlaying(false);
-     setShowResults(true);
- 
-     // Submit the attempt
-     if (challenge && user) {
-       const userName = profile?.display_name || user.email?.split('@')[0] || 'Anonymous';
-       await submitAttempt.mutateAsync({
-         challengeId: challenge.id,
-         userName,
-         score,
-         maxScore: challenge.quizData.questions.length,
-         timeTakenSeconds: timeTaken,
-         answers,
-       });
-     }
-   };
+    const handleQuizComplete = async (answers: Record<string, string>, _clientScore: number, timeTaken: number) => {
+      setQuizAnswers(answers);
+      setQuizTime(timeTaken);
+      setIsPlaying(false);
+      setShowResults(true);
+
+      // Score server-side to prevent cheating
+      if (challenge && user) {
+        try {
+          const result = await scoreChallengeAttempt(challenge.id, answers);
+          setQuizScore(result.score);
+          
+          const userName = profile?.display_name || user.email?.split('@')[0] || 'Anonymous';
+          await submitAttempt.mutateAsync({
+            challengeId: challenge.id,
+            userName,
+            score: result.score,
+            maxScore: result.maxScore,
+            timeTakenSeconds: timeTaken,
+            answers,
+          });
+        } catch (err) {
+          console.error('Server-side scoring failed:', err);
+          toast.error("Failed to submit your score");
+        }
+      }
+    };
  
    const handleRetake = () => {
      setQuizAnswers({});
