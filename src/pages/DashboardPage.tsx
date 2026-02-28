@@ -11,16 +11,9 @@ import { CompactRemindersWidget } from "@/components/reminders/CompactRemindersW
 import { Button } from "@/components/ui/button";
 import { ProgressRing } from "@/components/ProgressRing";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 import {
-  BookOpen,
-  Target,
-  Clock,
-  Plus,
-  ChevronRight,
-  Sparkles,
-  Loader2,
-  Map,
-  Video,
+  BookOpen, Target, Clock, Plus, ChevronRight, Sparkles, Loader2, Map, Video,
 } from "lucide-react";
 
 interface RoadmapWithProgress {
@@ -39,6 +32,7 @@ const DashboardPage = () => {
   const navigate = useNavigate();
   const { currentStreak, longestStreak, weekData, loading: streakLoading } = useStreak();
   const { totalMinutesThisWeek, formatTime, loading: studyTimeLoading } = useStudyTime();
+  const { t } = useTranslation();
 
   const [roadmaps, setRoadmaps] = useState<RoadmapWithProgress[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +45,6 @@ const DashboardPage = () => {
 
   const fetchData = async () => {
     try {
-      // Fetch profile
       const { data: profile } = await supabase
         .from("profiles")
         .select("display_name")
@@ -62,7 +55,6 @@ const DashboardPage = () => {
         setDisplayName(profile.display_name);
       }
 
-      // Fetch roadmaps
       const { data: roadmapsData, error: roadmapsError } = await supabase
         .from("roadmaps")
         .select("*")
@@ -74,10 +66,8 @@ const DashboardPage = () => {
         return;
       }
 
-      // For each roadmap, calculate progress
       const roadmapsWithProgress: RoadmapWithProgress[] = await Promise.all(
         (roadmapsData || []).map(async (roadmap) => {
-          // Get subjects
           const { data: subjects } = await supabase
             .from("subjects")
             .select("id")
@@ -87,7 +77,6 @@ const DashboardPage = () => {
             return { ...roadmap, totalTopics: 0, completedTopics: 0, progress: 0 };
           }
 
-          // Get topics
           const subjectIds = subjects.map((s) => s.id);
           const { data: topics } = await supabase
             .from("topics")
@@ -126,145 +115,80 @@ const DashboardPage = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
       </div>
 
       <main className="relative z-10 container mx-auto px-4 pt-24 pb-12">
-        {/* Welcome Section */}
         <div className="mb-8 animate-slide-up">
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
             <span>👋</span>
-            <span>Welcome back{displayName ? `, ${displayName}` : ""}</span>
+            <span>{t('dashboard.welcome_back')}{displayName ? `, ${displayName}` : ""}</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">
-            Your <span className="gradient-text">learning dashboard</span>
+            {t('dashboard.learning_dashboard_start')} <span className="gradient-text">{t('dashboard.learning_dashboard_accent')}</span>
           </h1>
           <p className="text-muted-foreground">
-            {roadmaps.length > 0
-              ? "Continue your learning journey or create a new roadmap"
-              : "Get started by creating your first personalized roadmap"}
+            {roadmaps.length > 0 ? t('dashboard.continue_message') : t('dashboard.get_started_message')}
           </p>
         </div>
 
-        {/* Stats Grid */}
         {roadmaps.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <StatCard
-              title="Active Roadmaps"
-              value={roadmaps.length}
-              subtitle="learning paths"
-              icon={Map}
-              className="animate-slide-up stagger-1"
-            />
-            <StatCard
-              title="Topics Completed"
-              value={completedTopics}
-              subtitle={`out of ${totalTopics} topics`}
-              icon={BookOpen}
-              className="animate-slide-up stagger-2"
-            />
-            <StatCard
-              title="Overall Progress"
-              value={`${overallProgress}%`}
-              subtitle="across all roadmaps"
-              icon={Target}
-              className="animate-slide-up stagger-3"
-            />
-            <StatCard
-              title="Study Time"
-              value={studyTimeLoading ? "..." : formatTime(totalMinutesThisWeek)}
-              subtitle="this week"
-              icon={Clock}
-              className="animate-slide-up stagger-4"
-            />
+            <StatCard title={t('dashboard.active_roadmaps')} value={roadmaps.length} subtitle={t('dashboard.learning_paths')} icon={Map} className="animate-slide-up stagger-1" />
+            <StatCard title={t('dashboard.topics_completed')} value={completedTopics} subtitle={t('dashboard.out_of_topics', { total: totalTopics })} icon={BookOpen} className="animate-slide-up stagger-2" />
+            <StatCard title={t('dashboard.overall_progress')} value={`${overallProgress}%`} subtitle={t('dashboard.across_all_roadmaps')} icon={Target} className="animate-slide-up stagger-3" />
+            <StatCard title={t('dashboard.study_time')} value={studyTimeLoading ? "..." : formatTime(totalMinutesThisWeek)} subtitle={t('dashboard.this_week')} icon={Clock} className="animate-slide-up stagger-4" />
           </div>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Roadmaps List */}
             <div className="animate-slide-up" style={{ animationDelay: "0.3s" }}>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-display font-semibold text-foreground">Your Roadmaps</h2>
-                <Button
-                  variant="gradient"
-                  size="sm"
-                  onClick={() => navigate("/onboarding")}
-                  className="gap-2"
-                >
+                <h2 className="text-xl font-display font-semibold text-foreground">{t('dashboard.your_roadmaps')}</h2>
+                <Button variant="gradient" size="sm" onClick={() => navigate("/onboarding")} className="gap-2">
                   <Plus className="w-4 h-4" />
-                  New Roadmap
+                  {t('dashboard.new_roadmap')}
                 </Button>
               </div>
 
               {roadmaps.length === 0 ? (
                 <div className="glass-card p-12 text-center">
-                   <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4">
-                     <Sparkles className="w-8 h-8 text-accent" />
-                   </div>
-                  <h3 className="text-xl font-display font-semibold text-foreground mb-2">
-                    Create your first roadmap
-                  </h3>
-                  <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                    Tell us what you're preparing for and our AI will generate a personalized study plan
-                  </p>
+                  <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4">
+                    <Sparkles className="w-8 h-8 text-accent" />
+                  </div>
+                  <h3 className="text-xl font-display font-semibold text-foreground mb-2">{t('dashboard.create_first_roadmap')}</h3>
+                  <p className="text-muted-foreground mb-6 max-w-md mx-auto">{t('dashboard.create_first_roadmap_desc')}</p>
                   <Button variant="gradient" size="lg" onClick={() => navigate("/onboarding")} className="gap-2">
                     <Sparkles className="w-5 h-5" />
-                    Get Started
+                    {t('common.get_started')}
                   </Button>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {roadmaps.map((roadmap, index) => (
-                    <div
-                      key={roadmap.id}
-                      className={cn(
-                        "glass-card p-5 hover-lift animate-slide-up"
-                      )}
-                      style={{ animationDelay: `${0.1 * (index + 1)}s` }}
-                    >
-                      <button
-                        onClick={() => navigate(`/roadmap/${roadmap.id}`)}
-                        className="w-full flex items-center gap-4 text-left"
-                      >
+                    <div key={roadmap.id} className={cn("glass-card p-5 hover-lift animate-slide-up")} style={{ animationDelay: `${0.1 * (index + 1)}s` }}>
+                      <button onClick={() => navigate(`/roadmap/${roadmap.id}`)} className="w-full flex items-center gap-4 text-left">
                         <ProgressRing progress={roadmap.progress} size={56} strokeWidth={4}>
                           <span className="text-xs font-semibold text-foreground">{roadmap.progress}%</span>
                         </ProgressRing>
-
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-display font-semibold text-foreground truncate group-hover:text-primary transition-colors">
-                            {roadmap.title}
-                          </h3>
+                          <h3 className="font-display font-semibold text-foreground truncate group-hover:text-primary transition-colors">{roadmap.title}</h3>
                           <p className="text-sm text-muted-foreground">
-                            {roadmap.completedTopics}/{roadmap.totalTopics} topics completed
+                            {t('dashboard.topics_completed_count', { completed: roadmap.completedTopics, total: roadmap.totalTopics })}
                             {roadmap.target_date && (
-                              <span className="ml-2">
-                                • Target: {new Date(roadmap.target_date).toLocaleDateString()}
-                              </span>
+                              <span className="ml-2">• {t('dashboard.target_label', { date: new Date(roadmap.target_date).toLocaleDateString() })}</span>
                             )}
                           </p>
                         </div>
-
                         <ChevronRight className="w-5 h-5 text-muted-foreground" />
                       </button>
-
-                      {/* Resources Button */}
                       <div className="mt-3 pt-3 border-t border-border">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/roadmap/${roadmap.id}/resources`);
-                          }}
-                          className="w-full gap-2 text-muted-foreground hover:text-foreground"
-                        >
+                        <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); navigate(`/roadmap/${roadmap.id}/resources`); }} className="w-full gap-2 text-muted-foreground hover:text-foreground">
                           <Video className="w-4 h-4" />
-                          Study Materials
+                          {t('dashboard.study_materials')}
                         </Button>
                       </div>
                     </div>
@@ -274,19 +198,10 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-4">
-            {/* Streak Widget */}
             <div className="animate-slide-up" style={{ animationDelay: "0.4s" }}>
-              <StreakWidget
-                currentStreak={currentStreak}
-                longestStreak={longestStreak}
-                weekData={weekData}
-                loading={streakLoading}
-              />
+              <StreakWidget currentStreak={currentStreak} longestStreak={longestStreak} weekData={weekData} loading={streakLoading} />
             </div>
-
-            {/* Compact Reminders Widget */}
             <div className="animate-slide-up" style={{ animationDelay: "0.5s" }}>
               <CompactRemindersWidget />
             </div>
