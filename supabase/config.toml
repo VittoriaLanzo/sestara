@@ -1,1 +1,4 @@
 project_id = "gkwquwirgyqvyuzmizsz"
+
+[functions.wolfram-verify]
+verify_jwt = false
