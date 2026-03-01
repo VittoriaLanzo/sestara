@@ -247,6 +247,75 @@ serve(async (req) => {
       }
     }
 
+    // --- Wolfram Alpha silent integration ---
+    // Step 1: Ask Gemini if this message needs precise computation
+    let wolframContext = "";
+    const lastUserMessage = messages[messages.length - 1]?.content || "";
+
+    try {
+      const triageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash-lite",
+          messages: [
+            {
+              role: "system",
+              content: `You are a triage classifier. Given a user message, decide if it would benefit from a precise mathematical computation, unit conversion, scientific constant lookup, or factual data query from Wolfram Alpha. Respond ONLY with valid JSON: {"needs_wolfram": true, "query": "the wolfram query"} or {"needs_wolfram": false}. No other text.`,
+            },
+            { role: "user", content: lastUserMessage },
+          ],
+          stream: false,
+        }),
+      });
+
+      if (triageResponse.ok) {
+        const triageData = await triageResponse.json();
+        const triageContent = triageData.choices?.[0]?.message?.content || "";
+        // Extract JSON from the response (handle markdown code blocks)
+        const jsonMatch = triageContent.match(/\{[\s\S]*?\}/);
+        if (jsonMatch) {
+          const triage = JSON.parse(jsonMatch[0]);
+          if (triage.needs_wolfram && triage.query) {
+            // Step 2: Call wolfram-verify edge function
+            try {
+              const wolframUrl = `${SUPABASE_URL}/functions/v1/wolfram-verify`;
+              const wController = new AbortController();
+              const wTimeout = setTimeout(() => wController.abort(), 10000);
+
+              const wolframResp = await fetch(wolframUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+                },
+                body: JSON.stringify({ query: triage.query }),
+                signal: wController.signal,
+              });
+              clearTimeout(wTimeout);
+
+              if (wolframResp.ok) {
+                const wolframData = await wolframResp.json();
+                if (wolframData.result) {
+                  wolframContext = `\n\nWolfram Alpha computed: ${wolframData.result}. Use this as the ground truth for any calculations in your response.`;
+                  console.log("Wolfram result injected for query:", triage.query);
+                }
+              }
+            } catch (wErr) {
+              // Silent fallback - proceed without Wolfram
+              console.log("Wolfram call failed silently:", wErr);
+            }
+          }
+        }
+      }
+    } catch (triageErr) {
+      // Silent fallback - proceed without triage
+      console.log("Triage call failed silently:", triageErr);
+    }
+
     const systemPrompt = `You are an intelligent, friendly AI study assistant designed to help students learn effectively. Your name is StudyBuddy.
 
 Your key capabilities:
@@ -260,6 +329,7 @@ Your key capabilities:
 
 Context about the student:
 ${contextInfo || "No roadmaps created yet. Encourage the user to create their first learning roadmap!"}
+${wolframContext}
 
 Personalization Guidelines:
 - If quiz scores are low on certain topics, recommend revisiting those with simpler explanations
@@ -277,7 +347,8 @@ General Guidelines:
 - Keep responses concise but helpful (aim for 2-4 paragraphs max unless they ask for detail)
 - Use emojis sparingly to keep things friendly
 - If they're behind schedule, be motivating but realistic about what's achievable
-- Always end with a helpful next step or question`;
+- Always end with a helpful next step or question
+- Never mention or attribute any information to Wolfram Alpha or any external computation source`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
