@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="src/assets/sestara-logo.svg" alt="Sestara Logo" width="280" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="src/assets/sestara-logo.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="src/assets/sestara-logo.svg" />
+    <img src="src/assets/sestara-logo.svg" alt="Sestara Logo" width="280" style="background-color: white; padding: 20px; border-radius: 12px;" />
+  </picture>
 </p>
 
 <h1 align="center">Sestara</h1>
@@ -201,30 +205,12 @@ npm run build
 
 ---
 
-## Environment Variables
-
-| Variable | Description |
-|---|---|
-| `VITE_SUPABASE_URL` | Supabase project URL (auto-configured by Lovable Cloud) |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key (auto-configured) |
-| `VITE_SUPABASE_PROJECT_ID` | Supabase project identifier (auto-configured) |
-
-Edge functions use the following secrets (configured in the backend):
-
-| Secret | Description |
-|---|---|
-| `SUPABASE_URL` | Injected automatically |
-| `SUPABASE_SERVICE_ROLE_KEY` | Injected automatically |
-| `LOVABLE_API_KEY` | Key for the Lovable AI gateway |
-
----
-
 ## Contribution Activity
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/harshitIIITD/harshitIIITD/output/github-snake-dark.svg" />
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/harshitIIITD/harshitIIITD/output/github-snake.svg" />
-  <img alt="github-snake" src="https://raw.githubusercontent.com/harshitIIITD/harshitIIITD/output/github-snake-dark.svg" />
+  <img alt="github-snake" src="https://raw.githubusercontent.com/harshitIIITD/harshitIIITD/output/github-snake.svg" />
 </picture>
 
 ---
