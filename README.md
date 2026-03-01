@@ -1,20 +1,24 @@
-<p align="center">
-  <img src="src/assets/sestara-logo.svg" alt="Sestara Logo" width="280" />
-</p>
+<div align="center" style="background-color: #F4F1EC; padding: 40px 20px; border-radius: 12px;">
 
-<h1 align="center">Sestara</h1>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="src/assets/sestara-logo.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="src/assets/sestara-logo.svg" />
+  <img src="src/assets/sestara-logo.svg" alt="Sestara" width="280" />
+</picture>
 
-<p align="center">
-  AI-powered study roadmap builder and learning companion
-</p>
+<br /><br />
 
-<p align="center">
-  <img alt="React" src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white" />
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" />
-  <img alt="Vite" src="https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white" />
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" />
-  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-Backend-3FCF8E?style=flat-square&logo=supabase&logoColor=white" />
-</p>
+**AI-powered study roadmap builder and learning companion**
+
+<br />
+
+<img alt="React" src="https://img.shields.io/badge/React-18-1C3366?style=flat-square&logo=react&logoColor=CB9A2D" />
+<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-1C3366?style=flat-square&logo=typescript&logoColor=CB9A2D" />
+<img alt="Vite" src="https://img.shields.io/badge/Vite-5-1C3366?style=flat-square&logo=vite&logoColor=CB9A2D" />
+<img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-1C3366?style=flat-square&logo=tailwindcss&logoColor=CB9A2D" />
+<img alt="Supabase" src="https://img.shields.io/badge/Supabase-Backend-1C3366?style=flat-square&logo=supabase&logoColor=CB9A2D" />
+
+</div>
 
 ---
 
@@ -198,24 +202,6 @@ The development server starts at `http://localhost:8080`.
 ```sh
 npm run build
 ```
-
----
-
-## Environment Variables
-
-| Variable | Description |
-|---|---|
-| `VITE_SUPABASE_URL` | Supabase project URL (auto-configured by Lovable Cloud) |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key (auto-configured) |
-| `VITE_SUPABASE_PROJECT_ID` | Supabase project identifier (auto-configured) |
-
-Edge functions use the following secrets (configured in the backend):
-
-| Secret | Description |
-|---|---|
-| `SUPABASE_URL` | Injected automatically |
-| `SUPABASE_SERVICE_ROLE_KEY` | Injected automatically |
-| `LOVABLE_API_KEY` | Key for the Lovable AI gateway |
 
 ---
 
