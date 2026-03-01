@@ -205,16 +205,6 @@ npm run build
 
 ---
 
-## Contribution Activity
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/harshitIIITD/harshitIIITD/output/github-snake-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/harshitIIITD/harshitIIITD/output/github-snake.svg" />
-  <img alt="github-snake" src="https://raw.githubusercontent.com/harshitIIITD/harshitIIITD/output/github-snake.svg" />
-</picture>
-
----
-
 ## Credits
 
 **Vittoria Lanzo** -- Frontend Development, Branding, Graphic Design, Pitch Development, Brand Story Ideation
@@ -225,4 +215,4 @@ npm run build
 
 ## License
 
-License is currently not defined for this project.
+This project is licensed under the [MIT License](LICENSE).
