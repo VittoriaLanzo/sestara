@@ -23,6 +23,7 @@ import {
   Minimize2,
 } from "lucide-react";
 import { evaluateAnswer } from "@/lib/quizScoring";
+import { MathText } from "@/components/ui/math-text";
 
 interface Question {
   id: string;
@@ -349,7 +350,7 @@ export const EnhancedQuizViewer = ({
         </div>
 
         <p className="text-lg font-medium text-foreground mb-6">
-          {currentQuestion.question}
+          <MathText>{currentQuestion.question}</MathText>
         </p>
 
         {currentQuestion.type === 'mcq' ? (
@@ -371,7 +372,7 @@ export const EnhancedQuizViewer = ({
                 )}
               >
                 <div className="flex items-center justify-between">
-                  <span>{option}</span>
+                  <span><MathText>{option}</MathText></span>
                   {isAnswered && isCorrectOption && (
                     <CheckCircle2 className="w-5 h-5 text-green-500" />
                   )}
@@ -412,12 +413,12 @@ export const EnhancedQuizViewer = ({
                   Not quite, but that's okay! Learning is a process.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Correct answer:</strong> {currentQuestion.correctAnswer}
+                  <strong>Correct answer:</strong> <MathText>{currentQuestion.correctAnswer}</MathText>
                 </p>
               </div>
             )}
             <p className="text-sm text-muted-foreground mt-2">
-              {currentQuestion.explanation}
+              <MathText>{currentQuestion.explanation}</MathText>
             </p>
           </div>
         )}

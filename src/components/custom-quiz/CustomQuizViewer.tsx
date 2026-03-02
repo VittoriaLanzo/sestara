@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
 import { InQuizChallengeButton } from "@/components/challenge/InQuizChallengeButton";
 import { evaluateAnswer } from "@/lib/quizScoring";
+import { MathText } from "@/components/ui/math-text";
 
 interface CustomQuizViewerProps {
   quiz: CustomQuiz;
@@ -355,7 +356,7 @@ export const CustomQuizViewer = ({
 
                 {/* Question Text */}
                 <h3 className="text-lg md:text-xl font-medium mb-8 leading-relaxed">
-                  {currentQuestion.question}
+                  <MathText>{currentQuestion.question}</MathText>
                 </h3>
 
                 {/* Options */}
@@ -389,7 +390,7 @@ export const CustomQuizViewer = ({
                           )}>
                             {letter}
                           </div>
-                          <span className="flex-1 pt-1">{optionText}</span>
+                          <span className="flex-1 pt-1"><MathText>{optionText}</MathText></span>
                           {isSelected && <Check className="w-5 h-5 text-primary flex-shrink-0" />}
                         </div>
                       </button>
