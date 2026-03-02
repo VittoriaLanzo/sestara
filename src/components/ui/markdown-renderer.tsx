@@ -1,4 +1,5 @@
 import React from "react";
+import { MathRenderer } from "@/components/notes/MathRenderer";
 
 interface MarkdownRendererProps {
   content: string;
@@ -28,6 +29,22 @@ export const MarkdownRenderer = ({ content, className = "" }: MarkdownRendererPr
         listItems = [];
         listType = null;
       }
+    };
+
+    /** Split text on LaTeX delimiters first, then apply markdown inline formatting to non-math parts */
+    const parseMath = (text: string, baseKey: number): React.ReactNode[] => {
+      const parts = text.split(/(\$\$[\s\S]+?\$\$|\$[^$]+?\$)/g);
+      const nodes: React.ReactNode[] = [];
+      parts.forEach((part, i) => {
+        if (part.startsWith("$$") && part.endsWith("$$")) {
+          nodes.push(<MathRenderer key={`m-${baseKey}-${i}`} latex={part.slice(2, -2).trim()} display className="my-2" />);
+        } else if (part.startsWith("$") && part.endsWith("$") && part.length > 2) {
+          nodes.push(<MathRenderer key={`m-${baseKey}-${i}`} latex={part.slice(1, -1).trim()} />);
+        } else if (part) {
+          nodes.push(<React.Fragment key={`t-${baseKey}-${i}`}>{part}</React.Fragment>);
+        }
+      });
+      return nodes;
     };
 
     const parseInline = (text: string): React.ReactNode => {
@@ -60,17 +77,16 @@ export const MarkdownRenderer = ({ content, className = "" }: MarkdownRendererPr
       let key = 0;
 
       while (remaining.length > 0) {
-        // Italic: *text* or _text_ (but not ** or __)
         const italicMatch = remaining.match(/^(.*?)(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)(.*)$/s) ||
                            remaining.match(/^(.*?)(?<!_)_(?!_)(.+?)(?<!_)_(?!_)(.*)$/s);
         if (italicMatch) {
-          if (italicMatch[1]) parts.push(italicMatch[1]);
-          parts.push(<em key={`${baseKey}-${key++}`} className="italic text-foreground/90">{italicMatch[2]}</em>);
+          if (italicMatch[1]) parts.push(...parseMath(italicMatch[1], baseKey * 100 + key++));
+          parts.push(<em key={`${baseKey}-${key++}`} className="italic text-foreground/90">{parseMath(italicMatch[2], baseKey * 100 + key)}</em>);
           remaining = italicMatch[3];
           continue;
         }
 
-        parts.push(remaining);
+        parts.push(...parseMath(remaining, baseKey * 100 + key++));
         break;
       }
 
