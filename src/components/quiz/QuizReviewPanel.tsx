@@ -23,6 +23,7 @@ import {
   Users,
 } from "lucide-react";
 import { evaluateAnswer } from "@/lib/quizScoring";
+import { MathText } from "@/components/ui/math-text";
 
 interface Question {
   id: string;
@@ -208,17 +209,17 @@ export const QuizReviewPanel = ({
                     )}
                   </div>
                   
-                  <p className="font-medium text-foreground mb-3">{question.question}</p>
+                  <p className="font-medium text-foreground mb-3"><MathText>{question.question}</MathText></p>
                   
                   <div className="space-y-2 text-sm">
                     <p className="text-muted-foreground">
-                      <span className="text-red-400">Your answer:</span> {answers[question.id] || "(no answer)"}
+                      <span className="text-red-400">Your answer:</span> <MathText>{answers[question.id] || "(no answer)"}</MathText>
                     </p>
                     <p className="text-muted-foreground">
-                      <span className="text-green-400">Correct answer:</span> {question.correctAnswer}
+                      <span className="text-green-400">Correct answer:</span> <MathText>{question.correctAnswer}</MathText>
                     </p>
                     <p className="text-muted-foreground italic">
-                      {question.explanation}
+                      <MathText>{question.explanation}</MathText>
                     </p>
                   </div>
 

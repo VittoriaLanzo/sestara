@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import type { CustomQuiz } from "@/hooks/useCustomQuizzes";
 import { motion } from "framer-motion";
 import { evaluateAnswer } from "@/lib/quizScoring";
+import { MathText } from "@/components/ui/math-text";
 
 interface CustomQuizResultsProps {
   quiz: CustomQuiz;
@@ -275,7 +276,7 @@ const ReviewList = ({ questions, answers, expandedQuestion, setExpandedQuestion 
                    <XCircle className="w-4 h-4" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium line-clamp-2">{q.question}</p>
+                  <p className="font-medium line-clamp-2"><MathText>{q.question}</MathText></p>
                   <div className="flex gap-2 mt-1">
                     {userAnswer && (
                       <Badge variant={isCorrect ? "default" : "destructive"} className="text-xs">
@@ -314,7 +315,7 @@ const ReviewList = ({ questions, answers, expandedQuestion, setExpandedQuestion 
                           >
                             {isCorrectOption && <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />}
                             {isUserOption && !isCorrectOption && <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" />}
-                            <span>{opt}</span>
+                            <span><MathText>{opt}</MathText></span>
                           </div>
                         );
                       })}
@@ -324,7 +325,7 @@ const ReviewList = ({ questions, answers, expandedQuestion, setExpandedQuestion 
                     {q.explanation && (
                       <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
                         <p className="text-sm font-medium mb-1">Explanation:</p>
-                        <p className="text-sm text-muted-foreground">{q.explanation}</p>
+                        <p className="text-sm text-muted-foreground"><MathText>{q.explanation || ''}</MathText></p>
                       </div>
                     )}
 

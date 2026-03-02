@@ -242,10 +242,8 @@ serve(async (req) => {
     
     const context = contentParts.join('\n\n');
 
-    // Base language instruction for content generation
-    const languageInstruction = studyLanguage !== 'en' 
-      ? `Generate all content in ${langName}. For technical terms and keywords, show them in BOTH English AND ${langName} format.`
-      : '';
+    // Base language instruction for content generation — ALWAYS enforced
+    const languageInstruction = `You MUST respond entirely in ${langName}. Never use the source material's original language in your output unless it is ${langName}. Translate all content — including question text, answer choices, hints, explanations, and flashcard text — into ${langName} before responding.${studyLanguage !== 'en' ? ` For technical terms and keywords, show them in BOTH English AND ${langName} format.` : ''}`;
 
     // Exam-awareness instruction
     const examInstruction = `
@@ -287,7 +285,9 @@ Note: Since you cannot directly access the video, use the video title/URL contex
 
       case 'explain':
         systemPrompt = `You are a friendly, patient tutor who explains concepts in simple terms. Use analogies, examples, and break down complex ideas into digestible parts. Be encouraging and supportive.
+
 ${languageInstruction}
+
 ${examInstruction}`;
         userPrompt = `Please explain this topic in simple, easy-to-understand terms:\n\n${context}\n\nUse analogies and real-world examples where possible. Break it down step by step. Consider the exam level and explain accordingly.`;
         break;
@@ -330,6 +330,7 @@ ${studyLanguage !== 'en' ? `Provide keywords in BOTH English AND ${langName} for
 5. Provide detailed explanations that help learning
 
 ${languageInstruction}
+
 ${examInstruction}
 
 INTERNET-AWARE GENERATION:
@@ -401,6 +402,7 @@ CRITICAL REQUIREMENTS:
 4. Help with quick revision before exams
 
 ${languageInstruction}
+
 ${examInstruction}`;
         userPrompt = `Create ${cardCount} flashcards for studying:\n\n${context}\n\n
 IMPORTANT:
