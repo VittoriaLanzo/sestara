@@ -10,7 +10,7 @@ interface SEOHeadProps {
 const defaults = {
   title: "Sestara — AI-Powered Learning Platform",
   description: "Master any subject with personalized AI roadmaps. Track progress, take quizzes, and achieve your goals with Sestara.",
-  image: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8606d189-b1e2-4958-b410-9a7fe5a04967/id-preview-a3e78198--50c937c8-d9b1-4513-97b1-fa9661857e50.lovable.app-1772201832050.png",
+  image: "https://sestara.lovable.app/favicon.png",
   baseUrl: "https://sestara.lovable.app",
 };
 

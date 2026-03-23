@@ -250,9 +250,15 @@ export const QuizModal = ({
                 <button
                   key={index}
                   onClick={() => !isAnswered && setSelectedAnswer(option)}
+                  onTouchEnd={(e) => {
+                    if (!isAnswered) {
+                      e.preventDefault();
+                      setSelectedAnswer(option);
+                    }
+                  }}
                   disabled={isAnswered}
                   className={cn(
-                    "w-full p-4 rounded-lg border text-left transition-all",
+                    "w-full p-4 rounded-lg border text-left transition-all touch-manipulation",
                     "hover:bg-primary/5 hover:border-primary/50",
                     selectedAnswer === option && !isAnswered && "border-primary bg-primary/10",
                     isAnswered && option === currentQuestion.correctAnswer && "border-green-500 bg-green-500/10",

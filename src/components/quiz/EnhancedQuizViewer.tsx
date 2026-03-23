@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useStreak } from "@/hooks/useStreak";
 import { cn } from "@/lib/utils";
@@ -78,6 +78,7 @@ export const EnhancedQuizViewer = ({
 
   const currentQuestion = questions[currentIndex];
   const progress = ((currentIndex + 1) / questions.length) * 100;
+  const isMobile = window.innerWidth < 768;
 
   // Handle fullscreen
   useEffect(() => {
@@ -102,8 +103,9 @@ export const EnhancedQuizViewer = ({
     setShowResults(false);
   }, [questions.length]);
 
-  const checkAnswer = () => {
-    const userAnswer = currentQuestion.type === 'mcq' ? selectedAnswer : shortAnswer;
+  const checkAnswer = (overrideAnswer?: string) => {
+    if (isAnswered) return;
+    const userAnswer = overrideAnswer || (currentQuestion.type === 'mcq' ? selectedAnswer : shortAnswer);
     if (!userAnswer) {
       toast.error("Please provide an answer");
       return;
@@ -118,6 +120,7 @@ export const EnhancedQuizViewer = ({
 
     setIsCorrect(correct);
     setIsAnswered(true);
+    setSelectedAnswer(userAnswer);
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: userAnswer }));
     setQuestionStates(prev => {
       const updated = [...prev];
@@ -229,9 +232,12 @@ export const EnhancedQuizViewer = ({
     setShowResults(true);
   };
 
+  const completeQuizRef = useRef(completeQuiz);
+  useEffect(() => { completeQuizRef.current = completeQuiz; });
+
   const handleTimeUp = useCallback(() => {
     toast.warning("Time's up! Submitting your quiz...");
-    completeQuiz();
+    completeQuizRef.current();
   }, []);
 
   if (showResults) {
@@ -361,10 +367,26 @@ export const EnhancedQuizViewer = ({
               return (
               <button
                 key={index}
-                onClick={() => !isAnswered && setSelectedAnswer(option)}
+                onClick={() => {
+                  if (!isAnswered) {
+                    setSelectedAnswer(option);
+                    if (isMobile) {
+                      setTimeout(() => checkAnswer(option), 250);
+                    }
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  if (!isAnswered) {
+                    e.preventDefault();
+                    setSelectedAnswer(option);
+                    if (isMobile) {
+                      setTimeout(() => checkAnswer(option), 250);
+                    }
+                  }
+                }}
                 disabled={isAnswered}
                 className={cn(
-                  "w-full p-4 rounded-lg border text-left transition-all",
+                  "w-full p-4 rounded-lg border text-left transition-all touch-manipulation",
                   "hover:bg-primary/5 hover:border-primary/50",
                   selectedAnswer === option && !isAnswered && "border-primary bg-primary/10",
                   isAnswered && isCorrectOption && "border-green-500 bg-green-500/10",
@@ -455,7 +477,7 @@ export const EnhancedQuizViewer = ({
                 <SkipForward className="w-4 h-4 mr-2" />
                 Skip
               </Button>
-              <Button onClick={checkAnswer}>
+              <Button onClick={() => checkAnswer()}>
                 Check Answer
               </Button>
             </>

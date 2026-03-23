@@ -9,6 +9,7 @@ import { StudyTimeProvider } from "@/providers/StudyTimeProvider";
 import { StudyAssistant } from "@/components/assistant/StudyAssistant";
 import { LegalFooter } from "@/components/LegalFooter";
 import { CookieBanner, CookieManageDialog, useCookieConsent } from "@/components/CookieConsent";
+import { ConsentProvider } from "@/contexts/ConsentContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
@@ -49,6 +50,7 @@ const AppContent = () => {
   const cookie = useCookieConsent();
   
   return (
+    <ConsentProvider cookie={cookie}>
     <StudyTimeProvider>
       <div className="flex flex-col min-h-screen">
         <div className="flex-1">
@@ -89,6 +91,7 @@ const AppContent = () => {
         initialMarketing={cookie.preferences?.marketing ?? false}
       />
     </StudyTimeProvider>
+    </ConsentProvider>
   );
 };
 

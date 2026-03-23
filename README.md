@@ -35,7 +35,7 @@ Sestara is a web application that generates personalised study roadmaps using AI
 Users select a learning goal (competitive exams, college subjects, job preparation, programming, certifications, or language learning), provide details, and the backend generates a structured roadmap of subjects and topics.
 
 - **Frontend**: `src/components/GoalSelector.tsx`, `src/pages/Onboarding.tsx`
-- **Backend**: `supabase/functions/generate-roadmap/index.ts` -- calls the Lovable AI gateway (`google/gemini-2.5-flash`) with a curriculum-design prompt and returns structured JSON
+- **Backend**: `supabase/functions/generate-roadmap/index.ts` -- calls the AI gateway (`google/gemini-2.5-flash`) with a curriculum-design prompt and returns structured JSON
 - **Database**: `roadmaps`, `subjects`, `topics` tables
 
 ### Roadmap Management
@@ -53,7 +53,7 @@ Per-topic page with tabbed interface for notes, AI-generated explanations, quizz
 
 ### AI-Powered Quizzes
 
-Configurable quiz generation (MCQ, short answer, mixed) with difficulty levels, timer, navigation, review panel, scoring, and doubt reporting. Quizzes are generated server-side via the `topic-ai` edge function.
+Configurable quiz generation (MCQ, short answer, mixed) with difficulty levels, timer, navigation, review panel, scoring, and doubt reporting. Quizzes are generated server-side via the `topic-ai` edge function. On mobile, selecting an MCQ option auto-submits the answer after a 250 ms delay for a smoother one-tap experience; `touch-manipulation` CSS prevents ghost clicks throughout the quiz and flashcard UI.
 
 - **Frontend**: `src/components/quiz/EnhancedQuizViewer.tsx`, `src/components/quiz/QuizConfigPanel.tsx`, `src/components/quiz/QuizReviewPanel.tsx`, `src/components/quiz/QuizTimer.tsx`
 - **Backend**: `supabase/functions/topic-ai/index.ts` (action: `quiz`)
@@ -62,7 +62,7 @@ Configurable quiz generation (MCQ, short answer, mixed) with difficulty levels, 
 
 ### AI Flashcards
 
-Generate flashcards from topic content or convert quiz questions into flashcard sets. Spaced-repetition mastery tracking stored per user.
+Generate flashcards from topic content or convert quiz questions into flashcard sets. Spaced-repetition mastery tracking stored per user. Cards use responsive sizing and overflow-scrollable content for mobile compatibility.
 
 - **Frontend**: `src/components/flashcard/EnhancedFlashcardViewer.tsx`, `src/components/flashcard/FlashcardGenerator.tsx`
 - **Backend**: `supabase/functions/topic-ai/index.ts` (action: `flashcards`)
@@ -119,6 +119,14 @@ Organise YouTube videos and other links into groups per roadmap. Auto-fetches vi
 - **Backend**: `supabase/functions/youtube-metadata/index.ts`
 - **Database**: `roadmap_resources`, `resource_groups`
 
+### Video Study Buddy
+
+AI chat panel rendered alongside the video player. While watching a resource video, authenticated users can open a collapsible Study Buddy panel that lets them ask questions about the video content. The conversation is persisted per video. A separate `generate-artifact` edge function renders AI-produced artifacts (code, diagrams, structured notes) in the `ArtifactWorkspace` tab.
+
+- **Frontend**: `src/components/resources/VideoPlayer.tsx`, `src/components/topic/VideoStudyBuddy.tsx`, `src/components/topic/ArtifactWorkspace.tsx`, `src/components/topic/MessageActions.tsx`
+- **Backend**: `supabase/functions/video-studybuddy/index.ts`, `supabase/functions/generate-artifact/index.ts`
+- **Database**: `video_chat_messages`, `video_chat_artifacts`
+
 ### Study Streaks and Progress
 
 Daily activity tracking with streak counters (current and longest). Dashboard displays per-roadmap progress, topic completion stats, and study time tracking.
@@ -142,6 +150,20 @@ Email/password authentication with Supabase Auth. Protected routes redirect unau
 - **Frontend**: `src/pages/Auth.tsx`, `src/hooks/useAuth.tsx`
 - **Database**: `profiles`
 
+### GDPR: Data Export & Account Deletion
+
+Authenticated users can download all their personal data as a JSON file or permanently delete their account from the Settings page. Both actions are gated behind confirmation dialogs and executed server-side via dedicated edge functions.
+
+- **Frontend**: `src/pages/SettingsPage.tsx` (Data & Privacy section)
+- **Backend**: `supabase/functions/export-user-data/index.ts`, `supabase/functions/delete-user-account/index.ts`
+- **i18n keys**: `settings.data_privacy`, `settings.export_data`, `settings.delete_account`
+
+### Cookie Consent
+
+A `ConsentProvider` context wraps the entire application and manages cookie consent state. The `CookieConsent` banner is shown to new visitors and gates analytics until consent is granted.
+
+- **Frontend**: `src/contexts/ConsentContext.tsx`, `src/components/CookieConsent.tsx`
+
 ### Global Search
 
 Cross-roadmap search from the navbar.
@@ -158,7 +180,7 @@ Single-page React application built with Vite. UI components from shadcn/ui (Rad
 
 ### Backend (Edge Functions)
 
-Four Deno-based edge functions deployed on Supabase:
+Eight Deno-based edge functions deployed on Supabase:
 
 | Function | Purpose |
 |---|---|
@@ -166,8 +188,12 @@ Four Deno-based edge functions deployed on Supabase:
 | `topic-ai` | Explanations, quizzes, flashcards, write-assist, math conversion |
 | `study-assistant` | Streaming AI chat |
 | `youtube-metadata` | YouTube oEmbed metadata and playlist extraction |
+| `video-studybuddy` | Persistent AI chat scoped to a resource video |
+| `generate-artifact` | Renders AI-produced artifacts (code, diagrams, structured notes) |
+| `export-user-data` | Packages all user data as a downloadable JSON (GDPR) |
+| `delete-user-account` | Permanently removes a user and all associated data (GDPR) |
 
-All AI functions route through the Lovable AI gateway (`ai.gateway.lovable.dev`) using `google/gemini-2.5-flash`. Authentication is enforced via JWT validation on every request.
+All AI functions route through the AI gateway using `google/gemini-2.5-flash`. Authentication is enforced via JWT validation on every request except GDPR endpoints (which use service-role keys internally).
 
 ### Database
 
@@ -175,7 +201,7 @@ PostgreSQL via Supabase with Row Level Security (RLS) policies on all tables. Ke
 
 ### Deployment
 
-Frontend deployed via Lovable's publish flow. Backend edge functions deploy automatically on push.
+Frontend deployed to `https://sestara.lovable.app`. Backend edge functions deploy automatically on push.
 
 ---
 

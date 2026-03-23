@@ -45,7 +45,7 @@ export const StudyTimeProvider = ({ children }: { children: React.ReactNode }) =
 
   const lastActivityRef = useRef<number>(Date.now());
   const isActiveRef = useRef<boolean>(true);
-  const saveIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const saveIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchStudyTime = useCallback(async () => {
     if (!user) {

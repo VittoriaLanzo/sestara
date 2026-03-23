@@ -2,3 +2,15 @@ project_id = "gkwquwirgyqvyuzmizsz"
 
 [functions.wolfram-verify]
 verify_jwt = false
+
+[functions.video-studybuddy]
+verify_jwt = false
+
+[functions.generate-artifact]
+verify_jwt = false
+
+[functions.export-user-data]
+verify_jwt = false
+
+[functions.delete-user-account]
+verify_jwt = false
