@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -49,6 +49,7 @@ export const CustomQuizViewer = ({
   );
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const isPausedRef = useRef(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -56,6 +57,10 @@ export const CustomQuizViewer = ({
 
   const currentQuestion = quiz.questions[currentIndex];
   const totalQuestions = quiz.questions.length;
+
+  const handleSubmitRef = useRef(handleSubmit);
+  useEffect(() => { handleSubmitRef.current = handleSubmit; });
+  useEffect(() => { isPausedRef.current = isPaused; }, [isPaused]);
 
   // Timer logic
   useEffect(() => {
@@ -66,7 +71,8 @@ export const CustomQuizViewer = ({
         setRemainingSeconds(prev => {
           if (prev <= 1) {
             clearInterval(interval);
-            handleSubmit();
+            // Defer submit outside the state-setter to avoid StrictMode double-call
+            setTimeout(() => handleSubmitRef.current(), 0);
             return 0;
           }
           return prev - 1;
@@ -113,17 +119,16 @@ export const CustomQuizViewer = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const isMobile = window.innerWidth < 768;
+
   const handleSelectAnswer = (option: string) => {
     if (isPaused) return;
     
-    // Extract letter from option (e.g., "A) Answer" -> "A")
-    // Only proceed if the option starts with a valid letter format
     const letterMatch = option.match(/^([A-Z])\)/i);
     if (!letterMatch) return;
     
     const letter = letterMatch[1].toUpperCase();
     
-    // Prevent selecting the same answer again (no toggle behavior)
     if (answers[currentQuestion.id] === letter) return;
     
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: letter }));
@@ -131,6 +136,11 @@ export const CustomQuizViewer = ({
     const newStates = [...questionStates];
     newStates[currentIndex] = 'answered';
     setQuestionStates(newStates);
+
+    // Auto-advance on mobile after a brief delay (only if not paused at fire time)
+    if (isMobile && currentIndex < totalQuestions - 1) {
+      setTimeout(() => { if (!isPausedRef.current) setCurrentIndex(prev => prev + 1); }, 350);
+    }
   };
 
   const handleClearAnswer = () => {
@@ -375,7 +385,7 @@ export const CustomQuizViewer = ({
                         disabled={isPaused}
                         type="button"
                         className={cn(
-                          "w-full p-4 rounded-xl border text-left transition-all",
+                          "w-full p-4 rounded-xl border text-left transition-all touch-manipulation",
                           "hover:border-primary/50 hover:bg-primary/5",
                           isSelected && "border-primary bg-primary/10 ring-2 ring-primary/20",
                           isPaused && "opacity-50 cursor-not-allowed"

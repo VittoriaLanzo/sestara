@@ -261,7 +261,7 @@ QUALITY REQUIREMENTS:
 - Reference common exam patterns and frequently asked concepts
 - Avoid overly generic or shallow questions`;
 
-    console.log(`Processing ${action} request for user: ${userId}, topic: ${topicTitle}, exam: ${examName || 'general'}`);
+    console.log(`Processing ${action} request for user: ${userId}`);
 
     switch (action) {
       case 'youtube-extract': {

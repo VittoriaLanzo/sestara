@@ -22,7 +22,7 @@ export const useStudyTime = () => {
   const lastActivityRef = useRef<number>(Date.now());
   const activeTimeRef = useRef<number>(0);
   const isActiveRef = useRef<boolean>(true);
-  const saveIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const saveIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchStudyTime = useCallback(async () => {
     if (!user) {

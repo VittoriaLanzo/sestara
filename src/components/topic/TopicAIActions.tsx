@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
+
 interface TopicAIActionsProps {
   topic: {
     id: string;
@@ -31,6 +32,7 @@ interface TopicAIActionsProps {
   onGenerateQuiz: () => void;
   onGenerateFlashcards?: () => void;
   hasExistingFlashcards?: boolean;
+  onVideoSourceChange?: (source: { type: "youtube"; videoId: string; url: string } | null) => void;
   examContext?: {
     examName?: string;
     examType?: string;
@@ -53,6 +55,7 @@ export const TopicAIActions = ({
   onGenerateQuiz,
   onGenerateFlashcards,
   hasExistingFlashcards,
+  onVideoSourceChange,
   examContext,
 }: TopicAIActionsProps) => {
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
@@ -150,6 +153,8 @@ export const TopicAIActions = ({
           </Button>
         ))}
       </div>
+
+
 
       {/* AI Generated Content - New content appears at top */}
       <div className="space-y-4">

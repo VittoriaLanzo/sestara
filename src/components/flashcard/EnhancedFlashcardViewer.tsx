@@ -59,7 +59,7 @@ export const EnhancedFlashcardViewer = ({
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [masteryData, setMasteryData] = useState<Record<string, 'easy' | 'medium' | 'hard'>>({});
   
-  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+  const autoPlayRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const originalCards = useRef(initialCards);
 
   const currentCard = cards[currentIndex];
@@ -279,7 +279,7 @@ export const EnhancedFlashcardViewer = ({
         <div
           onClick={() => setIsFlipped(!isFlipped)}
           className={cn(
-            "relative w-full max-w-lg aspect-[3/2] rounded-xl cursor-pointer transition-all duration-500",
+            "relative w-full max-w-lg min-h-[200px] md:aspect-[3/2] rounded-xl cursor-pointer transition-all duration-500",
             "hover:shadow-lg",
             isFocusMode && "max-w-2xl"
           )}
@@ -287,7 +287,7 @@ export const EnhancedFlashcardViewer = ({
         >
           <div
             className={cn(
-              "absolute inset-0 backface-hidden rounded-xl p-6 flex flex-col items-center justify-center text-center transition-transform duration-500",
+              "absolute inset-0 backface-hidden rounded-xl p-4 md:p-6 flex flex-col items-center justify-center text-center transition-transform duration-500 overflow-y-auto",
               "bg-gradient-to-br from-primary/20 to-accent/20 border border-border/50"
             )}
             style={{
@@ -297,8 +297,8 @@ export const EnhancedFlashcardViewer = ({
           >
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Question</p>
             <div className={cn(
-              "font-medium text-foreground",
-              isFocusMode ? "text-2xl" : "text-lg"
+              "font-medium text-foreground break-words w-full",
+              isFocusMode ? "text-xl md:text-2xl" : "text-base md:text-lg"
             )}>
               <MathText>{currentCard.front}</MathText>
             </div>
@@ -318,7 +318,7 @@ export const EnhancedFlashcardViewer = ({
 
           <div
             className={cn(
-              "absolute inset-0 backface-hidden rounded-xl p-6 flex flex-col items-center justify-center text-center transition-transform duration-500",
+              "absolute inset-0 backface-hidden rounded-xl p-4 md:p-6 flex flex-col items-center justify-center text-center transition-transform duration-500 overflow-y-auto",
               "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30"
             )}
             style={{
@@ -328,8 +328,8 @@ export const EnhancedFlashcardViewer = ({
           >
             <p className="text-xs text-green-400 uppercase tracking-wider mb-3">Answer</p>
             <div className={cn(
-              "font-medium text-foreground",
-              isFocusMode ? "text-2xl" : "text-lg"
+              "font-medium text-foreground break-words w-full",
+              isFocusMode ? "text-xl md:text-2xl" : "text-base md:text-lg"
             )}>
               <MathText>{currentCard.back}</MathText>
             </div>

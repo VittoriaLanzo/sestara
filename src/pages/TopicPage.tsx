@@ -110,6 +110,7 @@ const TopicPage = () => {
   // Challenge dialog state
   const [showChallengeDialog, setShowChallengeDialog] = useState(false);
   const [challengeQuiz, setChallengeQuiz] = useState<CustomQuiz | null>(null);
+  const [videoSource, setVideoSource] = useState<{ type: "youtube"; videoId: string; url: string } | null>(null);
   const examContext = {
     examName: roadmap?.title || '',
     examType: roadmap?.goal_type || '',
@@ -269,7 +270,7 @@ const TopicPage = () => {
     updateProgress(100, "completed");
   };
 
-  const handleStartQuiz = async (config: QuizConfig) => {
+  const handleStartQuiz = useCallback(async (config: QuizConfig) => {
     if (!topic) return;
     
     setIsGeneratingQuiz(true);
@@ -284,8 +285,8 @@ const TopicPage = () => {
           quizType: config.quizType,
           questionCount: config.questionCount,
           difficulty: config.difficulty,
-          sourceUrl: config.sourceUrl,
-          sourceType: config.source,
+          sourceUrl: config.sourceUrl || videoSource?.url,
+          sourceType: config.source === 'topic' && videoSource ? 'youtube' : config.source,
           // Exam context
           examName: examContext.examName,
           examType: examContext.examType,
@@ -306,7 +307,7 @@ const TopicPage = () => {
     } finally {
       setIsGeneratingQuiz(false);
     }
-  };
+  }, [topic, subject, notes, examContext, videoSource]);
 
   const handleCloseQuiz = () => {
     setShowQuiz(false);
@@ -646,6 +647,7 @@ const TopicPage = () => {
               onGenerateQuiz={() => setShowQuizConfig(true)}
               onGenerateFlashcards={() => setShowFlashcardGenerator(true)}
               hasExistingFlashcards={!!flashcards && flashcards.length > 0}
+              onVideoSourceChange={setVideoSource}
               examContext={{ ...examContext, subjectTitle: subject?.title }}
             />
           </TabsContent>

@@ -71,7 +71,7 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log("Generating roadmap for:", { goalType, goalDetails, title, userId: userData.user.id });
+    console.log("Generating roadmap for:", { goalType, userId: userData.user.id });
 
     const systemPrompt = `You are an expert educational curriculum designer and study planner. 
 Your task is to create a comprehensive, well-structured study roadmap based on the user's learning goal.
@@ -160,7 +160,7 @@ Make it practical and achievable.`;
       throw new Error("No content in AI response");
     }
 
-    console.log("Raw AI response:", content);
+    console.log("AI response received, parsing roadmap data");
 
     // Clean the response - remove markdown code blocks and extract JSON
     content = content.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -192,7 +192,7 @@ Make it practical and achievable.`;
       }
     }
 
-    console.log("Parsed roadmap data:", roadmapData);
+    console.log("Roadmap data parsed successfully, subjects:", roadmapData?.subjects?.length ?? 0);
 
     return new Response(JSON.stringify({ roadmap: roadmapData }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
