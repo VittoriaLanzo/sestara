@@ -233,9 +233,9 @@ npm run build
 
 ## Credits
 
-**Vittoria Lanzo** -- Frontend Development, Branding, Graphic Design, Pitch Development, Brand Story Ideation
+**Vittoria Lanzo** -- Frontend Development, Branding, Graphic Design, Pitch Development, Brand Story Ideation, Demo Video Production
 
-**Harshit Singh** -- Backend Development, AI Integration, Demo Video Production
+**Harshit Singh** -- Backend Development, AI Integration
 
 ---
 
